@@ -1,0 +1,178 @@
+main{
+    width: 100vw;
+    padding-block: 5em 0;
+    display: flex;
+    justify-content: center;
+}
+
+.main-card{
+    position: relative;
+    padding: 1.3em;
+    border: 1px var(--light-grey) solid;
+    border-radius: 10px;
+    font-size: var(--fs-md);
+}
+
+.main-card-head{
+    display: flex;
+    justify-content: space-between;
+    font-weight: bolder;
+    width: 100%;
+    margin: .3em 0;
+    border-bottom: 1px var(--light-grey) solid;
+    padding-bottom: 1em;
+}
+
+.main-card-head span{
+    color: #6366f1;
+}
+
+.main-card hr{
+    border-color: var(--light-grey);
+    opacity: 40%;
+    margin: 20px 0px;
+}
+
+.user-image-container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+
+.user-image {
+    position: absolute;
+    top: 2em;
+    width: 6em;
+    height: 6em;
+    background-image: url('./../assets/pranav.jpeg');
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 .2em 4px .6px rgb(184, 184, 184);
+    padding: .3em;
+    align-self: center;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.user-image-container:hover .user-image{
+    animation: bounce forwards;
+    animation-duration: 1s;
+}
+
+@keyframes bounce {
+    40%{
+        transform: translateY(-30px) rotateY(180deg);
+    }
+    60%{
+        transform: translateY(-30px) rotateY(180deg);
+    }
+    100%{
+        transform: translateY(0px)
+    }
+}
+
+.user-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid #ffffff; /* Adjust the border width and color as desired */
+    box-sizing: border-box;
+}
+
+.add-image-icon {
+    position: absolute;
+    transform: translate(50%, 50%); /* Center the icon */
+    font-size: 1.6em;
+    color: #6366f1;
+    margin-left: 2em;
+    margin-top: .9em;
+}
+
+.main-input-container{
+    width: 100%;
+    padding: .6em 1em;
+}
+
+.input-container{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin: 1.5em;
+}
+
+.input-container input{
+    padding: .4em 1em;
+    border: 1px var(--input-border) solid;
+    border-radius: .35em;
+    background-color: var(--input-bg);
+}
+
+
+.input-container select{
+    padding: .4em 1em;
+    border: 1px var(--input-border) solid;
+    border-radius: .35em;
+    background-color: var(--input-bg);
+    width: 17em;
+    color: var(--input-placeholder);
+}
+
+
+.input-container input::placeholder{
+    color: var(--input-placeholder);
+    font-size: var(--fs-md);
+}
+
+.date-input{
+    width: 17em;
+}
+
+.btn-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 3em;
+}
+
+.primary-btn{
+    background-color: #6366f1;
+    color: white;
+    font-weight: 600;
+    padding: .6em 1.9em;
+    border: 0;
+    border-radius: .3em;
+    transition: .45s ease-in-out;
+    cursor: pointer;
+}
+
+.primary-btn:hover{
+    background-color: #5456c8;
+}
+
+
+@media screen and (min-width:300px) {
+    .main-card{
+        max-width: 30em;
+    }
+}
+
+@media screen and (min-width:400px) {
+    .main-card{
+        min-width: 41em;
+    }
+}
+
+@media screen and (min-width:768px) {
+    .main-card{
+        min-width: 700px;
+    }
+    .extra-margin{
+        margin-top: 3em;
+    }
+}

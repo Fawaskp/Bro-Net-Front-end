@@ -1,3 +1,30 @@
+:root{
+    --fs-xl:1em;
+    --fs-md:.78em;
+    --fs-sm:.6em;
+    --light-grey:rgb(233, 233, 233);
+    --light-violet:#EAEEFF;
+
+    --input-bg:#FBFBFB;
+    --input-border:#EAEEFF;
+    --input-placeholder:#939393;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+    font-size: var(--fs-xl);
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

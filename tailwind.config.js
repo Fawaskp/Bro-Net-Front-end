@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {},
+    borderRadius: {
+      '10': '10px', 
+    },
   },
   plugins: [],
 }

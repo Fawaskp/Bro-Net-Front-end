@@ -1,0 +1,42 @@
+/* LoginCard.module.css */
+.main {
+    @apply w-screen;
+    padding-block: 3em 0;
+    display: flex;
+    justify-content: center;
+    margin: 8.5em 0;
+  }
+  
+  .login-card-head {
+    @apply w-full;
+    margin: .15em 0;
+  }
+  
+  .login-card-head span {
+    @apply text-indigo-600;
+  }
+  
+  .login-card {
+    @apply flex flex-col justify-center min-w-[350px] w-[60vw] max-w-[468px] p-10 border border-gray-300 rounded-10 font-medium shadow-md;
+  }
+  
+  .login-card hr {
+    @apply border border-gray-300 opacity-100 my-2 rounded-10;
+  }
+  
+  .social-media-card {
+    @apply w-full my-2 flex flex-row items-center transition-all duration-500 ease-out py-3 px-0;
+  }
+  
+  .social-media-card:hover {
+    @apply rounded-10 bg-indigo-100 transform scale-105;
+  }
+  
+  .social-media-card img {
+    @apply w-[2em] md:w-[50px] py-0 px-2 float-left;
+  }
+  
+  .social-media-card h4 {
+    @apply pr-2;
+  }
+  
