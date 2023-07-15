@@ -18,6 +18,8 @@
   
   .login-card {
     @apply flex flex-col justify-center min-w-[350px] w-[60vw] max-w-[468px] p-10 border border-gray-300 rounded-10 font-medium shadow-md;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  
   }
   
   .login-card hr {
@@ -26,6 +28,7 @@
   
   .social-media-card {
     @apply w-full my-2 flex flex-row items-center transition-all duration-500 ease-out py-3 px-0;
+    cursor: pointer;
   }
   
   .social-media-card:hover {
