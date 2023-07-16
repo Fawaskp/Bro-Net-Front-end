@@ -1,53 +1,71 @@
-import React, { useState } from 'react';
-import { DefaultButton } from './buttons';
-import { EmailInput } from './Inputs';
+import React, { useState } from "react";
+import {
+  Button,
+  Dialog,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
+  Input,
+  Checkbox,
+} from "@material-tailwind/react";
+import { validateEmail } from "../helpers/email_validator";
+import { login_with_email } from "../pages/LoginPage/login-with-email";
 
-const inputModal = ({ close }) => {
+ 
+export default function Example({status,close}) {
+
+  const [email,setEmail] = useState()
+  const [inputColor,setinputColor] = useState('indigo')
+ 
+  const  handleSubmit = async () =>{
+    if(validateEmail(email)){
+      setinputColor('indigo')
+      login_with_email(email)
+      close()
+    }
+    else{
+      setinputColor('red')
+      console.log(email,' : ',validateEmail(email));
+    }
+  }
 
   return (
-    <>
-      
-          <div
-            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+    <React.Fragment> 
+      <Dialog
+        size="xs"
+        open={status}
+        handler={()=>close()}
+        className="bg-transparent shadow-none"
+      >
+        <Card className="mx-auto w-full max-w-[24rem]">
+          <CardHeader
+            color="white"
+            className="mt-4 ms-0 text-gray-700 px-3 pb-2 w-full place-items-center shadow-none border-b-2 "
           >
-            <div className="relative w-auto my-6 mx-auto max-w-6xl">
-              {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h5 className="text-3xl font-semibold">
-                    Login with E-mail
-                  </h5>
-                  <button
-                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => close()}
-                  >
-                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
-                  </button>
-                </div>
-                {/*body*/}
-                <div className="relative p-6 flex-auto">
-                  <EmailInput/>
-                </div>
-                {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                  <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => close()}
-                  >
-                    Close
-                  </button>
-                  <DefaultButton onClick={() => close()} ></DefaultButton>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-        </>
+            Login into Bronet
+          </CardHeader>
+          <form onSubmit={(e)=>{e.preventDefault();handleSubmit()}}>
+          <CardBody className="flex flex-col gap-4">
+            <Input label="Email" size="lg" color={inputColor} onChange={(e)=>setEmail(e.target.value)} />
+            {
+              inputColor != 'indigo'?
+              <Typography className="text-xs -pt-2 text-red-500" >
+              Enter Valid Email
+            </Typography>
+            :
+            null
+            }
+          </CardBody>
+          <CardFooter className="pt-0">
+            <Button type="submit" variant="gradient" color="indigo" fullWidth>
+              Log in
+            </Button>
+          </CardFooter>
+          </form>
+        </Card>
+      </Dialog>
+    </React.Fragment>
   );
-};
-
-export default inputModal;
+}

@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import './LoginPage.css'
-import Navbar from '../components/Navbar'
+import Navbar from '../../components/Navbar'
 import { useGoogleLogin } from '@react-oauth/google';
-import axios from 'axios'
-import InputModal from '../components/InputModal';
-import { userAxiosInstance } from '../utils/axios-utils';
+import InputModal from '../../components/InputModal';
+import { userAxiosInstance } from '../../utils/axios-utils';
+import { login_with_email, verify_email_login_token } from './login-with-email';
+import { toast } from 'react-toastify';
 
 function LoginPage() {
 
   const [user, setUser] = useState('');
   const [githuUserData, setgithuUserData] = useState({});
 
+  const [email,setEmail] = useState('')
   const [showModal, setShowModal] = useState(false);
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -58,9 +60,9 @@ function LoginPage() {
 
           const keysToDelete = ['name', 'id', 'picture','locale'];
           keysToDelete.forEach(key => delete updatedData[key]);
-          console.log('Profile => ',profileData, ' UpdatedData => ',updatedData);
+          // console.log('Profile => ',profileData, ' UpdatedData => ',updatedData);
 
-          userAxiosInstance.post("/",updatedData,{
+          userAxiosInstance.post("/login/",updatedData,{
           }).then((res)=>{
             console.log(res.data);
           })
@@ -87,6 +89,16 @@ function LoginPage() {
         })
       }
       getAccessToken()
+    }
+  }, [])
+
+  useEffect(() => {
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    const codeParam = urlParams.get('token')
+    if (codeParam) {
+      console.log(codeParam);
+      verify_email_login_token(codeParam)
     }
   }, [])
 
@@ -123,10 +135,10 @@ function LoginPage() {
       </main>
 
       <div>
-        {showModal && <InputModal close={toggleModal} />}
+        <InputModal status={showModal} close={toggleModal} />
       </div>
 
-      <button className='p-3' onClick={() => getGithubUserData()} >Get Use data</button>
+      {/* <button className='p-3' onClick={() => getGithubUserData()} >Get Use data</button> */}
       
     </>
   )

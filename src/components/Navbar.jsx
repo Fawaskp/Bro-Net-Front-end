@@ -27,6 +27,8 @@ import {
   MagnifyingGlassIcon
 } from "@heroicons/react/24/outline";
 
+import {useNavigate} from 'react-router-dom'
+
 // profile menu component
 const profileMenuItems = [
   {
@@ -45,15 +47,17 @@ const profileMenuItems = [
     label: "Help",
     icon: LifebuoyIcon,
   },
-  {
-    label: "Sign Out",
-    icon: PowerIcon,
-  },
 ];
 
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const closeMenu = () => setIsMenuOpen(false);
+
+  const navigate = useNavigate()
+
+  const signOut = ()=>{
+    localStorage.removeItem('AuthToken')
+  }
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -68,7 +72,7 @@ function ProfileMenu() {
             variant="circular"
             size="sm"
             alt="tania andrew"
-            className="border border-indigo-500 p-0.5 rounded-full"
+            className="border border-indigo-500 p-0.5 rounded-full focus:outline-0"
             src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
           />
           <ChevronDownIcon
@@ -84,27 +88,38 @@ function ProfileMenu() {
           return (
             <MenuItem
               key={label}
-              onClick={closeMenu}
               className={`flex items-center gap-2 rounded ${isLastItem
                 ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
                 : ""
                 }`}
             >
               {React.createElement(icon, {
-                className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
+                className: "h-4 w-4",
                 strokeWidth: 2,
               })}
+              
               <Typography
                 as="span"
                 variant="small"
                 className="font-normal"
-                color={isLastItem ? "red" : "inherit"}
+                color="inherit"
               >
                 {label}
               </Typography>
             </MenuItem>
           );
         })}
+        <MenuItem onClick={()=>signOut()} key={"Sign Out"}  className="flex items-center gap-2 rounded">
+          <PowerIcon className="h-4 w-4" color="red" ></PowerIcon>
+          <Typography
+                as="span"
+                variant="small"
+                className="font-normal"
+                color="red"
+              >
+                Sign out
+              </Typography>
+        </MenuItem>
       </MenuList>
     </Menu>
   );
@@ -133,6 +148,7 @@ const navListMenuItems = [
 export default function ComplexNavbar() {
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
+  const navigate = useNavigate()
 
   React.useEffect(() => {
     window.addEventListener(
@@ -147,7 +163,6 @@ export default function ComplexNavbar() {
         <div className="relative max-w-screen-2xl mx-auto flex items-center text-blue-gray-900">
           <Typography
             as="a"
-            href="#"
             className="mr-4 text-xl text-indigo-500 ml-2 cursor-pointer py-1.5 font-semibold"
           >
             Bronet

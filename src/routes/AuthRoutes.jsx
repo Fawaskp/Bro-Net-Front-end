@@ -1,8 +1,8 @@
 import React from 'react'
-import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
-import LoginPage from '../pages/LoginPage'
-import ProfileCompletion from '../pages/ProfileCompletion'
-import NoteFoundPage from '../pages/NoteFoundPage'
+import { Routes, Route, Navigate} from 'react-router-dom'
+import LoginPage from '../pages/LoginPage/LoginPage'
+import ProfileCompletion from '../pages/ProfileCompletion/ProfileCompletion'
+import NoteFoundPage from '../pages/PageNoteFound'
 
 
 function AuthRoutes() {
