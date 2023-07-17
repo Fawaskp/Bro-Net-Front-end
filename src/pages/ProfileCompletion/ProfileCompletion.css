@@ -43,9 +43,8 @@ main{
 .user-image {
     position: absolute;
     top: 2em;
-    width: 6em;
-    height: 6em;
-    background-image: url('./../assets/pranav.jpeg');
+    width: 8em;
+    height: 8em;
     background-color: white;
     background-size: cover;
     background-position: center;
@@ -56,9 +55,33 @@ main{
     overflow: hidden;
 }
 
-.user-image-container:hover .user-image{
+.user-image-container:hover .add-image-icon{
     animation: bounce forwards;
     animation-duration: 1s;
+}
+
+.add-image-icon {
+    position: absolute;
+    transform: translate(50%, 50%); /* Center the icon */
+    font-size: 1.6em;
+    color: #6366f1;
+    margin-left: 2em;
+    margin-top: 1.6em;
+    background-color: white;
+    border-radius: 50%;
+    border: 1px #6366f1 solid;
+}
+
+.remove-image-icon{
+    position: absolute;
+    transform: translate(50%, 50%) rotateZ(45deg);
+    font-size: 1.6em;
+    color: #e94848;
+    margin-left: 2em;
+    margin-top: 1.6em;
+    background-color: white;
+    border-radius: 50%;
+    border: 1px #e94848 solid;
 }
 
 @keyframes bounce {
@@ -69,7 +92,7 @@ main{
         transform: translateY(-30px) rotateY(180deg);
     }
     100%{
-        transform: translateY(0px)
+        transform: translateY(12px) translateX(11px)
     }
 }
 
@@ -83,15 +106,6 @@ main{
     border-radius: 50%;
     border: 1px solid #ffffff; /* Adjust the border width and color as desired */
     box-sizing: border-box;
-}
-
-.add-image-icon {
-    position: absolute;
-    transform: translate(50%, 50%); /* Center the icon */
-    font-size: 1.6em;
-    color: #6366f1;
-    margin-left: 2em;
-    margin-top: .9em;
 }
 
 .main-input-container{

@@ -8,13 +8,20 @@ export function login_with_email(email){
     }) .catch((err) => console.log(err));
 }
 
-export function verify_email_login_token(token){
-    userAxiosInstance.get(`/login/email/?token=${token}`).then((res)=>{
-        if (res.data.status == 200){
-            localStorage.setItem('AuthToken',JSON.stringify(res.data.Token))
+export async function verify_email_login_token(token,){
+    try{
+        const response = await userAxiosInstance.get(`/login/email/?token=${token}`)
+        if (response.data.status == 200){
+            localStorage.setItem('AuthToken',JSON.stringify(response.data.Token))
+            return true
         }
         else{
-            console.log("Backend Error: ",res.data);
+            // console.log("Backend Error: ",res.data);
+            toast.error(response.data.message)
+            return false
         }
-    }) .catch((err) => console.log(err));
+    }
+    catch(err){
+        console.log(err);
+    }
 }

@@ -6,6 +6,7 @@ import InputModal from '../../components/InputModal';
 import { userAxiosInstance } from '../../utils/axios-utils';
 import { login_with_email, verify_email_login_token } from './login-with-email';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
 
@@ -14,6 +15,9 @@ function LoginPage() {
 
   const [email,setEmail] = useState('')
   const [showModal, setShowModal] = useState(false);
+
+  const navigate = useNavigate()
+
   const toggleModal = () => {
     setShowModal(!showModal);
   };
@@ -71,6 +75,14 @@ function LoginPage() {
     }
   }, [user]);
 
+  const call_token_verify = async (token)=>{
+    const result = await verify_email_login_token(token)
+      if(result){
+        toast.success('Login successfully')
+        navigate('/auth/complete-profile')
+      }
+  }
+
   useEffect(() => {
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
@@ -95,19 +107,17 @@ function LoginPage() {
   useEffect(() => {
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
-    const codeParam = urlParams.get('token')
-    if (codeParam) {
-      console.log(codeParam);
-      verify_email_login_token(codeParam)
+    const tokenParam = urlParams.get('token')
+    if (tokenParam) {
+      console.log(tokenParam);
+      call_token_verify(tokenParam)
     }
   }, [])
 
 
   return (
-    <>
-
+    <>    
       <Navbar />
-
       <main className='main'>
         <div className='login-card'>
           <div className='login-card-head'>

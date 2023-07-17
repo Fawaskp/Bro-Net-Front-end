@@ -57,6 +57,7 @@ function ProfileMenu() {
 
   const signOut = ()=>{
     localStorage.removeItem('AuthToken')
+    // navigate('/auth/')
   }
 
   return (
@@ -186,7 +187,7 @@ export default function ComplexNavbar() {
               placeholder="Search..."
             />
           </div>
-        </div> */}
+        </div> */}  
 
 
           <IconButton
