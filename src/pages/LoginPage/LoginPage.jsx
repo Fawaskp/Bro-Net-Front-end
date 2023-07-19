@@ -7,6 +7,10 @@ import { userAxiosInstance } from '../../utils/axios-utils';
 import { login_with_email, verify_email_login_token } from './login-with-email';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+import { getLocal } from '../../helpers/auth';
+import { login_with_google } from './login-with-google';
+import { getGitHubAccessToken } from './login-with-github';
 
 function LoginPage() {
 
@@ -15,6 +19,8 @@ function LoginPage() {
 
   const [email,setEmail] = useState('')
   const [showModal, setShowModal] = useState(false);
+
+  const [loading,setLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -32,46 +38,12 @@ function LoginPage() {
   const github_client_id = import.meta.env.VITE_GITHUB_CLIENT_ID
 
   const githubLogin = () => {
-    window.location.assign('https://github.com/login/oauth/authorize?client_id=' + github_client_id)
-  }
-
-  async function getGithubUserData() {
-    await fetch("http://localhost:5000/getUserData", {
-      method: 'GET',
-      headers: {
-        "Authorization": "Bearer " + localStorage.getItem("githubAccessToken")
-      }
-    }).then((response) => {
-      return response.json();
-    }).then((data) => {
-      console.log(data);
-      setgithuUserData(data)
-    })
+    window.location.assign('https://github.com/login/oauth/authorize?client_id=' + github_client_id+"&scope=user:email,read:user")
   }
 
   useEffect(() => {
     if (user) {
-      axios
-        .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-          headers: {
-            Authorization: `Bearer ${user.access_token}`,
-            Accept: 'application/json'
-          }
-        })
-        .then((res) => {
-          const updatedData = { ...res.data, fullname: res.data.name,password:res.data.email };
-          const profileData = { profile: res.data.picture}
-
-          const keysToDelete = ['name', 'id', 'picture','locale'];
-          keysToDelete.forEach(key => delete updatedData[key]);
-          // console.log('Profile => ',profileData, ' UpdatedData => ',updatedData);
-
-          userAxiosInstance.post("/login/",updatedData,{
-          }).then((res)=>{
-            console.log(res.data);
-          })
-        })
-        .catch((err) => console.log(err));
+      login_with_google(user.access_token,navigate)
     }
   }, [user]);
 
@@ -82,62 +54,64 @@ function LoginPage() {
         navigate('/auth/complete-profile')
       }
   }
+  
 
   useEffect(() => {
+    document.title = "Login Here"
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
     const codeParam = urlParams.get('code')
     if (codeParam) {
-      async function getAccessToken() {
-        await fetch("http://localhost:5000/getAccessToken?code=" + codeParam, {
-          method: 'GET'
-        }).then((response) => {
-          return response.json()
-        }).then((data) => {
-          console.log(data);
-          if (data.access_token) {
-            localStorage.setItem('githubAccessToken', data.access_token);
-          }
-        })
-      }
-      getAccessToken()
+      getGitHubAccessToken(codeParam,setLoading,navigate)
     }
   }, [])
 
   useEffect(() => {
-    const queryString = window.location.search
-    const urlParams = new URLSearchParams(queryString)
-    const tokenParam = urlParams.get('token')
-    if (tokenParam) {
-      console.log(tokenParam);
-      call_token_verify(tokenParam)
-    }
+    const local_user = getLocal('AuthToken')
+      if(local_user) {
+        navigate('/')
+        const user_decoded = jwtDecode(local_user)
+      }
+      else{
+        const queryString = window.location.search
+        const urlParams = new URLSearchParams(queryString)
+        const tokenParam = urlParams.get('token')
+        if (tokenParam) {
+          console.log(tokenParam);
+          call_token_verify(tokenParam)
+        }
+      }
   }, [])
 
 
+
   return (
-    <>    
+    <>
+      {loading && (
+        <div className="page-loader">
+          <div className="loader"></div>
+        </div>
+      )}
+
       <Navbar />
-      <main className='main'>
-        <div className='login-card'>
-          <div className='login-card-head'>
-            <h4>Login to <span className="text-indigo-600">BROCAMP</span></h4>
+      <main className="main">
+        <div className="login-card">
+          <div className="login-card-head">
+            <h4>
+              Login to <span className="text-indigo-600">BROCAMP</span>
+            </h4>
           </div>
           <hr />
-          <div onClick={() => googleLogin()}
-            className='social-media-card'
-          >
+          <div onClick={googleLogin} className="social-media-card">
             <img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="Google-icon" />
             <h4>Continue With Google</h4>
           </div>
-          <div onClick={() => githubLogin()}
-            className='social-media-card'>
+          <div onClick={githubLogin} className="social-media-card">
             <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="Github-icon" />
             <h4>Continue With GitHub</h4>
           </div>
 
-          <div onClick={toggleModal}
-            className='social-media-card'>
+          <div onClick={toggleModal} className="social-media-card">
             <img src="https://cdn-icons-png.flaticon.com/512/6244/6244438.png" alt="Email-icon" />
             <h4>Continue With E-mail</h4>
           </div>
@@ -147,11 +121,9 @@ function LoginPage() {
       <div>
         <InputModal status={showModal} close={toggleModal} />
       </div>
-
-      {/* <button className='p-3' onClick={() => getGithubUserData()} >Get Use data</button> */}
-      
     </>
-  )
+  );
 }
+
 
 export default LoginPage

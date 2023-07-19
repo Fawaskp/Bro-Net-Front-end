@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   MobileNav,
@@ -28,36 +28,46 @@ import {
 } from "@heroicons/react/24/outline";
 
 import {useNavigate} from 'react-router-dom'
+import { toast } from "react-toastify";
+import jwtDecode from "jwt-decode";
+import { getLocal } from "../helpers/auth";
+import { defaults } from "autoprefixer";
+import { apiUrl, defaultUserImageLink } from "../constants/constants";
+import { userAxiosInstance } from "../utils/axios-utils";
 
 // profile menu component
 const profileMenuItems = [
   {
     label: "My Profile",
     icon: UserCircleIcon,
+    link:'/user/profile',
   },
-  {
-    label: "Edit Profile",
-    icon: Cog6ToothIcon,
-  },
-  {
-    label: "Inbox",
-    icon: InboxArrowDownIcon,
-  },
-  {
-    label: "Help",
-    icon: LifebuoyIcon,
-  },
+  // {
+  //   label: "Edit Profile",
+  //   icon: Cog6ToothIcon,
+  //   link:'',
+    
+  // },
+  // {
+  //   label: "Inbox",
+  //   icon: InboxArrowDownIcon,
+  //   link:'',
+  // },
+  // {
+  //   label: "Help",
+  //   icon: LifebuoyIcon,
+  //   link:'',
+  // },
 ];
 
-function ProfileMenu() {
+function ProfileMenu({userImage}) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const closeMenu = () => setIsMenuOpen(false);
 
   const navigate = useNavigate()
-
   const signOut = ()=>{
     localStorage.removeItem('AuthToken')
-    // navigate('/auth/')
+    navigate('/auth/')
   }
 
   return (
@@ -74,7 +84,7 @@ function ProfileMenu() {
             size="sm"
             alt="tania andrew"
             className="border border-indigo-500 p-0.5 rounded-full focus:outline-0"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+            src={userImage?apiUrl+userImage:defaultUserImageLink}
           />
           <ChevronDownIcon
             strokeWidth={2.5}
@@ -84,10 +94,11 @@ function ProfileMenu() {
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
-        {profileMenuItems.map(({ label, icon }, key) => {
+        {profileMenuItems.map(({ label, icon,link }, key) => {
           const isLastItem = key === profileMenuItems.length - 1;
           return (
             <MenuItem
+            onClick={()=>{navigate(link)}}
               key={label}
               className={`flex items-center gap-2 rounded ${isLastItem
                 ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
@@ -126,32 +137,28 @@ function ProfileMenu() {
   );
 }
 
-// nav list menu
-const navListMenuItems = [
-  {
-    title: "@material-tailwind/html",
-    description:
-      "Learn how to use @material-tailwind/html, packed with rich components and widgets.",
-  },
-  {
-    title: "@material-tailwind/react",
-    description:
-      "Learn how to use @material-tailwind/react, packed with rich components for React.",
-  },
-  {
-    title: "Material Tailwind PRO",
-    description:
-      "A complete set of UI Elements for building faster websites in less time.",
-  },
-];
+const getUserImage = async (userId,setUserImage) =>{
+  userAxiosInstance.get('/user-profile/'+userId+'/').then((response)=>{
+    setUserImage(response.data.profile_image)
+  })
+}
 
 
 export default function ComplexNavbar() {
-  const [isNavOpen, setIsNavOpen] = React.useState(false);
+  const [isNavOpen, setIsNavOpen] = useState (false);
+  const [userImage, setUserImage] = useState(null);
+
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
   const navigate = useNavigate()
 
   React.useEffect(() => {
+    
+    const user = getLocal('AuthToken')
+    if (user){
+      const user_decoded = jwtDecode(user)
+      getUserImage(user_decoded.custom.user_id,setUserImage)
+    }
+
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setIsNavOpen(false)
@@ -162,7 +169,7 @@ export default function ComplexNavbar() {
     <>
       <Navbar className="fixed z-50 mx-auto max-w-full p-2 lg:rounded-full lg:pl-6">
         <div className="relative max-w-screen-2xl mx-auto flex items-center text-blue-gray-900">
-          <Typography
+          <Typography onClick={()=>{navigate('/')}}
             as="a"
             className="mr-4 text-xl text-indigo-500 ml-2 cursor-pointer py-1.5 font-semibold"
           >
@@ -199,7 +206,7 @@ export default function ComplexNavbar() {
           >
             <Bars2Icon className="h-6 w-6" />
           </IconButton>
-          <ProfileMenu />
+          <ProfileMenu userImage={userImage} />
         </div>
 
       </Navbar>

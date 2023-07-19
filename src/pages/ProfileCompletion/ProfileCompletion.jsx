@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import { getLocal } from '../../helpers/auth'
 import jwtDecode from 'jwt-decode'
 import { checkIsCompleted, getBatchList, getHubList, getStackList, updateBasicUserData,updateUserProfile } from './api'
-import { defautlUserImageLink } from '../../constants/constants'
+import { defaultUserImageLink } from '../../constants/constants'
 import ConfirmModal from './AlertModal'
 
 function ProfileCompletion() {
@@ -109,6 +109,7 @@ function ProfileCompletion() {
   }
 
   useEffect(() => {
+    document.title = "Complete Profile"
     const user = getLocal('AuthToken')
       if (!user) {
         toast.warn('Login First')
@@ -134,7 +135,7 @@ function ProfileCompletion() {
           <form onSubmit={(e) => { e.preventDefault(), handleFormSubmit() }} >
             <div className="user-image-container">
               <div onClick={()=>handleIconClick()} className="user-image" 
-              style={{ backgroundImage: `url(${userimage ? URL.createObjectURL(userimage) : defautlUserImageLink})` }} >
+              style={{ backgroundImage: `url(${userimage ? URL.createObjectURL(userimage) : defaultUserImageLink})` }} >
               </div>
 
               {

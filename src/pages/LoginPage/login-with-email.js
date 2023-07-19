@@ -2,10 +2,19 @@ import { toast } from 'react-toastify';
 import { userAxiosInstance } from '../../utils/axios-utils';
 
 
-export function login_with_email(email){
-    userAxiosInstance.post("/login/email/",{email},{}).then((res)=>{
-        console.log('Token: ',res.data);
-    }) .catch((err) => console.log(err));
+export function login_with_email(email,close,setLoading) {
+  setLoading(true)
+  userAxiosInstance
+    .post('/login/email/', { email }, {})
+    .then((res) => {
+      console.log('Token: ', res.data);
+    })
+    .catch((err) => console.log(err))
+    .finally(() => {
+        setLoading(false)
+      close()
+      toast.success('Email Sent to '+email)
+});
 }
 
 export async function verify_email_login_token(token,){

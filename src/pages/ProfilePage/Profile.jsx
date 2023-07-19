@@ -1,7 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { DefaultButton } from '../../components/buttons'
+import { getLocal } from '../../helpers/auth'
+import { toast } from 'react-toastify'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import jwtDecode from 'jwt-decode'
+import { apiUrl, defaultUserImageLink } from '../../constants/constants'
+import { userAxiosInstance } from '../../utils/axios-utils'
+
+
+const setUserBasicDetails = async (userId, setUserName) => {
+    userAxiosInstance.get('/user/' + userId + '/').then((response) => {
+        console.log('Profile-1: ', response.data);
+        setUserName(response.data.fullname)
+    })
+}
+
+const setUserProfileDetails = async (userId, setUserImage) => {
+    userAxiosInstance.get('/user-profile/' + userId + '/').then((response) => {
+        console.log('Profile-2: ', response.data);
+        setUserImage(response.data.profile_image)
+    })
+}
+
 
 function Profile() {
+
+    const navigate = useNavigate()
+
+    const [userImage, setUserImage] = useState('')
+    const [userName, setUserName] = useState('')
+
+    useEffect(() => {
+        const user = getLocal('AuthToken')
+        if (!user) {
+            toast.warn('User Not Authenticated')
+            navigate('/auth/')
+        }
+        else {
+            const user_decoded = jwtDecode(user)
+            setUserProfileDetails(user_decoded.custom.user_id, setUserImage)
+            setUserBasicDetails(user_decoded.custom.user_id, setUserName)
+        }
+    }, [])
+
     return (
         <>
             <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css" />
@@ -10,16 +51,18 @@ function Profile() {
             <div className='absolute w-full bg-gray-900 h-32 md:h-50 lg: sm:h-96' >
 
             </div>
-            <main className="profile-page mt-64">
+            <main className="profile-page mt-72">
                 <section className="relative">
                     <div className="container mx-auto px-4">
                         <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64">
                             <div className="px-6">
                                 <div className="flex justify-center">
                                     <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-                                        <div className="relative">
-                                            <img alt="..." src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" 
-                                            className="rounded-full h-auto align-middle ring-8 ring-gray-900 absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px" 
+                                        <div className="relative w-40 h-40">
+                                            <img
+                                                alt="User-Dp"
+                                                src={userImage ? apiUrl + userImage : defaultUserImageLink}
+                                                className="rounded-full w-full h-full align-middle ring-8 ring-gray-900 object-cover absolute -mt-16"
                                             />
                                         </div>
                                     </div>
@@ -43,7 +86,7 @@ function Profile() {
 
                                 <div className="text-center">
                                     <h3 className="sm:text-xl md:text-2xl lg:text-4xl  font-semibold leading-normal text-blueGray-700 mb-2">
-                                        Jenna Stones
+                                        {userName ? userName : 'No name'}
                                     </h3>
                                     <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-semibold uppercase">
                                         Any Caption which user prefers

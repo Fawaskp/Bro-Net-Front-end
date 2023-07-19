@@ -9,25 +9,24 @@ import {
   Typography,
   Input,
   Checkbox,
+  Spinner,
 } from "@material-tailwind/react";
 import { validateEmail } from "../helpers/email_validator";
 import { login_with_email } from "../pages/LoginPage/login-with-email";
 
  
 export default function Example({status,close}) {
-
+  const [loading,setLoading] = useState(false)
   const [email,setEmail] = useState()
   const [inputColor,setinputColor] = useState('indigo')
  
   const  handleSubmit = async () =>{
     if(validateEmail(email)){
       setinputColor('indigo')
-      login_with_email(email)
-      close()
+      login_with_email(email,close,setLoading)
     }
     else{
       setinputColor('red')
-      console.log(email,' : ',validateEmail(email));
     }
   }
 
@@ -60,7 +59,11 @@ export default function Example({status,close}) {
           </CardBody>
           <CardFooter className="pt-0">
             <Button type="submit" variant="gradient" color="indigo" fullWidth>
-              Log in
+              {
+                loading?
+                <Spinner className="mx-auto" color="indigo" /> :
+                "Log in"
+              }
             </Button>
           </CardFooter>
           </form>

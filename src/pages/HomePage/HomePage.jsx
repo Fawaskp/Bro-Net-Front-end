@@ -15,6 +15,7 @@ function HomePage() {
   const navigate = useNavigate()
 
   useEffect(()=>{
+    document.title = "Home"
     const user = getLocal('AuthToken')
       if (!user) {
         toast.warn('User Not Authenticated')

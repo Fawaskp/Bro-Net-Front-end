@@ -3,6 +3,7 @@ import AuthRoutes from './routes/AuthRoutes'
 import HomePage from './pages/HomePage/HomePage'
 import NoteFoundPage from './pages/PageNoteFound'
 import UserRoutes from './routes/UserRoutes'
+import AdminRoutes from './routes/AdminRoutes'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <Route path='*' exact element={<NoteFoundPage/>} />
         <Route path='/auth/*' element={<AuthRoutes/>} />
         <Route path='/user/*' element={<UserRoutes/>} />
+        <Route path='/admin/*' element={<AdminRoutes/>} />
       </Routes>
     </Router>
   )
