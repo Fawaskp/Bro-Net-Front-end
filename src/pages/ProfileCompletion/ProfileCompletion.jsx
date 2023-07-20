@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { getLocal } from '../../helpers/auth'
 import jwtDecode from 'jwt-decode'
-import { checkIsCompleted, getBatchList, getHubList, getStackList, updateBasicUserData,updateUserProfile } from './api'
+import { getBatchList, getHubList, getStackList, getToken, updateBasicUserData,updateUserProfile } from './api'
 import { defaultUserImageLink } from '../../constants/constants'
 import ConfirmModal from './AlertModal'
 
@@ -60,16 +60,6 @@ function ProfileCompletion() {
     else false
   }
 
-  const callIsProfileComplete = async (user_id,email) =>{
-    const isProfileCompleted = await checkIsCompleted(user_id)
-        if(isProfileCompleted){
-          navigate('/')
-        }else{
-          toast.success('Welcome ' + email)
-          StackAndHubList()
-        }
-  }
-
   const handleFormSubmit = () => {
     var userData = [fullname, username, email, dob, hub, batch, stack]
     { userimage ? userData.push(userimage) : null }
@@ -84,25 +74,23 @@ function ProfileCompletion() {
     userData = {fullname,username,dob,is_verified:true}
 
     const user_decoded = getCurrentUser()
-    console.log('user data: ',userData,' user Id: ',user_decoded.custom.user_id);
+    console.log('user data: ',userData);
     var requestStatus = updateBasicUserData(userData,user_decoded.custom.user_id)
 
-
     const profileFormData = new FormData();
-    profileFormData.append('hub', hub);
-    profileFormData.append('batch', batch);
-    profileFormData.append('stack', stack);
+    profileFormData.append('hub', hub)
+    profileFormData.append('batch', batch)
+    profileFormData.append('stack', stack)
     { userimage ? profileFormData.append('profile_image', userimage) : null }
 
-    {
+    { 
       requestStatus?
       requestStatus = updateUserProfile(profileFormData,user_decoded.custom.user_id) :
       toast.error('Re-try again something went wrong')
     }
 
     if(requestStatus){
-      toast.success('Profile Completion Suceessfull ')
-      navigate('/')
+      getToken({'email':user_decoded.custom.email},navigate)      
     }else{
       toast.error('Re-try again something went wrong')
     }
@@ -113,12 +101,17 @@ function ProfileCompletion() {
     const user = getLocal('AuthToken')
       if (!user) {
         toast.warn('Login First')
-        navigate('/auth/')
+        navigate('/auth/login')
       }
       else{
-        const user_decoded = jwtDecode(user)
-        setEmail(user_decoded.custom.email)
-        callIsProfileComplete(user_decoded.custom.user_id,user_decoded.custom.email)
+        var user_decoded = jwtDecode(user).custom
+        if(user_decoded.is_profile_completed){
+          navigate('/')
+        }else{
+          setEmail(user_decoded.email)
+          toast.success('Welcome ' + user_decoded.email)
+          StackAndHubList()
+        }
       }
   }, [])
 

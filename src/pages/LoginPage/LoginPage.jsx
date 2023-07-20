@@ -14,14 +14,9 @@ import { getGitHubAccessToken } from './login-with-github';
 
 function LoginPage() {
 
-  const [user, setUser] = useState('');
-  const [githuUserData, setgithuUserData] = useState({});
-
-  const [email,setEmail] = useState('')
   const [showModal, setShowModal] = useState(false);
-
   const [loading,setLoading] = useState(false)
-
+  const [start,setStart] = useState(false)
   const navigate = useNavigate()
 
   const toggleModal = () => {
@@ -30,61 +25,47 @@ function LoginPage() {
 
   const googleLogin = useGoogleLogin({
     onSuccess: (codeResponse) => {
-      setUser(codeResponse);
+      login_with_google(codeResponse.access_token,navigate)
     },
     onError: (error) => console.log('Login Failed:', error)
   });
 
-  const github_client_id = import.meta.env.VITE_GITHUB_CLIENT_ID
-
   const githubLogin = () => {
+    const github_client_id = import.meta.env.VITE_GITHUB_CLIENT_ID
     window.location.assign('https://github.com/login/oauth/authorize?client_id=' + github_client_id+"&scope=user:email,read:user")
   }
 
-  useEffect(() => {
-    if (user) {
-      login_with_google(user.access_token,navigate)
-    }
-  }, [user]);
-
   const call_token_verify = async (token)=>{
-    const result = await verify_email_login_token(token)
-      if(result){
-        toast.success('Login successfully')
-        navigate('/auth/complete-profile')
-      }
+    await verify_email_login_token(token,navigate)
   }
-  
 
   useEffect(() => {
     document.title = "Login Here"
-    const queryString = window.location.search
-    const urlParams = new URLSearchParams(queryString)
-    const codeParam = urlParams.get('code')
-    if (codeParam) {
-      getGitHubAccessToken(codeParam,setLoading,navigate)
-    }
-  }, [])
-
-  useEffect(() => {
     const local_user = getLocal('AuthToken')
-      if(local_user) {
-        navigate('/')
-        const user_decoded = jwtDecode(local_user)
+    if(local_user) {
+      const user_decoded = jwtDecode(local_user).custom
+      if (user_decoded.is_profile_completed) navigate('/')
+      else navigate('/auth/complete-profile')
+    }
+    else{
+      setStart(true)
+      const queryString = window.location.search
+      const urlParams = new URLSearchParams(queryString)
+      const codeParam = urlParams.get('code')
+      if (codeParam) {
+        getGitHubAccessToken(codeParam,setLoading,navigate)
       }
       else{
-        const queryString = window.location.search
-        const urlParams = new URLSearchParams(queryString)
         const tokenParam = urlParams.get('token')
         if (tokenParam) {
           console.log(tokenParam);
           call_token_verify(tokenParam)
         }
       }
+    }
   }, [])
 
-
-
+if(start) 
   return (
     <>
       {loading && (
@@ -122,7 +103,7 @@ function LoginPage() {
         <InputModal status={showModal} close={toggleModal} />
       </div>
     </>
-  );
+    );
 }
 
 

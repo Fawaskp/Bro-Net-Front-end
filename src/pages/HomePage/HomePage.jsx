@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Banner from './Banner';
 import LeftBar from './LeftBar';
@@ -13,19 +13,25 @@ import { useNavigate } from 'react-router-dom';
 function HomePage() {
 
   const navigate = useNavigate()
+  const [start,setStart] = useState(false)
 
-  useEffect(()=>{
+
+useEffect(()=>{
     document.title = "Home"
     const user = getLocal('AuthToken')
       if (!user) {
         toast.warn('User Not Authenticated')
-        navigate('/auth/')
+        navigate('/auth/login')
       }
       else{
-        const user_decoded = jwtDecode(user)
+        const user_decoded = jwtDecode(user).custom
+        console.log('decoded user',user_decoded);
+        if(!user_decoded.is_profile_completed) {navigate('/auth/complete-profile/');console.log('me also');}
+        else setStart(true)
       }
-  })
+  },[])
 
+  if(start)
   return (
     <>
       <Navbar />
@@ -50,8 +56,6 @@ function HomePage() {
         </div>
         </div>
       </div>
-
-
     </>
   )
 }

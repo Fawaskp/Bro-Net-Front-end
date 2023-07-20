@@ -38,8 +38,11 @@ function Profile() {
         }
         else {
             const user_decoded = jwtDecode(user)
-            setUserProfileDetails(user_decoded.custom.user_id, setUserImage)
-            setUserBasicDetails(user_decoded.custom.user_id, setUserName)
+            if(user_decoded.custom.is_profile_completed){
+                setUserProfileDetails(user_decoded.custom.user_id, setUserImage)
+                setUserBasicDetails(user_decoded.custom.user_id, setUserName)
+            }
+            else navigate('/auth/login')
         }
     }, [])
 
@@ -51,10 +54,9 @@ function Profile() {
             <div className='absolute w-full bg-gray-900 h-32 md:h-50 lg: sm:h-96' >
 
             </div>
-            <main className="profile-page mt-72">
-                <section className="relative">
+            <main className="mt-72">
                     <div className="container mx-auto px-4">
-                        <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64">
+                        <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64 border-2 border-gray-200">
                             <div className="px-6">
                                 <div className="flex justify-center">
                                     <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
@@ -112,14 +114,13 @@ function Profile() {
                                                 warm, intimate feel with a solid groove structure. An
                                                 artist of considerable range.
                                             </p>
-                                            <a href="#pablo" className="font-normal text-pink-500">Show more</a>
+                                            <a href="#" className="font-normal text-pink-500">Show more</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
             </main>
         </>
     )

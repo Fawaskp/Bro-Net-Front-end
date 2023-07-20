@@ -19,14 +19,20 @@ export default function Example({status,close}) {
   const [loading,setLoading] = useState(false)
   const [email,setEmail] = useState()
   const [inputColor,setinputColor] = useState('indigo')
+  const [errormessage,setErrorMessage] = useState('')
  
   const  handleSubmit = async () =>{
-    if(validateEmail(email)){
+    if (!email){
+      setinputColor('red')
+      setErrorMessage('Email field cannot be null')
+    }
+    else if(validateEmail(email)){
       setinputColor('indigo')
-      login_with_email(email,close,setLoading)
+      login_with_email(email,close,setLoading,setinputColor,setErrorMessage)
     }
     else{
       setinputColor('red')
+      setErrorMessage('Enter valid E-mail')
     }
   }
 
@@ -35,7 +41,7 @@ export default function Example({status,close}) {
       <Dialog
         size="xs"
         open={status}
-        handler={()=>close()}
+        handler={()=>{close();setEmail(''),setinputColor('indigo'),setErrorMessage('')}}
         className="bg-transparent shadow-none"
       >
         <Card className="mx-auto w-full max-w-[24rem]">
@@ -51,7 +57,7 @@ export default function Example({status,close}) {
             {
               inputColor != 'indigo'?
               <Typography className="text-xs -pt-2 text-red-500" >
-              Enter Valid Email
+              {errormessage}
             </Typography>
             :
             null
