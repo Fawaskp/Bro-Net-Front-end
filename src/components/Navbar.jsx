@@ -42,12 +42,12 @@ const profileMenuItems = [
     icon: UserCircleIcon,
     link:'/user/profile',
   },
-  // {
-  //   label: "Edit Profile",
-  //   icon: Cog6ToothIcon,
-  //   link:'',
+  {
+    label: "Profile Settings",
+    icon: Cog6ToothIcon,
+    link:'/user/profile/settings',
     
-  // },
+  },
   // {
   //   label: "Inbox",
   //   icon: InboxArrowDownIcon,

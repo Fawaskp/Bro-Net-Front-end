@@ -3,6 +3,8 @@ import NavBar from '../../components/Navbar';
 import Profile from './Profile';
 import EducationSection from './EducationSection';
 import ExperienceSection from './ExperienceSection';
+import SkillSection from './SkillSection';
+import ProjectSection from './ProjectSection';
 
 function ProfileLayout() {
   useEffect(()=>{
@@ -18,6 +20,12 @@ function ProfileLayout() {
           <EducationSection/>
           <ExperienceSection/>
         </div>
+      </div>
+      <div className='max-w-screen-xl mx-auto mb-3' >
+        <SkillSection></SkillSection>
+      </div>
+      <div className='max-w-screen-xl mx-auto mb-3' >
+        <ProjectSection></ProjectSection>
       </div>
     </>
   );
