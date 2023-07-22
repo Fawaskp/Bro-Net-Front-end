@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
-import Navbar from '../../../components/Navbar'
+import { AdminSideBar } from '../../../components/AdminSideBar'
+import AdminNavbar from '../../../components/AdminNavbar'
 export default function AdminHome() {
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Admin Home"
-  },[])
+  }, [])
 
   return (
     <>
-      <Navbar/>
       <h1 >Its Admin Home Page</h1>
     </>
   )
 }
+

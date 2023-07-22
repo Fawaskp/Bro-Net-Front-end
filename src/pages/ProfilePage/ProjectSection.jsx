@@ -8,15 +8,24 @@ import {
   CardHeader,
   IconButton,
 } from "@material-tailwind/react";
+import ProjectAddModal from "./ProjectAddModal";
+import { useState } from "react";
 
 export default function ProjectSection() {
+
+  const [modalstatus,showModal] = useState(false)
+
+  const handleOpen = () => showModal(!modalstatus)
+
   return (
+    <>
+    <ProjectAddModal status={modalstatus} handleOpen={handleOpen}  ></ProjectAddModal>
     <Card className="max-w-6xl mx-auto border-2 border-gray-200 rounded-10">
       <div className='flex flex-row justify-between px-3'  >
         <Typography variant="h4" color="blue-gray" className="p-5" >
           Projects
         </Typography>
-        <IconButton variant="text" color="blue-gray" className="flex justify-center" >
+        <IconButton onClick={handleOpen} variant="text" color="indigo" className="flex justify-center" >
           Add
         </IconButton>
       </div>
@@ -27,8 +36,8 @@ export default function ProjectSection() {
             Beatandbase
           </Typography>
         </div>
-        <div className="w-1/2 flex justify-end" >
-          <img className="w-1/12 h-10 rounded-10" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/2048px-Octicons-mark-github.svg.png" alt="" />
+        <div className="w-1/2 h-1/2 flex justify-end" >
+          <img className="w-7 h-7 rounded-10" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/2048px-Octicons-mark-github.svg.png" alt="" />
           <Typography variant="h6" color="blue-gray" className="p-2" >
             <a href="">githublinkofproject/</a>
           </Typography>
@@ -46,16 +55,17 @@ export default function ProjectSection() {
         </div>
         <div className="w-2/6 h-full flex justify-end" >
           <List>
-            <ListItem style={{ width: '80%', padding: 0 }} >
+            <ListItem style={{ width: '80%', padding: 0 }}>
               <ListItemPrefix>
                 <img className="w-4/6 h-12 rounded-10" src="https://i.pinimg.com/736x/e3/46/35/e34635d7e861c21b9b9c8513ea0780c1.jpg" alt="" />
               </ListItemPrefix>
-              <div>
+              <div className="hidden md:block">
                 <Typography variant="h6" color="blue-gray">
                   Tania Andrew
                 </Typography>
               </div>
             </ListItem>
+
             <ListItem style={{ width: '80%', padding: 0 }} >
               <ListItemPrefix>
                 <img className="w-4/6 h-12 rounded-10" src="https://i.pinimg.com/736x/e3/46/35/e34635d7e861c21b9b9c8513ea0780c1.jpg" alt="" />
@@ -81,5 +91,6 @@ export default function ProjectSection() {
       </div>
 
     </Card>
+    </>
   );
 }

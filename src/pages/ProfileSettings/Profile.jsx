@@ -51,60 +51,80 @@ function Profile() {
             <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css" />
             <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" />
 
-            <div className='absolute w-full bg-gray-900 h-3/6' >
-                <div className='w-4/6 flex justify-around align-middle' >
-                    <div className="relative w-40 h-40 mt-48">
+            <div className='w-full bg-gray-900 h-96'>
+                <div className='mx-auto h-2/3 md:w-3/6 flex flex-col items-center'>
+                    <div className="block mx-auto mt-10">
                         <img
                             alt="User-Dp"
                             src={userImage ? apiUrl + userImage : defaultUserImageLink}
-                            className="rounded-full w-full h-full align-middle ring-4 ring-gray-50 object-cover absolute -mt-16"
+                            className="rounded-full w-28 lg:w-28 h-28 lg:h-28 object-cover -top-1/2 left-1/2  ring-4 ring-gray-50"
                         />
                     </div>
-                    <h3 className='text-green-800' >Muhammed Fawas kp</h3>
+                    <div className='mt-3'>
+                        <h3 className='text-gray-50 text-xl font-semibold'>user name</h3>
+                    </div>
                 </div>
             </div>
-            <main className="mt-72">
-                <div className="container mx-auto px-4">
-                    <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt- border-2 border-gray-200">
+
+
+            <main className="absolute -mt-56">
+                <div className="container flex justify-center mx-auto px-4">
+                    <div className="relative flex flex-col min-w-0 break-words bg-white w-5/6 mb-6 rounded-lg -mt- border-2 border-gray-200">
+                        <div className='p-4 font-bold' >
+                            <h1>Personal Info</h1>
+                        </div>
                         <div className="px-6">
-                            <div className="flex justify-center">
-                                <div className="md:w-5 lg:w-4/12 md:px-4 lg:order-3 float-right lg:self-center">
-                                    <img className='w-24 float-right' src="https://ih1.redbubble.net/image.354280811.3987/st,small,507x507-pad,600x600,f8f8f8.u4.jpg" alt="Django" />
+                            <div className="my-2 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
+                                <h4 className='lg:text-4xl text-sm' >Full name</h4>
+                                <h4>Muhammed Fawas kp</h4>
+                            </div>
+                           <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
+                                <h4>Username</h4>
+                                <h4>Muhammed Fawas kp</h4>
+                            </div>
+                            <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
+                                <h4>E-mail</h4>
+                                <h4>Muhammed Fawas kp</h4>
+                            </div>
+                            <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
+                                <h4>DOB</h4>
+                                <h4>Muhammed Fawas kp</h4>
+                            </div>
+                            <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
+                                <h4>Full name</h4>
+                                <h4>Muhammed Fawas kp</h4>
+                            </div>
+                            <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-left flex justify-between">
+                                <h4>About</h4>
+                                <p className='ms-20' >Hi, I'm livingstone, a Full Stack Web Developer trainee from BCK74. I'm passionate about programming and I've gained a lot of knowledge and experience in Python, Django, React, DSA, HTML, CSS, JavaScript, AWS, SQL, and NoSQL. through self learn I love working on complex projects that challenge me to learn and grow as a ...</p>
+                            </div>
+
+                            <div className='p-4 font-bold' >
+                                <h1>Brocamp Info</h1>
+                            </div>
+                            <div className="px-6">
+                                <div className="my-2 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
+                                    <h4>Full name</h4>
+                                    <h4>Muhammed Fawas kp</h4>
+                                    <h4 className='text-indigo-600' >Edit</h4>
+                                </div>
+                                <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
+                                    <h4>Full name</h4>
+                                    <h4>Muhammed Fawas kp</h4>
+                                    <h4 className='text-indigo-600' >Edit</h4>
+                                </div>
+                                <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
+                                    <h4>Full name</h4>
+                                    <h4>Muhammed Fawas kp</h4>
+                                    <h4 className='text-indigo-600' >Edit</h4>
+                                </div>
+                                <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
+                                    <h4>Full name</h4>
+                                    <h4>Muhammed Fawas kp</h4>
+                                    <h4 className='text-indigo-600' >Edit</h4>
                                 </div>
                             </div>
 
-                            <div className="text-center">
-                                <h3 className="sm:text-xl md:text-2xl lg:text-4xl  font-semibold leading-normal text-blueGray-700 mb-2">
-                                    {userName ? userName : 'No name'}
-                                </h3>
-                                <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-semibold uppercase">
-                                    Any Caption which user prefers
-                                </div>
-                                <div className='flex justify-center' >
-                                    <DefaultButton name='Follow' ></DefaultButton>
-                                </div>
-                                <div className="mb-2 text-blueGray-600 mt-10">
-                                    <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>Solution Manager - Creative Tim Officer
-                                </div>
-                                <div className="mb-2 text-blueGray-600">
-                                    <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>University of Computer Science
-                                </div>
-                            </div>
-
-                            <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
-                                <div className="flex flex-wrap justify-center">
-                                    <div className="w-full lg:w-9/12 px-4">
-                                        <p className="mb-4 text-left sm:text-lg md:text-sm lg:text-base text-blueGray-700">
-                                            An artist of considerable range, Jenna the name taken by
-                                            Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                                            performs and records all of his own music, giving it a
-                                            warm, intimate feel with a solid groove structure. An
-                                            artist of considerable range.
-                                        </p>
-                                        <a href="#" className="font-normal text-pink-500">Show more</a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
