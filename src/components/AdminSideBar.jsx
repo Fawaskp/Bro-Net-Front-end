@@ -13,7 +13,7 @@ import {
 import { UsersIcon, ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 
-export function AdminSideBar({ status, handleDrawer }) {
+export function     AdminSideBar({ status, handleDrawer }) {
 
   const [open, setOpen] = React.useState(0);
 
@@ -98,13 +98,13 @@ export function AdminSideBar({ status, handleDrawer }) {
                   </ListItemPrefix>
                   Education Categories
                 </ListItem>
-                <ListItem>
+                <ListItem onClick={()=>{navigate('/admin/social-media'),handleDrawer()}} >
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                   </ListItemPrefix>
                   Social Media
                 </ListItem>
-                <ListItem>
+                <ListItem onClick={()=>{navigate('/admin/skills'),handleDrawer()}} >
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                   </ListItemPrefix>

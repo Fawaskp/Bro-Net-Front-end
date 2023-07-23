@@ -12,7 +12,9 @@ export default function AdminLayout() {
         <>
             <AdminNavbar handleDrawer={handleDrawer} />
             <AdminSideBar status={open} handleDrawer={handleDrawer} />
-            <div>{<Outlet/>}</div>
+            <div className='mx-auto max-w-sm sm:max-w-lg md:w-4/6 lg:max-w-6xl mt-12' >
+                {<Outlet />}
+            </div>
         </>
     )
 }

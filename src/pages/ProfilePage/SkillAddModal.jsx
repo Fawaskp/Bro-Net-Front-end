@@ -12,10 +12,12 @@ import {
     Card,
     Typography,
 } from "@material-tailwind/react";
+import { userAxiosInstance } from '../../utils/axios-utils';
 
 
 export default function SkillAddModal({ status, handleOpen }) {
 
+    userAxiosInstance.post('')
 
     return (
         <>
