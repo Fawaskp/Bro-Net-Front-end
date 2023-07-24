@@ -1,23 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Dialog,
-    DialogHeader,
     DialogBody,
     DialogFooter,
     List,
     ListItem,
     ListItemPrefix,
     Avatar,
-    Card,
     Typography,
 } from "@material-tailwind/react";
-import { userAxiosInstance } from '../../utils/axios-utils';
+import { getSkills } from "./api";
+import { DefaultButton } from '../../components/buttons'
+import { userAxiosInstance } from "../../utils/axios-utils";
+import jwtDecode from "jwt-decode";
+import { getLocal } from "../../helpers/auth";
+import { toast } from "react-toastify";
 
+export default function SkillAddModal({ status, handleOpen,setUserSkills }) {
 
-export default function SkillAddModal({ status, handleOpen }) {
+    const [skills, setSkills] = useState([])
+    const [selectedskill, setSelectedSkill] = useState(null)
 
-    userAxiosInstance.post('')
+    const handleAddSkill = () =>{
+        const data = {skill_id:selectedskill}
+        const user = getLocal('AuthToken')
+        const user_decoded = jwtDecode(user)
+            
+        userAxiosInstance.put(`add-skill/${user_decoded.user_id}/`,data).then((res)=>{
+            if(res.data.status == 200){
+                toast.success('Skill Added successfully')
+                setUserSkills(user_decoded.user_id)
+                handleOpen()
+            }
+            else{
+                toast.error(res.data.Message)
+            }
+        })
+    }
+
+    useEffect(() => {
+        getSkills().then((res) => {
+            setSkills(res)
+        })
+    }, [])
 
     return (
         <>
@@ -30,40 +56,31 @@ export default function SkillAddModal({ status, handleOpen }) {
                         placeholder="Search..."
                     />
                 </div>
-                <DialogBody>
+                <DialogBody className="max-h-96 overflow-y-scroll my-6" >
                     <List>
-                        <ListItem>
-                            <ListItemPrefix>
-                                <Avatar variant="circular" alt="candice" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" />
-                            </ListItemPrefix>
-                            <div>
-                                <Typography variant="h6" color="blue-gray">
-                                    Tania Andrew
-                                </Typography>
-                            </div>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemPrefix>
-                                <Avatar variant="circular" alt="candice" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" />
-                            </ListItemPrefix>
-                            <div>
-                                <Typography variant="h6" color="blue-gray">
-                                    Alexander
-                                </Typography>
-                            </div>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemPrefix>
-                                <Avatar variant="circular" alt="candice" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" />
-                            </ListItemPrefix>
-                            <div>
-                                <Typography variant="h6" color="blue-gray">
-                                    Emma Willever
-                                </Typography>
-                            </div>
-                        </ListItem>
+                        {
+                            skills.map((skill) => {
+                                return (
+                                    <ListItem onClick={(e) => setSelectedSkill(skill.id)} key={skill.id} >
+                                        <ListItemPrefix>
+                                            <Avatar variant="rounded" size="sm" alt="candice" src={skill.icon} />
+                                        </ListItemPrefix>
+                                        <div>
+                                            <Typography variant="h6" color="blue-gray">
+                                                {skill.name}
+                                            </Typography>
+                                        </div>
+                                    </ListItem>
+                                )
+                            })
+                        }
+                        {skills.length < 1 && <h1>No Skills found</h1>}
                     </List>
                 </DialogBody>
+                <DialogFooter>
+                    { selectedskill && <Button color="indigo" onClick={()=> handleAddSkill() } > Add </Button> }
+                    { !selectedskill && <Button color="indigo" className="outline-none focus:bor"  disabled > Next </Button> }
+                </DialogFooter>
             </Dialog>
         </>
     );

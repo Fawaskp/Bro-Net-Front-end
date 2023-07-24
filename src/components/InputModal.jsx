@@ -16,6 +16,7 @@ import { login_with_email } from "../pages/LoginPage/login-with-email";
 
  
 export default function Example({status,close}) {
+  
   const [loading,setLoading] = useState(false)
   const [email,setEmail] = useState()
   const [inputColor,setinputColor] = useState('indigo')

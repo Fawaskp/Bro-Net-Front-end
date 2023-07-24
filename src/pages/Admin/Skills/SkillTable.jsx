@@ -64,7 +64,7 @@ export function SkillTable() {
                   </Typography>
                 </td>
                 <td className={classes}>
-                  <Tooltip content="Edit User">
+                  <Tooltip content="Edit Skill">
                     <IconButton variant="text" color="blue-gray">
                       <PencilIcon className="h-4 w-4" />
                     </IconButton>

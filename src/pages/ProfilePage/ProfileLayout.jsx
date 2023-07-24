@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import NavBar from '../../components/Navbar';
 import Profile from './Profile';
 import EducationSection from './EducationSection';
@@ -7,9 +6,6 @@ import SkillSection from './SkillSection';
 import ProjectSection from './ProjectSection';
 
 function ProfileLayout() {
-  useEffect(()=>{
-    document.title = "Your Profile"
-  })
 
   return (
     <>
