@@ -7,19 +7,18 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { getLocal } from '../../helpers/auth'
 import jwtDecode from 'jwt-decode'
-import { getBatchList, getHubList, getStackList, getToken, updateBasicUserData,updateUserProfile } from './api'
+import { getBatchList, getHubList, getStackList, getToken, updateBasicUserData, updateUserProfile2 } from './api'
 import { defaultUserImageLink } from '../../constants/constants'
 import ConfirmModal from './AlertModal'
 
 function ProfileCompletion() {
 
 
-  const [confirmModal,setConfirmModal] = useState(false)
+  const [confirmModal, setConfirmModal] = useState(false)
   const handConfirmModal = () => setConfirmModal(!confirmModal)
 
   const currentDate = new Date();
   const maxDate = new Date(currentDate.getFullYear() - 17, currentDate.getMonth(), currentDate.getDate()).toISOString().split('T')[0];
-
 
   const fileInputRef = React.createRef();
   const [userimage, setUserImage] = useState()
@@ -30,17 +29,17 @@ function ProfileCompletion() {
   const [hub, setHub] = useState()
   const [batch, setBatch] = useState()
   const [stack, setStack] = useState()
-  
+
   const [hublist, setHubList] = useState([])
   const [batchlist, setBatchList] = useState([])
   const [stacklist, setStackList] = useState([])
   const navigate = useNavigate()
-  
+
   const handleIconClick = () => {
     fileInputRef.current.click();
   };
 
-  const removeImage = () =>{
+  const removeImage = () => {
     handConfirmModal()
     return
   }
@@ -54,28 +53,36 @@ function ProfileCompletion() {
     setBatchList(await getBatchList(hub_id))
   }
 
-  const getCurrentUser = () =>{
+  const getCurrentUser = () => {
     const user = getLocal('AuthToken')
-    if(user) return jwtDecode(user)
+    if (user) return jwtDecode(user)
     else false
   }
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
+
     var userData = [fullname, username, email, dob, hub, batch, stack]
     { userimage ? userData.push(userimage) : null }
+
+    var flag = false;
     userData.map((value) => {
       if (value == null || value == "") {
         toast.error("Some fields are empty")
+        flag = true
+        return;
       }
-      else if(value.length>30){
+      else if (value.length > 30) {
         toast.error("Some fields exceeding the character limit")
+        flag = true
+        return
       }
     })
-    userData = {fullname,username,dob,is_verified:true}
+
+    if (flag) return
+    userData = { fullname, username, dob, is_verified: true }
 
     const user_decoded = getCurrentUser()
-    console.log('user data: ',userData);
-    var requestStatus = updateBasicUserData(userData,user_decoded.custom.user_id)
+    var requestStatus = updateBasicUserData(userData, user_decoded.custom.user_id)
 
     const profileFormData = new FormData();
     profileFormData.append('hub', hub)
@@ -83,15 +90,16 @@ function ProfileCompletion() {
     profileFormData.append('stack', stack)
     { userimage ? profileFormData.append('profile_image', userimage) : null }
 
-    { 
-      requestStatus?
-      requestStatus = updateUserProfile(profileFormData,user_decoded.custom.user_id) :
-      toast.error('Re-try again something went wrong')
+    {
+      requestStatus ?
+        requestStatus = await updateUserProfile2(profileFormData, user_decoded.custom.user_id)
+        : toast.error('Re-try again something went wrong')
     }
 
-    if(requestStatus){
-      getToken({'email':user_decoded.custom.email},navigate)      
-    }else{
+    if (requestStatus) {
+      console.log('its sending');
+      getToken({ 'email': user_decoded.custom.email }, navigate)
+    } else {
       toast.error('Re-try again something went wrong')
     }
   }
@@ -99,25 +107,23 @@ function ProfileCompletion() {
   useEffect(() => {
     document.title = "Complete Profile"
     const user = getLocal('AuthToken')
-      if (!user) {
-        toast.warn('Login First')
-        navigate('/auth/login')
+    if (!user) {
+      toast.warn('Login First')
+      navigate('/auth/login')
+    }
+    else {
+      var user_decoded = jwtDecode(user).custom
+      if (user_decoded.is_profile_completed) {
+        navigate('/')
+      } else {
+        setEmail(user_decoded.email)
+        StackAndHubList()
       }
-      else{
-        var user_decoded = jwtDecode(user).custom
-        if(user_decoded.is_profile_completed){
-          navigate('/')
-        }else{
-          setEmail(user_decoded.email)
-          toast.success('Welcome ' + user_decoded.email)
-          StackAndHubList()
-        }
-      }
+    }
   }, [])
 
   return (
     <>
-      <Navbar />
       <ConfirmModal status={confirmModal} message={"Are you sure to remove image"} handleOpen={handConfirmModal} confirm={setUserImage} />
       <main>
         <div className="main-card">
@@ -127,20 +133,20 @@ function ProfileCompletion() {
           </div>
           <form onSubmit={(e) => { e.preventDefault(), handleFormSubmit() }} >
             <div className="user-image-container">
-              <div onClick={()=>handleIconClick()} className="user-image" 
-              style={{ backgroundImage: `url(${userimage ? URL.createObjectURL(userimage) : defaultUserImageLink})` }} >
+              <div onClick={() => handleIconClick()} className="user-image"
+                style={{ backgroundImage: `url(${userimage ? URL.createObjectURL(userimage) : defaultUserImageLink})` }} >
               </div>
 
               {
-                userimage?
-                <FontAwesomeIcon icon={faPlusCircle} className="remove-image-icon" onClick={()=>removeImage()} />
-                :
-                <FontAwesomeIcon icon={faPlusCircle} className="add-image-icon" />
+                userimage ?
+                  <FontAwesomeIcon icon={faPlusCircle} className="remove-image-icon" onClick={() => removeImage()} />
+                  :
+                  <FontAwesomeIcon icon={faPlusCircle} className="add-image-icon" />
               }
 
               <input type="file" className='hidden' ref={fileInputRef} onChange={(e) => {
                 if (e.target.value[0] != null)
-                setUserImage(e.target.files[0])
+                  setUserImage(e.target.files[0])
               }}
               />
               <div style={{ width: '100%', height: '80px' }}></div>
@@ -148,7 +154,7 @@ function ProfileCompletion() {
 
             <div className="main-input-container">
               <div className="input-container">
-                <input onChange={(e) => setFullname(e.target.value) } required type="text"
+                <input onChange={(e) => setFullname(e.target.value)} required type="text"
                   defaultValue={fullname ? fullname : ''} placeholder="Full name" />
                 <input onChange={(e) => { setUsername(e.target.value) }} required type="text"
                   defaultValue={username ? username : ''} placeholder="Username" />
@@ -184,7 +190,7 @@ function ProfileCompletion() {
                   {
                     batchlist.length > 0 ?
                       batchlist.map((batch, idx) => {
-                        return (<option key={idx} value={batch.id}>{batch.batch_name  }</option>)
+                        return (<option key={idx} value={batch.id}>{batch.batch_name}</option>)
                       })
                       :
                       null

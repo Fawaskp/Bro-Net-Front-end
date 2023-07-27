@@ -17,7 +17,7 @@
   }
   
   .login-card {
-    @apply flex flex-col justify-center min-w-[350px] w-[60vw] max-w-[468px] p-10 border border-gray-300 rounded-10 font-medium shadow-md;
+    @apply flex flex-col justify-center min-w-[350px] w-[60vw] max-w-[468px] p-7 border border-gray-300 rounded-10 font-medium shadow-md;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   
   }
@@ -27,7 +27,7 @@
   }
   
   .social-media-card {
-    @apply w-full my-2 flex flex-row items-center transition-all duration-500 ease-out py-3 px-0;
+    @apply w-full text-sm my-2 flex flex-row items-center transition-all duration-500 ease-out py-3 px-0;
     cursor: pointer;
   }
   
@@ -36,7 +36,7 @@
   }
   
   .social-media-card img {
-    @apply w-[2em] md:w-[50px] py-0 px-2 float-left;
+    @apply w-[2em] md:w-[35px] py-0 px-2 float-left;
   }
   
   .social-media-card h4 {

@@ -41,12 +41,12 @@ const profileMenuItems = [
   {
     label: "My Profile",
     icon: UserCircleIcon,
-    link:'/user/profile',
+    link:'',
   },
   {
     label: "Profile Settings",
     icon: Cog6ToothIcon,
-    link:'/user/profile/settings',
+    link:'',
     
   },
   // {

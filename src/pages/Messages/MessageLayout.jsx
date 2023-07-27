@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar'
 function MessagePage() {
     return (
         <>
-        <Navbar/>
+        <h1>Messaging page</h1>
         </>
     )
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { suAxiosInstance } from "../../../utils/axios-utils";
 import {
   Card,
@@ -15,6 +15,10 @@ const TABLE_HEAD = ["Icon", "Name", "Edit", ""];
 export function SkillTable() {
 
   const [skills, setSkills] = useState([])
+
+  useEffect(()=>{
+    document.title = 'Skill list'
+  })
   
   suAxiosInstance.get('/skills/').then((res)=>{
     setSkills(res.data)

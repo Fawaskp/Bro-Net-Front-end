@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
-import Navbar from '../../components/Navbar'
-import Profile from './Profile'
+import PersonalSection from './PersonalSection'
+import BrocampSection from './BrocampSection'
 function ProfileSettingsLayout() {
 
-    useEffect(()=>{
-        document.title = 'Profile Settings'
-    })
+  useEffect(() => {
+    document.title = 'Profile Settings'
+  })
 
   return (
     <>
-      <Navbar/>
-      <Profile/>
+      <PersonalSection />
+      <BrocampSection />
     </>
   )
 }

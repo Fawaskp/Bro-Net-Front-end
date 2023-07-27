@@ -92,12 +92,12 @@ export function     AdminSideBar({ status, handleDrawer }) {
                   </ListItemPrefix>
                   User List
                 </ListItem>
-                <ListItem>
+                {/* <ListItem>
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                   </ListItemPrefix>
                   Education Categories
-                </ListItem>
+                </ListItem> */}
                 <ListItem onClick={()=>{navigate('/admin/social-media'),handleDrawer()}} >
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
@@ -110,7 +110,7 @@ export function     AdminSideBar({ status, handleDrawer }) {
                   </ListItemPrefix>
                   Skills
                 </ListItem>
-                <ListItem>
+                {/* <ListItem>
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                   </ListItemPrefix>
@@ -121,7 +121,7 @@ export function     AdminSideBar({ status, handleDrawer }) {
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                   </ListItemPrefix>
                   Badges
-                </ListItem>
+                </ListItem> */}
               </List>
             </AccordionBody>
           </Accordion>

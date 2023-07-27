@@ -21,6 +21,8 @@ export function login_with_google(access_token,navigate) {
 
           userAxiosInstance.post("/login/social-media/",updatedData,{
           }).then((res)=>{
+            console.log('Aceess:',res.data.Token.access);
+            console.log('Refresh:',res.data.Token.access);
             localStorage.setItem('AuthToken',JSON.stringify(res.data.Token));
             navigate('/auth/complete-profile')
           })

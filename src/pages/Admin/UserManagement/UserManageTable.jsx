@@ -41,7 +41,7 @@ const TABS = [
   }
 ];
 
-const TABLE_HEAD = ["User", "Verified", "Status", "Employed", ""];
+const TABLE_HEAD = ["User", "Verified", "Status", "Batch", ""];
 
 
 
@@ -152,14 +152,14 @@ export function UserManageTable() {
                   <td className={classes}>
                     <div className="flex flex-col">
                       <Typography variant="small" color="blue-gray" className="font-normal">
-                        job
+                        null
                       </Typography>
                       <Typography
                         variant="small"
                         color="blue-gray"
                         className="font-normal opacity-70"
                       >
-                        org
+                        
                       </Typography>
                     </div>
                   </td>
@@ -178,13 +178,13 @@ export function UserManageTable() {
                       {date}
                     </Typography>
                   </td>
-                  <td className={classes}>
+                  {/* <td className={classes}>
                     <Tooltip content="Edit User">
                       <IconButton variant="text" color="blue-gray">
                         <PencilIcon className="h-4 w-4" />
                       </IconButton>
                     </Tooltip>
-                  </td>
+                  </td> */}
                 </tr>
               );
             })}
@@ -200,7 +200,7 @@ export function UserManageTable() {
           </tbody>
         </table>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+      {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
           Page 1 of 10
         </Typography>
@@ -212,7 +212,7 @@ export function UserManageTable() {
             Next
           </Button>
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

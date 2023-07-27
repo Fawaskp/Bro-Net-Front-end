@@ -52,7 +52,7 @@ export default function ProjectSection() {
         {
           userProjects.map((project) => {
             return (
-              <div className="border-t py-6 px-4" >
+              <div key={project.name} className="border-t py-6 px-4" >
                 <div className="flex align-middle justify-between px-3" >
                   <div className="w-1/2 flex py-4" >
                     <img className="w-1/12 rounded-10" src={project.logo ? project.logo : defaultUserImageLink} alt="" />

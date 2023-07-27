@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import './LoginPage.css'
-import Navbar from '../../components/Navbar'
 import { useGoogleLogin } from '@react-oauth/google';
 import InputModal from '../../components/InputModal';
-import { userAxiosInstance } from '../../utils/axios-utils';
-import { login_with_email, verify_email_login_token } from './login-with-email';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import { getLocal } from '../../helpers/auth';
 import { login_with_google } from './login-with-google';
 import { getGitHubAccessToken } from './login-with-github';
+import './LoginPage.css'
 
 function LoginPage() {
 
@@ -45,7 +42,10 @@ function LoginPage() {
     if(local_user) {
       const user_decoded = jwtDecode(local_user).custom
       if (user_decoded.is_profile_completed) navigate('/')
-      else navigate('/auth/complete-profile')
+      else {
+        navigate('/auth/complete-profile')
+        toast.success('Welcome ' + user_decoded.email)
+      }
     }
     else{
       setStart(true)
@@ -58,7 +58,6 @@ function LoginPage() {
       else{
         const tokenParam = urlParams.get('token')
         if (tokenParam) {
-          console.log(tokenParam);
           call_token_verify(tokenParam)
         }
       }
@@ -74,7 +73,6 @@ if(start)
         </div>
       )}
 
-      <Navbar />
       <main className="main">
         <div className="login-card">
           <div className="login-card-head">
@@ -89,12 +87,12 @@ if(start)
           </div>
           <div onClick={githubLogin} className="social-media-card">
             <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="Github-icon" />
-            <h4>Continue With GitHub</h4>
+            <h6>Continue With GitHub</h6>
           </div>
 
           <div onClick={toggleModal} className="social-media-card">
             <img src="https://cdn-icons-png.flaticon.com/512/6244/6244438.png" alt="Email-icon" />
-            <h4>Continue With E-mail</h4>
+            <h6>Continue With E-mail</h6>
           </div>
         </div>
       </main>

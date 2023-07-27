@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { DefaultButton } from '../../components/buttons'
 import { getLocal } from '../../helpers/auth'
-import { toast } from 'react-toastify'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import { apiUrl, defaultUserImageLink } from '../../constants/constants'
 import { userAxiosInstance } from '../../utils/axios-utils'
@@ -16,7 +14,7 @@ const setUserBasicDetails = async (userId, setUserName) => {
     })
 }
 
-const setUserProfileDetails = async (userId, setUserImage, setFollowers, setFollowings, setHub, setBatch,setAbout,setStackImage) => {
+const setUserProfileDetails = async (userId, setUserImage, setFollowers, setFollowings, setHub, setBatch, setAbout, setStackImage) => {
     userAxiosInstance.get('/user-profile/' + userId + '/').then((response) => {
         setUserImage(response.data.profile_image)
         setFollowers(response.data.followers_count)
@@ -28,7 +26,6 @@ const setUserProfileDetails = async (userId, setUserImage, setFollowers, setFoll
         console.log('UserProfileDetails: ', response.data);
     })
 }
-
 
 function Profile() {
 
@@ -42,42 +39,35 @@ function Profile() {
     const [batch, setBatch] = useState('')
     const [about, setAbout] = useState('')
     const [stackimage, setStackImage] = useState('')
+    const [socialaccounts, setSocialAccounts] = useState([])
 
     useEffect(() => {
         const user = getLocal('AuthToken')
-        if (!user) {
-            toast.warn('User Not Authenticated')
-            navigate('/auth/')
-        }
-        else {
             const user_decoded = jwtDecode(user)
             if (user_decoded.custom.is_profile_completed) {
                 setUserProfileDetails(
-                    user_decoded.custom.user_id, 
-                    setUserImage, 
-                    setFollowers, 
-                    setFollowings, 
-                    setHub, 
+                    user_decoded.custom.user_id,
+                    setUserImage,
+                    setFollowers,
+                    setFollowings,
+                    setHub,
                     setBatch,
                     setAbout,
                     setStackImage,
                 )
                 setUserBasicDetails(user_decoded.custom.user_id, setUserName)
-                getUserSocialMediaAccounts(user_decoded.custom.user_id)
+                getUserSocialMediaAccounts(user_decoded.custom.user_id).then((accounts)=>{
+                setSocialAccounts(accounts)
+            })
             }
             else navigate('/auth/login')
-        }
     }, [])
 
     return (
         <>
-            <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css" />
-            <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" />
-
             <div className='absolute w-full bg-gray-900 h-32 md:h-50 lg: sm:h-96' >
-
             </div>
-            <main className="mt-72">
+            <main className="mt-72 w-full">
                 <div className="container mx-auto px-4">
                     <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 rounded-lg -mt-64 border-2 border-gray-200">
                         <div className="px-6">
@@ -115,26 +105,32 @@ function Profile() {
                                     Any Caption which user prefers
                                 </div>
                                 <div className='flex justify-center' >
-                                    <DefaultButton name='Follow' ></DefaultButton>
+                                    {/* <DefaultButton name='Follow' ></DefaultButton> */}
                                 </div>
                                 <div className="mb-2 text-blueGray-600 mt-10">
                                     <i className="fas fa-regular fa-building"></i> {hub}
                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <FontAwesomeIcon size={'md'} icon={faUsersRectangle} /> {batch}
+                                    <FontAwesomeIcon icon={faUsersRectangle} /> {batch}
                                 </div>
                             </div>
                             <div className='flex justify-end' >
-                                <div className='w-96 h-14 p-3' >
-                                   <a href="">
-
-                                   </a>
+                                <div className='w-96 h-14 p-3 flex justify-end' >
+                                    {
+                                        socialaccounts.map((social) => {
+                                            return (
+                                                <a key={social.url} className='mx-2' target='_blank' href={social.url}>
+                                                    <img src={social.social_media.icon} className='w-9' alt="" />
+                                                </a>
+                                            )
+                                        })
+                                    }
                                 </div>
                             </div>
                             <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
                                 <div className="flex flex-wrap justify-center">
                                     <div className="w-full lg:w-9/12 px-4">
                                         <p className="mb-4 text-left sm:text-lg md:text-sm lg:text-base text-blueGray-700">
-                                           {about?about: <i>about is not added</i> }
+                                            {about ? about : <i>about is not added</i>}
                                         </p>
                                     </div>
                                 </div>

@@ -16,8 +16,6 @@ import {
 
 export default function ProjectAddModal({ status, handleOpen }) {
 
-
-
     return (
         <>
             <Dialog open={status} handler={handleOpen} className="px-2 pt-6" >
@@ -25,7 +23,7 @@ export default function ProjectAddModal({ status, handleOpen }) {
                     <h1>Add Project</h1>
                 </div>
                 <DialogBody>
-                    
+                    Project adding section
                 </DialogBody>
             </Dialog>
         </>

@@ -9,7 +9,7 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { suAxiosInstance } from "../../../utils/axios-utils";
 import { apiUrl, defaultUserImageLink } from "../../../constants/constants";
  
@@ -18,6 +18,10 @@ const TABLE_HEAD = ['icon','Edit'];
 export function SocialMediaTable() {
 
   const [social_media,setSocialMedia] = useState([])
+
+  useEffect(()=>{
+    document.title = 'Social Media list'
+  })
 
   suAxiosInstance.get('/social-media/').then((res)=>{
     setSocialMedia(res.data)
@@ -77,7 +81,7 @@ export function SocialMediaTable() {
           </tbody>
         </table>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+      {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Button variant="outlined" color="blue-gray" size="sm">
           Previous
         </Button>
@@ -107,7 +111,7 @@ export function SocialMediaTable() {
         <Button variant="outlined" color="blue-gray" size="sm">
           Next
         </Button>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

@@ -25,8 +25,8 @@ useEffect(()=>{
       }
       else{
         const user_decoded = jwtDecode(user).custom
-        console.log('decoded user',user_decoded);
-        if(!user_decoded.is_profile_completed) {navigate('/auth/complete-profile/');console.log('me also');}
+        console.log('decoded user homepage',user_decoded);
+        if(!user_decoded.is_profile_completed) {navigate('/auth/complete-profile/');console.log('me also', user_decoded);}
         else setStart(true)
       }
   },[])
