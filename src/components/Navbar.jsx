@@ -100,10 +100,7 @@ function ProfileMenu({userImage}) {
             <MenuItem
             onClick={()=>{navigate(link)}}
               key={label}
-              className={`flex items-center gap-2 rounded ${isLastItem
-                ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                : ""
-                }`}
+              className={`flex items-center gap-2 rounded`}
             >
               {React.createElement(icon, {
                 className: "h-4 w-4",
@@ -121,12 +118,14 @@ function ProfileMenu({userImage}) {
             </MenuItem>
           );
         })}
-        <MenuItem onClick={()=>signOut()} key={"Sign Out"}  className="flex items-center gap-2 rounded">
+        <MenuItem onClick={()=>signOut()} key={"Sign Out"}  
+        className="flex items-center gap-2 rounded hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+        >
           <PowerIcon className="h-4 w-4" color="red" ></PowerIcon>
           <Typography
                 as="span"
                 variant="small"
-                className="font-normal"
+                className="font-normal "
                 color="red"
               >
                 Sign out
@@ -167,7 +166,7 @@ export default function ComplexNavbar() {
 
   return (
     <>
-      <Navbar className="fixed z-50 mx-auto max-w-full p-2 lg:rounded-full lg:pl-6">
+      <Navbar className="fixed z-50 mx-auto max-w-full p-2 lg:pl-6">
         <div className="relative max-w-screen-2xl mx-auto flex items-center text-blue-gray-900">
           <Typography onClick={()=>{navigate('/')}}
             as="a"

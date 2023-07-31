@@ -68,7 +68,7 @@ function ProfileMenu({userImage}) {
   const navigate = useNavigate()
   const signOut = ()=>{
     localStorage.removeItem('AuthToken')
-    navigate('/auth/')
+    navigate('/admin/login')
   }
 
   return (

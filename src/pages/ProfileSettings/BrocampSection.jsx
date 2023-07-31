@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import { userAxiosInstance } from '../../utils/axios-utils'
 import { Switch, Input } from "@material-tailwind/react";
-import { DpConfirmModal } from './DpConfirmModal'
 import { updateBasicUserData, updateUserProfile } from '../ProfileCompletion/api'
 
 const setUserBasicDetails = async (userId, setUserName, setFullName, setEmail, setDob) => {
@@ -36,7 +35,6 @@ function BrocampSection() {
     const handleDpConfirmModal = () => setDpConfirmModal(!dpconfirmmodal);
 
     const [userImage, setUserImage] = useState('')
-    const [selectedimage, setSelectedImage] = useState('')
     const [username, setUserName] = useState('')
     const [fullname, setFullName] = useState('')
     const [email, setEmail] = useState('')
@@ -129,9 +127,7 @@ function BrocampSection() {
 
     return (
         <>
-            <DpConfirmModal open={dpconfirmmodal} handleOpen={handleDpConfirmModal} setImage={setUserImage} image1={userImage} image2={selectedimage} ></DpConfirmModal>
-
-            <main className="absolute mt-60 w-full">
+            <main className="w-full -mt-14">
                 <div className="container flex justify-center mx-auto px-4">
                     <div className="relative flex flex-col min-w-0 break-words bg-white w-4/6 mb-6 rounded-10 -mt- border-2 border-gray-200">
                         <div className='p-4 font-bold flex justify-between' >
@@ -177,43 +173,7 @@ function BrocampSection() {
                                         }
                                     </div>
                                 </div>
-                                <div className="my-6 py-3 border-blueGray-200 text-gray-700 text-center flex justify-between">
-                                    <h4>DOB</h4>
-                                    <div className='flex' >
-                                        {
-                                            editmode ?
-                                                <Input inputRef={dobRef} type='date' defaultValue={dob} />
-                                                :
-                                                <p className='mx-10' >{dob}</p>
-                                        }
-                                    </div>
-                                </div>
                             </form>
-                            {/* <div className='p-4 font-bold' >
-                                <h1>Brocamp Info</h1>
-                            </div>
-                            <div className="px-6">
-                                <div className="my-2 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
-                                    <h4>Full name</h4>
-                                    <h4>Muhammed Fawas kp</h4>
-                                    <h4 className='text-indigo-600' >Edit</h4>
-                                </div>
-                                <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
-                                    <h4>Full name</h4>
-                                    <h4>Muhammed Fawas kp</h4>
-                                    <h4 className='text-indigo-600' >Edit</h4>
-                                </div>
-                                <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
-                                    <h4>Full name</h4>
-                                    <h4>Muhammed Fawas kp</h4>
-                                    <h4 className='text-indigo-600' >Edit</h4>
-                                </div>
-                                <div className="my-6 py-3 border-b border-blueGray-200 text-gray-700 text-center flex justify-between">
-                                    <h4>Full name</h4>
-                                    <h4>Muhammed Fawas kp</h4>
-                                    <h4 className='text-indigo-600' >Edit</h4>
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                 </div>

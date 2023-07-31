@@ -8,6 +8,7 @@ import { getLocal } from '../../helpers/auth';
 import { login_with_google } from './login-with-google';
 import { getGitHubAccessToken } from './login-with-github';
 import './LoginPage.css'
+import { verify_email_login_token } from './login-with-email';
 
 function LoginPage() {
 

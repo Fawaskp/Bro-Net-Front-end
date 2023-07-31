@@ -6,6 +6,8 @@ import MessagePage from '../pages/Messages/MessageLayout'
 import ProfileSettingsLayout from '../pages/ProfileSettings/ProfileSettingsLayout'
 import PrivateRoutes from '../protected-routes/PrivateRoutes'
 import UserLayout from '../pages/UserLayout'
+import AllProjects from '../pages/ProfilePage/Project/AllProjects'
+import AllSkills from '../pages/ProfilePage/Skill/AllSkills'
 
 
 function UserRoutes() {
@@ -16,6 +18,8 @@ function UserRoutes() {
         <Route path='/' element={<UserLayout />}>
           <Route path='/profile' element={<ProfileLayout />} />
           <Route path='/profile/settings' element={<ProfileSettingsLayout />} />
+          <Route path='/profile/projects' element={<AllProjects />} />
+          <Route path='/profile/skills' element={<AllSkills />} />
           <Route path='/messaging/' element={<MessagePage />} />
         </Route>
       </Route>

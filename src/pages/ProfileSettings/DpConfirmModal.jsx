@@ -4,10 +4,8 @@ import {
     Dialog,
     DialogHeader,
     DialogBody,
-    DialogFooter,
 } from "@material-tailwind/react";
 import { apiUrl } from "../../constants/constants";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChevronDoubleRightIcon } from '@heroicons/react/24/solid'
 import { updateUserProfile } from "../ProfileCompletion/api";
 import { getLocal } from "../../helpers/auth";
@@ -35,18 +33,20 @@ export function DpConfirmModal({ open, handleOpen, setImage, image1, image2 }) {
     return (
         <>
             <Dialog open={open} handler={handleOpen}>
-                <DialogHeader className="font-normal text-lg" >Are you sure to change image?</DialogHeader>
+                <DialogHeader className="font-normal text-lg" >Are you sure to set image?</DialogHeader>
                 <DialogBody divider>
                     <div className="flex justify-center" >
                         {
                             image1 &&
-                            <img
-                                alt="User-Dp"
-                                src={apiUrl + image1}
-                                className="rounded-10 mx-4 w-28 lg:w-28 h-28 lg:h-28 object-cover -top-1/2 left-1/2  ring-4 ring-gray-50"
-                            />
+                            <>
+                                <img
+                                    alt="User-Dp"
+                                    src={apiUrl + image1}
+                                    className="rounded-10 mx-4 w-28 lg:w-28 h-28 lg:h-28 object-cover -top-1/2 left-1/2  ring-4 ring-gray-50"
+                                />
+                                <ChevronDoubleRightIcon className="w-11" />
+                            </>
                         }
-                        <ChevronDoubleRightIcon className="w-11" />
                         {
                             image2 &&
                             <img

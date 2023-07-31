@@ -135,24 +135,23 @@ function PersonalSection() {
 
     return (
         <>
-            {/* <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css" />
-            <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" /> */}
             <DpConfirmModal open={dpconfirmmodal} handleOpen={handleDpConfirmModal} setImage={setUserImage} image1={userImage} image2={selectedimage} ></DpConfirmModal>
             <div className='w-full bg-gray-900 h-96'>
                 <div className='mx-auto h-2/3 md:w-3/6 flex flex-col items-center'>
-                    <div onClick={handleImageClick} className="block mx-auto mt-10 bg-gray-200 cursor-pointer relative group">
+                    <div onClick={handleImageClick} className="block mx-auto mt-10 bg-gray-200 cursor-pointer rounded-10 relative group">
                         <input type="file" className="hidden" ref={fileInputRef} onChange={(e) => {
                             if (e.target.value[0] != null)
                                 setSelectedImage(e.target.files[0]);
+                                console.log(e.target.files[0]);
                             handleDpConfirmModal();
                         }} />
                         <img
                             alt="User-Dp"
                             src={userImage ? apiUrl + userImage : defaultUserImageLink}
-                            className="rounded-10 w-28 lg:w-28 h-28 lg:h-28 object-cover ring-4 ring-gray-50 transition-all duration-200 ease-out group-hover:opacity-50"
+                            className="rounded-10 w-28 lg:w-28 h-28 lg:h-28 object-cover ring-4 ring-gray-50 transition-all duration-500 ease-out group-hover:opacity-50"
                         />
-                        <span className="text-overlay absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 py-2 px-4 duration-200 ease-out font-semibold text-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                            Change
+                        <span className="text-overlay absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 py-2 px-4 duration-500 ease-out font-semibold text-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        {userImage ? 'Change' : 'Add'} 
                         </span>
                     </div>
 
@@ -163,7 +162,7 @@ function PersonalSection() {
             </div>
 
 
-            <main className="absolute -mt-56 w-full">
+            <main className="-mt-56 w-full">
                 <div className="container flex justify-center mx-auto px-4">
                     <div className="relative flex flex-col min-w-0 break-words bg-white w-4/6 mb-6 rounded-10 -mt- border-2 border-gray-200">
                         <div className='p-4 font-bold flex justify-between' >

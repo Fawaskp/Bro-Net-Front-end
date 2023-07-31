@@ -10,11 +10,11 @@ import {
     Avatar,
     Typography,
 } from "@material-tailwind/react";
-import { getSkills } from "./api";
-import { DefaultButton } from '../../components/buttons'
-import { userAxiosInstance } from "../../utils/axios-utils";
+import { getSkills } from "../api";
+import { DefaultButton } from '../../../components/buttons'
+import { userAxiosInstance } from "../../../utils/axios-utils";
 import jwtDecode from "jwt-decode";
-import { getLocal } from "../../helpers/auth";
+import { getLocal } from "../../../helpers/auth";
 import { toast } from "react-toastify";
 
 export default function SkillAddModal({ status, handleOpen,setUserSkills }) {

@@ -1,9 +1,8 @@
-import NavBar from '../../components/Navbar';
 import Profile from './Profile';
-import EducationSection from './EducationSection';
-import ExperienceSection from './ExperienceSection';
-import SkillSection from './SkillSection';
-import ProjectSection from './ProjectSection';
+import EducationSection from './Education/EducationSection';
+import ExperienceSection from './Experience/ExperienceSection';
+import SkillSection from './Skill/SkillSection';
+import ProjectSection from './Project/ProjectSection';
 
 function ProfileLayout() {
 console.log('Reached Here');

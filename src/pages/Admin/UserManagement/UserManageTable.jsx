@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { EyeIcon,NoSymbolIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -41,7 +41,12 @@ const TABS = [
   }
 ];
 
-const TABLE_HEAD = ["User", "Verified", "Status", "Batch", ""];
+const COMMON_TABLE_HEAD      = ["", "Username"]
+const STUDENT_TABLE_HEAD     = [...COMMON_TABLE_HEAD, "Profile Completed", ""]
+const COUNCELLOR_TABLE_HEAD  = [...COMMON_TABLE_HEAD, ""];
+const ADMIN_TABLE_HEAD       = [...COMMON_TABLE_HEAD, ""];
+const COORDINATOR_TABLE_HEAD = [...COMMON_TABLE_HEAD, ""];
+
 
 
 
@@ -57,6 +62,7 @@ export function UserManageTable() {
 
   const [users, setUsers] = useState([]);
   const [addModal, setAddModal] = useState(false);
+  const [tablehead, setTableHead] = useState(STUDENT_TABLE_HEAD)
   const [selectedTab, setTab] = useState('students')
   const handleUserAddModal = () => setAddModal(!addModal);
 
@@ -67,6 +73,10 @@ export function UserManageTable() {
     suAxiosInstance.get(`/${value}/`).then((response) => {
       if (response.data) setUsers(response.data)
       setTab(value)
+      if (value === 'students') setTableHead(STUDENT_TABLE_HEAD)
+      else if (value === 'co-ordinator') setTableHead(COORDINATOR_TABLE_HEAD)
+      else if (value === 'admins') setTableHead(ADMIN_TABLE_HEAD)
+      else if (value === 'councellors') setTableHead(COUNCELLOR_TABLE_HEAD)
       console.log(value);
     })
   }
@@ -88,6 +98,8 @@ export function UserManageTable() {
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+
+            {selectedTab === 'students' && <Button className="flex items-center gap-3 rounded-10 opacity-0" size="sm"><UserPlusIcon className="h-4 w-4" /></Button>}
             {selectedTab === 'co-ordinator' && renderButton('coordinator', 'Add Coordinator')}
             {selectedTab === 'admins' && renderButton('admin', 'Add Admin')}
             {selectedTab === 'councellors' && renderButton('councilor', 'Add Councilor')}
@@ -108,12 +120,12 @@ export function UserManageTable() {
           </div>
         </div>
       </CardHeader>
-      <CardBody className="overflow-scroll px-0">
+      <CardBody className="px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
-              {TABLE_HEAD.map((head) => (
-                <th key={head} className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
+              {tablehead.map((head,index) => (
+                <th key={index} className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -150,41 +162,36 @@ export function UserManageTable() {
                     </div>
                   </td>
                   <td className={classes}>
-                    <div className="flex flex-col">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
-                        null
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal opacity-70"
-                      >
-                        
-                      </Typography>
-                    </div>
-                  </td>
-                  <td className={classes}>
-                    <div className="w-max">
-                      <Chip
-                        variant="ghost"
-                        size="sm"
-                        value={online ? "online" : "offline"}
-                        color={online ? "green" : "blue-gray"}
-                      />
-                    </div>
-                  </td>
-                  <td className={classes}>
                     <Typography variant="small" color="blue-gray" className="font-normal">
-                      {date}
+                      {user.username}
                     </Typography>
                   </td>
-                  {/* <td className={classes}>
-                    <Tooltip content="Edit User">
-                      <IconButton variant="text" color="blue-gray">
-                        <PencilIcon className="h-4 w-4" />
+                  {
+                    selectedTab == "students" &&
+                    <td className={classes}>
+                      <div className="max-w-max">
+                        <Chip
+                          variant="ghost"
+                          size="sm"
+                          value={user.is_profile_completed ? "completed" : "not completed"}
+                          color={user.is_profile_completed ? "green" : "red"}
+                        />
+                      </div>
+                    </td>
+                  }
+                  <td className={classes}>
+                    <Tooltip content="Block User" >
+                      <IconButton variant="text" color="red">
+                        <NoSymbolIcon className="h-4 w-4" />
                       </IconButton>
                     </Tooltip>
-                  </td> */}
+
+                    <Tooltip content={`view ${selectedTab.slice(0,-1)}`} >
+                      <IconButton variant="text" color="indigo">
+                        <EyeIcon className="h-4 w-4" />
+                      </IconButton>
+                    </Tooltip>
+                  </td>
                 </tr>
               );
             })}
@@ -200,19 +207,6 @@ export function UserManageTable() {
           </tbody>
         </table>
       </CardBody>
-      {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
-        </Typography>
-        <div className="flex gap-2">
-          <Button variant="outlined" color="blue-gray" size="sm">
-            Previous
-          </Button>
-          <Button variant="outlined" color="blue-gray" size="sm">
-            Next
-          </Button>
-        </div>
-      </CardFooter> */}
     </Card>
   );
 }

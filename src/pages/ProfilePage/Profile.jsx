@@ -77,7 +77,8 @@ function Profile() {
                                         <img
                                             alt="User-Dp"
                                             src={userImage ? apiUrl + userImage : defaultUserImageLink}
-                                            className="rounded-full w-full h-full align-middle ring-8 ring-gray-900 object-cover absolute -mt-16"
+                                            style={{borderRadius:'50%'}}
+                                            className="w-full h-full align-middle ring-8 ring-gray-900 object-cover bg-white absolute -mt-16"
                                         />
                                     </div>
                                 </div>

@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react'
-import { AdminSideBar } from '../../../components/AdminSideBar'
-import AdminNavbar from '../../../components/AdminNavbar'
 export default function AdminHome() {
 
   useEffect(() => {

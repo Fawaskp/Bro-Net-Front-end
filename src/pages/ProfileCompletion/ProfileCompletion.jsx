@@ -124,6 +124,7 @@ function ProfileCompletion() {
 
   return (
     <>
+    <Navbar/>
       <ConfirmModal status={confirmModal} message={"Are you sure to remove image"} handleOpen={handConfirmModal} confirm={setUserImage} />
       <main>
         <div className="main-card">

@@ -8,8 +8,12 @@ import {
 import { useEffect, useRef } from "react";
 import { suAxiosInstance } from "../../../utils/axios-utils";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { getLocal } from "../../../helpers/auth";
+import jwtDecode from "jwt-decode";
 export function AdminLogin() {
 
+    const navigate = useNavigate()
     const emailRef = useRef();
     const passwordRef = useRef();
 
@@ -21,27 +25,38 @@ export function AdminLogin() {
 
         const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         if (!isEmailValid) {
-          alert("Please enter a valid email address.");
-          return;
+            alert("Please enter a valid email address.");
+            return;
         }
-        
-        suAxiosInstance.post('login',{email,password}).then((response)=>{
+
+        suAxiosInstance.post('login', { email, password }).then((response) => {
             console.log(response.data);
-            if(response.status==202){
+            if (response.status == 202) {
                 toast.success('Logged In sucessfully')
-                localStorage.setItem('AuthToken',JSON.stringify(response.data.token));
+                localStorage.setItem('AuthToken', JSON.stringify(response.data.token));
+                navigate('/admin')
             }
-            else{
+            else {
                 toast.error(response.data.message)
                 return
             }
+        }).catch((err) => {
+            if (err.response.data) toast.error(err.response.data[0])
         })
 
     }
 
     useEffect(() => {
         document.title = 'Admin Login'
-    })
+        const local_user = getLocal('AuthToken')
+        if (local_user) {
+            const user_decoded = jwtDecode(local_user).custom
+            if (user_decoded.user_id == 3) navigate('/admin')
+            else {
+                navigate('/admin/login')
+            }
+        }
+    }, [])
 
     return (
         <div className="flex justify-center mt-48" >

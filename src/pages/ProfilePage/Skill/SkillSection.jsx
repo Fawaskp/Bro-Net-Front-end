@@ -9,10 +9,10 @@ import {
 } from "@material-tailwind/react";
 import SkillAddModal from "./SkillAddModal";
 import { useEffect, useState } from "react";
-import { getLocal } from "../../helpers/auth";
+import { getLocal } from "../../../helpers/auth";
 import jwtDecode from "jwt-decode";
-import { userAxiosInstance } from "../../utils/axios-utils";
-import { apiUrl } from "../../constants/constants";
+import { userAxiosInstance } from "../../../utils/axios-utils";
+import { apiUrl } from "../../../constants/constants";
 
 export default function SkillSection() {
 
