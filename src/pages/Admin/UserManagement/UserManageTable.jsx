@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { EyeIcon,NoSymbolIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, NoSymbolIcon, UserPlusIcon,LockOpenIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -8,7 +8,6 @@ import {
   Button,
   CardBody,
   Chip,
-  CardFooter,
   Tabs,
   TabsHeader,
   Tab,
@@ -19,7 +18,7 @@ import {
 import { suAxiosInstance } from "../../../utils/axios-utils";
 import { useEffect, useState } from "react";
 import { apiUrl, defaultUserImageLink } from "../../../constants/constants";
-import { addUser } from "./api";
+import { addUser, blockUser, unBlockUser } from "./api";
 import { AddUserModal } from "./addUser";
 
 const TABS = [
@@ -41,10 +40,10 @@ const TABS = [
   }
 ];
 
-const COMMON_TABLE_HEAD      = ["", "Username"]
-const STUDENT_TABLE_HEAD     = [...COMMON_TABLE_HEAD, "Profile Completed", ""]
-const COUNCELLOR_TABLE_HEAD  = [...COMMON_TABLE_HEAD, ""];
-const ADMIN_TABLE_HEAD       = [...COMMON_TABLE_HEAD, ""];
+const COMMON_TABLE_HEAD = ["", "Username"]
+const STUDENT_TABLE_HEAD = [...COMMON_TABLE_HEAD, "Profile Completed", ""]
+const COUNCELLOR_TABLE_HEAD = [...COMMON_TABLE_HEAD, ""];
+const ADMIN_TABLE_HEAD = [...COMMON_TABLE_HEAD, ""];
 const COORDINATOR_TABLE_HEAD = [...COMMON_TABLE_HEAD, ""];
 
 
@@ -69,7 +68,7 @@ export function UserManageTable() {
   const online = true
   const date = '896-8-900'
 
-  const handleSelectTab = (value) => {
+  const handleSelectTab = (value=selectedTab) => {
     suAxiosInstance.get(`/${value}/`).then((response) => {
       if (response.data) setUsers(response.data)
       setTab(value)
@@ -98,7 +97,6 @@ export function UserManageTable() {
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-
             {selectedTab === 'students' && <Button className="flex items-center gap-3 rounded-10 opacity-0" size="sm"><UserPlusIcon className="h-4 w-4" /></Button>}
             {selectedTab === 'co-ordinator' && renderButton('coordinator', 'Add Coordinator')}
             {selectedTab === 'admins' && renderButton('admin', 'Add Admin')}
@@ -124,7 +122,7 @@ export function UserManageTable() {
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
-              {tablehead.map((head,index) => (
+              {tablehead.map((head, index) => (
                 <th key={index} className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
                   <Typography
                     variant="small"
@@ -180,17 +178,24 @@ export function UserManageTable() {
                     </td>
                   }
                   <td className={classes}>
-                    <Tooltip content="Block User" >
-                      <IconButton variant="text" color="red">
-                        <NoSymbolIcon className="h-4 w-4" />
-                      </IconButton>
+                    <Tooltip content={user.is_active? "Block User" : "Un-Block User"} >
+                      {
+                        user.is_active ?
+                          <IconButton onClick={() => blockUser(user.id,handleSelectTab)} variant="text" color="red">
+                            <NoSymbolIcon className="h-4 w-4" />
+                          </IconButton>
+                          :
+                          <IconButton onClick={() => unBlockUser(user.id,handleSelectTab)} variant="text" color="red">
+                            <LockOpenIcon className="h-4 w-4" />
+                          </IconButton>
+                      }
                     </Tooltip>
 
-                    <Tooltip content={`view ${selectedTab.slice(0,-1)}`} >
+                    {/* <Tooltip content={`view ${selectedTab.slice(0, -1)}`} >
                       <IconButton variant="text" color="indigo">
                         <EyeIcon className="h-4 w-4" />
                       </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                   </td>
                 </tr>
               );

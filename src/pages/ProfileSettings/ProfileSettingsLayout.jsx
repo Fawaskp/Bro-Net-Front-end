@@ -10,7 +10,7 @@ function ProfileSettingsLayout() {
   return (
     <>
       <PersonalSection />
-      <BrocampSection />
+      {/* <BrocampSection /> */}
     </>
   )
 }

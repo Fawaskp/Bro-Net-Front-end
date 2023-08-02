@@ -33,7 +33,7 @@ export function SkillTable() {
 
   const callSetSkills = () => {
     suAxiosInstance.get('/skills/').then((res) => {
-      setSkills(res.data)
+      setSkills(res.data.results)
     }).catch((err) => console.log(err))
   }
 

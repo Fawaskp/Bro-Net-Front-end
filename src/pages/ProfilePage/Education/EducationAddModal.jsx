@@ -8,7 +8,7 @@ import {
 } from "@material-tailwind/react";
 import jwtDecode from 'jwt-decode';
 import { toast } from 'react-toastify';
-import { suAxiosInstance, userAxiosInstance } from '../../../utils/axios-utils';
+import { userAxiosInstance } from '../../../utils/axios-utils';
 import { getLocal } from '../../../helpers/auth';
 import { Select, Option } from "@material-tailwind/react";
 
@@ -17,7 +17,7 @@ const EducationAddModal = ({ open, handleOpen, refresh }) => {
     const institutionRef = useRef();
     const courseRef = useRef();
     const locationRef = useRef();
-    let eduCategory = ''
+    const [selectedCategory, setSelectedCategory]= useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -25,9 +25,6 @@ const EducationAddModal = ({ open, handleOpen, refresh }) => {
         const institutionValue = institutionRef.current.value;
         const courseValue = courseRef.current.value;
         const locationValue = locationRef.current.value;
-
-        console.log(eduCategory,institutionValue,courseValue,locationValue);
-        return;
 
         const authToken = getLocal('AuthToken');
         const user_decoded = jwtDecode(authToken).custom;
@@ -37,9 +34,14 @@ const EducationAddModal = ({ open, handleOpen, refresh }) => {
         formData.append('institution', institutionValue);
         formData.append('course', courseValue);
         formData.append('location', locationValue);
-
-        suAxiosInstance
-            .post('user-education/', formData)
+        if(!selectedCategory){
+            toast.error(`Every field is important -> ${selectedCategory}`)
+            return;
+        }
+        formData.append('category', selectedCategory);
+  
+        userAxiosInstance
+            .post('user-education', formData)
             .then((response) => {
                 handleOpen();
                 toast.success('Education Added Successfully');
@@ -67,7 +69,7 @@ const EducationAddModal = ({ open, handleOpen, refresh }) => {
                 <DialogBody divider>
                     <form onSubmit={handleSubmit}>
                         <div className="flex flex-col gap-4">
-                            <Select onChange={(e)=>{console.log(e.target.value)}} label="Select Category">
+                            <Select onChange={(e)=>setSelectedCategory(e)} label="Select Category">
                                 {
                                     eduCategories.map((category) => {
                                         return (

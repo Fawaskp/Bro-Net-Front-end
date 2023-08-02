@@ -27,7 +27,7 @@ export default function SkillAddModal({ status, handleOpen,setUserSkills }) {
         const user = getLocal('AuthToken')
         const user_decoded = jwtDecode(user)
             
-        userAxiosInstance.put(`add-skill/${user_decoded.user_id}/`,data).then((res)=>{
+        userAxiosInstance.put(`user-skill-detail/${user_decoded.user_id}/`,data).then((res)=>{
             if(res.data.status == 200){
                 toast.success('Skill Added successfully')
                 setUserSkills(user_decoded.user_id)
@@ -48,14 +48,14 @@ export default function SkillAddModal({ status, handleOpen,setUserSkills }) {
     return (
         <>
             <Dialog open={status} handler={handleOpen} className="px-4 pt-12" >
-                <div className="flex justify-center">
+                {/* <div className="flex justify-center">
                     <input
                         style={{ borderRadius: 5 }}
                         type="text"
                         className="block w-5/6 px-4 mx-2 py-2 bg-indigo-50 bg-opacity-70 text-indigo-700 focus:outline-indigo-100"
                         placeholder="Search..."
                     />
-                </div>
+                </div> */}
                 <DialogBody className="max-h-96 overflow-y-scroll my-6" >
                     <List>
                         {

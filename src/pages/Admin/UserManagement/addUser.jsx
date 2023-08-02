@@ -9,14 +9,26 @@ import {
     Select,
     Option,
 } from "@material-tailwind/react";
+import { addUser } from "./api";
+import { toast } from "react-toastify";
 
 export function AddUserModal({ open, handleOpen, role }) {
 
-    const [Fullname,setFullname] = useState('')
-    const [email,setEmail] = useState('')
-    const [password,setPassword] = useState('')
+    const [Fullname, setFullname] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-    const clearFields = () =>{
+    const handleSubmit = () => {
+        const values = [Fullname, email, password]
+        values.map((data) => {
+            if (data.trim() == '')
+                toast.error("Field can't be empty")
+            return
+        })
+        addUser({fullname:Fullname,email,password},role)
+    }
+
+    const clearFields = () => {
         setEmail('')
         setFullname('')
         setPassword('')
@@ -25,9 +37,9 @@ export function AddUserModal({ open, handleOpen, role }) {
     const commonFields = () => {
         return (
             <>
-                <Input onChange={(e)=>setFullname(e.target.value)} size="lg" label="Fullname" value={Fullname} />
-                <Input onChange={(e)=>setEmail(e.target.value)}    size="lg" label="Email"    value={email}/>
-                <Input onChange={(e)=>setPassword(e.target.value)} size="lg" label="Password"  value={password}/>
+                <Input onChange={(e) => setFullname(e.target.value)} size="lg" label="Fullname" value={Fullname} />
+                <Input onChange={(e) => setEmail(e.target.value)} size="lg" label="Email" value={email} />
+                <Input onChange={(e) => { setPassword(e.target.value), console.log(e.target.value) }} size="lg" label="Password" value={password} />
             </>
         )
     }
@@ -54,7 +66,7 @@ export function AddUserModal({ open, handleOpen, role }) {
 
     const councillorForm = () => {
         return (
-            <form  className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+            <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
                 <div className="mb-4 flex flex-col gap-6">
                     {commonFields()}
                 </div>
@@ -92,11 +104,13 @@ export function AddUserModal({ open, handleOpen, role }) {
                             {role === 'admins' && adminForm()}
                             {role === 'councellors' && councillorForm()}
                             <div className="flex justify-center" >
-                                <Button className="mt-6 px-8 rounded-10">
+                                <Button
+                                    onClick={() => { handleSubmit() }}
+                                    className="mt-6 px-8 rounded-10">
                                     Create
                                 </Button>
                                 <Button color="red"
-                                    onClick={()=>{handleOpen(),clearFields()}}
+                                    onClick={() => { handleOpen(),clearFields() }}
                                     className="mt-6 mx-4 px-4 rounded-10" >
                                     Cancel
                                 </Button>

@@ -29,8 +29,6 @@ const setUserProfileDetails = async (userId, setUserImage, setFollowers, setFoll
 
 function Profile() {
 
-    const navigate = useNavigate()
-
     const [userImage, setUserImage] = useState('')
     const [userName, setUserName] = useState('')
     const [followers, setFollowers] = useState('')
