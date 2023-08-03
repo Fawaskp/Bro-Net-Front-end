@@ -8,6 +8,7 @@ import PrivateRoutes from '../protected-routes/PrivateRoutes'
 import UserLayout from '../pages/UserLayout'
 import AllProjects from '../pages/ProfilePage/Project/AllProjects'
 import AllSkills from '../pages/ProfilePage/Skill/AllSkills'
+import SearchPage from '../pages/SearchPage/SearchPage'
 
 
 function UserRoutes() {
@@ -16,6 +17,7 @@ function UserRoutes() {
       <Route path='*' element={<NoteFoundPage />} />
       <Route element={<PrivateRoutes role={'user'} route={'/auth/login'} />}>
         <Route path='/' element={<UserLayout />}>
+          <Route path='/search' element={<SearchPage/>} />
           <Route path='/profile' element={<ProfileLayout />} />
           <Route path='/profile/settings' element={<ProfileSettingsLayout />} />
           <Route path='/profile/projects' element={<AllProjects />} />

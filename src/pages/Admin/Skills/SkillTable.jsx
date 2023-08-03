@@ -7,17 +7,24 @@ import {
   IconButton,
   Tooltip,
   Button,
+  CardFooter,
 } from "@material-tailwind/react";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { AddSocialMediaModal } from "./AddModal";
 import { DeleteSocialMediaModal } from "./DeleteModal";
 import { EditSocialMediaModal } from "./EditModal";
+import { paginationPageCount } from "../../../constants/constants";
 
 const TABLE_HEAD = ["Icon", ""];
 
 export function SkillTable() {
 
   const [skills, setSkills] = useState([])
+  const [paginationCount, setPaginationCount] = useState([])
+  const [selectedPage, setSelectedPage] = useState(1)
+
+  // const [nextPage,setNextPage] = useState(null)
+  // const [prevPage,setPrevPage] = useState(null)
 
   const [addModal, setAddModal] = useState(false);
   const handleAddModal = () => setAddModal(!addModal);
@@ -31,9 +38,17 @@ export function SkillTable() {
   const [deletingInstance, setDeletingInstance] = useState()
   const [editingInstance, setEditingInstance] = useState('')
 
-  const callSetSkills = () => {
-    suAxiosInstance.get('/skills/').then((res) => {
+  const callSetSkills = (page=1) => {
+    suAxiosInstance.get('skills/?page='+page).then((res) => {
       setSkills(res.data.results)
+      // setNextPage(res.data.next)
+      // setPrevPage(res.data.pervious)
+      const pageCount = res.data.count /paginationPageCount
+      const newPaginationCount = [];
+      for (let i = 1; i <= pageCount; i++) {
+        newPaginationCount.push(i);
+      }
+      setPaginationCount(newPaginationCount);
     }).catch((err) => console.log(err))
   }
 
@@ -101,6 +116,25 @@ export function SkillTable() {
                 </tr>
               );
             })}
+            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+              {/* <Button onClick={()=>{callSetSkills(1,nextPage),console.log(nextPage)}} variant="outlined" color="blue-gray" size="sm">
+                Previous
+              </Button> */}
+              <div className="flex items-center gap-2">
+                {
+                  paginationCount.map((count) => {
+                    return (
+                      <IconButton onClick={() => {callSetSkills(count),setSelectedPage(count)}} variant="outlined" color={count==selectedPage?"blue":"blue-gray"} size="sm">
+                        {count}
+                      </IconButton>
+                    )
+                  })
+                }
+              </div>
+              {/* <Button variant="outlined" color="blue-gray" size="sm">
+                Next
+              </Button> */}
+            </CardFooter>
           </tbody>
           {
             skills.length < 1 ?

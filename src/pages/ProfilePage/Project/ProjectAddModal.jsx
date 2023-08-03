@@ -18,19 +18,29 @@ const ProjectAddModal = ({ open, handleOpen, refresh }) => {
     const descriptionRef = useRef();
     const repositoryLinkRef = useRef();
     const liveLinkRef = useRef();
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        const nameValue           = nameRef.current.value;
-        const descriptionValue    = descriptionRef.current.value;
-        const repositoryLinkValue = repositoryLinkRef.current.value;
-        const liveLinkValue       = liveLinkRef.current.value;
 
-        const skillsInputs        = document.getElementsByName('select_react') 
+        const nameValue = nameRef.current.value;
+        const descriptionValue = descriptionRef.current.value;
+        const repositoryLinkValue = repositoryLinkRef.current.value;
+        const liveLinkValue = liveLinkRef.current.value;
+
+        const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/i;
+        if (!urlPattern.test(repositoryLinkValue)) {
+            toast.error('Enter Valid Repo Link')
+            return
+        }
+        else if (!urlPattern.test(liveLinkValue)) {
+            toast.error('Enter Valid LIve Link')
+            return
+        }
+
+        const skillsInputs = document.getElementsByName('select_react')
         const authToken = getLocal('AuthToken')
         const user_decoded = jwtDecode(authToken).custom
-        
+
 
         const formData = new FormData();
         formData.append('user', user_decoded.user_id);
@@ -39,9 +49,9 @@ const ProjectAddModal = ({ open, handleOpen, refresh }) => {
         formData.append('repository_link', repositoryLinkValue);
         formData.append('live_link', liveLinkValue);
         formData.append('logo', logo);
-        
-        for(var i=0;i<skillsInputs.length;i++){
-            formData.append('skills_used',parseInt(skillsInputs[i].value))
+
+        for (var i = 0; i < skillsInputs.length; i++) {
+            formData.append('skills_used', parseInt(skillsInputs[i].value))
         }
 
         suAxiosInstance
@@ -91,7 +101,7 @@ const ProjectAddModal = ({ open, handleOpen, refresh }) => {
                             <Input inputRef={descriptionRef} size="lg" label="Description" />
                             <Input inputRef={repositoryLinkRef} size="lg" label="Repository Link" />
                             <Input inputRef={liveLinkRef} size="lg" label="Live Link" />
-                            <Select 
+                            <Select
                                 name='select_react'
                                 options={skills}
                                 isMulti

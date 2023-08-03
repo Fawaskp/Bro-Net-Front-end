@@ -65,7 +65,7 @@ const EducationAddModal = ({ open, handleOpen, refresh }) => {
     return (
         <>
             <Dialog open={open} handler={handleOpen}>
-                <DialogHeader className="font-normal text-lg">Are you sure to set image?</DialogHeader>
+                <DialogHeader className="font-normal text-lg">Add Your Education</DialogHeader>
                 <DialogBody divider>
                     <form onSubmit={handleSubmit}>
                         <div className="flex flex-col gap-4">

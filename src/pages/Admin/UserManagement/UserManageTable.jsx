@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { EyeIcon, NoSymbolIcon, UserPlusIcon,LockOpenIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, NoSymbolIcon, UserPlusIcon, LockOpenIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -14,12 +14,14 @@ import {
   Avatar,
   IconButton,
   Tooltip,
+  CardFooter,
 } from "@material-tailwind/react";
 import { suAxiosInstance } from "../../../utils/axios-utils";
 import { useEffect, useState } from "react";
-import { apiUrl, defaultUserImageLink } from "../../../constants/constants";
+import { apiUrl, defaultUserImageLink, paginationPageCount, suBaseUrl } from "../../../constants/constants";
 import { addUser, blockUser, unBlockUser } from "./api";
 import { AddUserModal } from "./addUser";
+import debounce from "../../../helpers/debouce";
 
 const TABS = [
   {
@@ -48,7 +50,6 @@ const COORDINATOR_TABLE_HEAD = [...COMMON_TABLE_HEAD, ""];
 
 
 
-
 export function UserManageTable() {
 
   const renderButton = (tab, label) => {
@@ -59,31 +60,51 @@ export function UserManageTable() {
     );
   };
 
+  const [paginationCount, setPaginationCount] = useState([])
+
   const [users, setUsers] = useState([]);
   const [addModal, setAddModal] = useState(false);
   const [tablehead, setTableHead] = useState(STUDENT_TABLE_HEAD)
   const [selectedTab, setTab] = useState('students')
+  const [sortby, setSortBy] = useState('id')
+  const [selectedPage, setSelectedPage] = useState(1)
+  const [searchValue, setSearchValue] = useState('')
+
   const handleUserAddModal = () => setAddModal(!addModal);
 
   const online = true
   const date = '896-8-900'
 
-  const handleSelectTab = (value=selectedTab) => {
-    suAxiosInstance.get(`/${value}/`).then((response) => {
-      if (response.data) setUsers(response.data)
+  const handleSelectTab = (value = selectedTab, page = selectedPage, sortBy = sortby, search = searchValue) => {
+    // console.log(suBaseUrl + `${value}/?page=${page}&ordering=${sortBy}&search=${search}`);
+    suAxiosInstance.get(`/${value}/?page=${page}&ordering=${sortBy}&search=${search}`).then((response) => {
+      if (response.data) {
+        setUsers(response.data.results)
+        const pageCount = response.data.count / paginationPageCount
+        const newPaginationCount = [];
+        for (let i = 1; i <= pageCount + 1; i++) {
+          newPaginationCount.push(i);
+        }
+        setPaginationCount(newPaginationCount)
+      }
       setTab(value)
       if (value === 'students') setTableHead(STUDENT_TABLE_HEAD)
       else if (value === 'co-ordinator') setTableHead(COORDINATOR_TABLE_HEAD)
       else if (value === 'admins') setTableHead(ADMIN_TABLE_HEAD)
       else if (value === 'councellors') setTableHead(COUNCELLOR_TABLE_HEAD)
-      console.log(value);
     })
   }
 
+  function saveInput(inputValue) {
+    // console.log('Saving data: ', inputValue);
+    handleSelectTab(selectedTab, 1, sortby, inputValue)
+    setSearchValue(inputValue)
+    setSelectedPage(1)
+  }
+  const processChange = debounce((inputValue) => saveInput(inputValue));
+
   useEffect(() => {
-    suAxiosInstance.get('/students/').then((response) => {
-      if (response.data) setUsers(response.data)
-    })
+    handleSelectTab('students')
   }, [])
 
   return (
@@ -114,9 +135,19 @@ export function UserManageTable() {
             </TabsHeader>
           </Tabs>
           <div className="w-full md:w-72">
-            <Input label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
+            <Input onKeyUp={(e) => processChange(e.target.value)} label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
           </div>
         </div>
+        <select onChange={(e) => { setSortBy(e.target.value), handleSelectTab(selectedTab, selectedPage, e.target.value, '') }} name="sort" id="">
+          <option value="">Sort by</option>
+          <option value="id">User Id ASC</option>
+          <option value="username">Username ASC</option>
+          <option value="dob">dob ASC</option>
+          <option value="-id">User Id dSC</option>
+          <option value="-username">Username dSC</option>
+          <option value="-dob">dob dSC</option>
+        </select>
+
       </CardHeader>
       <CardBody className="px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
@@ -178,14 +209,14 @@ export function UserManageTable() {
                     </td>
                   }
                   <td className={classes}>
-                    <Tooltip content={user.is_active? "Block User" : "Un-Block User"} >
+                    <Tooltip content={user.is_active ? "Block User" : "Un-Block User"} >
                       {
                         user.is_active ?
-                          <IconButton onClick={() => blockUser(user.id,handleSelectTab)} variant="text" color="red">
+                          <IconButton onClick={() => blockUser(user.id, handleSelectTab)} variant="text" color="red">
                             <NoSymbolIcon className="h-4 w-4" />
                           </IconButton>
                           :
-                          <IconButton onClick={() => unBlockUser(user.id,handleSelectTab)} variant="text" color="red">
+                          <IconButton onClick={() => unBlockUser(user.id, handleSelectTab)} variant="text" color="red">
                             <LockOpenIcon className="h-4 w-4" />
                           </IconButton>
                       }
@@ -200,18 +231,36 @@ export function UserManageTable() {
                 </tr>
               );
             })}
-            {
-              users.length < 1 ?
-                <tr className="flex justify-center" >
-                  <td>
-                    <h1 className="text-xl font-bold" >Data not found</h1>
-                  </td>
-                </tr>
-                : ''
-            }
           </tbody>
         </table>
       </CardBody>
+      {
+        users.length < 1 ?
+          <h1 className="text-center text-xl font-bold" >Data not found</h1>
+          : ''
+      }
+      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+        {/* <Button onClick={()=>{callSetSkills(1,nextPage),console.log(nextPage)}} variant="outlined" color="blue-gray" size="sm">
+                Previous
+              </Button> */}
+        <div className="flex items-center gap-2">
+          {
+            paginationCount.length > 1 ?
+              paginationCount.map((count) => {
+                return (
+                  <IconButton key={count} onClick={() => { handleSelectTab(selectedTab, count), setSelectedPage(count) }} color={count == selectedPage ? "blue" : "blue-gray"} variant="outlined" size="sm">
+                    {count}
+                  </IconButton>
+                )
+              })
+              :
+              ''
+          }
+        </div>
+        {/* <Button variant="outlined" color="blue-gray" size="sm">
+                Next
+              </Button> */}
+      </CardFooter>
     </Card>
   );
 }

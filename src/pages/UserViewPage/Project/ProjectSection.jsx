@@ -7,15 +7,12 @@ import {
   Button,
 } from "@material-tailwind/react";
 
-import ProjectAddModal from "./ProjectAddModal";
 import { useEffect, useState } from "react";
-import { getLocal } from "../../../helpers/auth";
-import jwtDecode from "jwt-decode";
 import { userAxiosInstance } from "../../../utils/axios-utils";
 import { defaultUserImageLink } from "../../../constants/constants";
 import { getSingleSkill } from "../api";
 
-export default function ProjectSection() {
+export default function ProjectSection({userId}) {
 
   const [userProjects, setUserProjects] = useState([])
   const [showAll, setShowAll] = useState(false);
@@ -25,14 +22,7 @@ export default function ProjectSection() {
     setShowAll(true);
   };
 
-
-  const [modalstatus, showModal] = useState(false)
-  const handleOpen = () => showModal(!modalstatus)
-
   document.title = "Your Profile"
-  const user = getLocal('AuthToken')
-  const user_decoded = jwtDecode(user)
-  const userId = user_decoded.custom.user_id
 
   const callSetUserProjects = () => {
     userAxiosInstance.get(`/project/${userId}/`).then((response) => {
@@ -47,18 +37,14 @@ export default function ProjectSection() {
 
   return (
     <>
-      <ProjectAddModal open={modalstatus} handleOpen={handleOpen} refresh={callSetUserProjects}  ></ProjectAddModal>
       <Card className="max-w-6xl mx-auto border-2 border-gray-200 rounded-10 py-3">
         <div className='flex flex-row justify-between px-3'  >
           <Typography variant="h4" color="blue-gray" className="p-3" >
             Projects
           </Typography>
-          <Button onClick={handleOpen} size="sm" color="indigo" className="h-8" >
-            Add
-          </Button>
         </div>
         {
-          projectsToShow.map((project, index) => {
+          projectsToShow.map((project) => {
             return (
               <>
                 <div key={project.name} className="border-t py-6 px-4" >

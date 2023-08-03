@@ -4,12 +4,14 @@ import HomePage from './pages/HomePage/HomePage'
 import NoteFoundPage from './pages/PageNoteFound'
 import UserRoutes from './routes/UserRoutes'
 import AdminRoutes from './routes/AdminRoutes'
+import UserViewPage from './pages/UserViewPage/UserViewPage'
 function App() {
 
   return (
     <Router>
       <Routes>
           <Route path='/' exact element={<HomePage />} />
+          <Route path='/:username' exact element={<UserViewPage />} />
           <Route path='*' exact element={<NoteFoundPage />} />
           <Route path='/auth/*' element={<AuthRoutes />} />
           <Route path='/user/*' element={<UserRoutes />} />
