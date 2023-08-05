@@ -6,15 +6,10 @@ import {
     DialogHeader,
     DialogBody,
 } from "@material-tailwind/react";
-// import { apiUrl } from "../../constants/constants";
-// import { ChevronDoubleRightIcon } from '@heroicons/react/24/solid'
-// import { updateUserProfile } from "../ProfileCompletion/api";
-// import { getLocal } from "../../helpers/auth";
-// import jwtDecode from "jwt-decode";
 import { toast } from "react-toastify";
 import { suAxiosInstance } from "../../../utils/axios-utils";
 
-export function AddSocialMediaModal({ open, handleOpen, refresh }) {
+export function AddSkill({ open, handleOpen, refresh }) {
     const [icon, setIcon] = useState('')
     const iconRef = useRef()
     const nameRef = useRef()

@@ -11,11 +11,13 @@ import {
   AccordionHeader,
 } from "@material-tailwind/react";
 import { UsersIcon, ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export function     AdminSideBar({ status, handleDrawer }) {
+export function AdminSideBar({ status, handleDrawer }) {
 
   const [open, setOpen] = React.useState(0);
+  const location = useLocation();
+  // console.log(location.pathname);
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
@@ -27,8 +29,8 @@ export function     AdminSideBar({ status, handleDrawer }) {
     <React.Fragment>
       <Drawer open={status} onClose={handleDrawer}>
         <div className="mb-2 flex items-center justify-between p-4">
-          <Typography variant="h5" color="blue-gray">
-            Navs
+          <Typography variant="h5" color="indigo">
+            Bronet
           </Typography>
           <IconButton variant="text" color="blue-gray" onClick={handleDrawer}>
             <svg
@@ -48,7 +50,7 @@ export function     AdminSideBar({ status, handleDrawer }) {
           </IconButton>
         </div>
         <List>
-          <ListItem onClick={()=>{navigate('/admin/'),handleDrawer()}} >
+          <ListItem selected={location.pathname == '/admin/'} onClick={() => { navigate('/admin/'), handleDrawer() }} >
             <ListItemPrefix>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +88,7 @@ export function     AdminSideBar({ status, handleDrawer }) {
             </ListItem>
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem onClick={()=>{navigate('/admin/users'),handleDrawer()}} >
+                <ListItem selected={location.pathname == '/admin/users'} onClick={() => { navigate('/admin/users'), handleDrawer() }} >
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                   </ListItemPrefix>
@@ -98,17 +100,29 @@ export function     AdminSideBar({ status, handleDrawer }) {
                   </ListItemPrefix>
                   Education Categories
                 </ListItem> */}
-                <ListItem onClick={()=>{navigate('/admin/social-media'),handleDrawer()}} >
+                <ListItem selected={location.pathname == '/admin/hubs'} onClick={() => { navigate('/admin/hubs'), handleDrawer() }} >
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                   </ListItemPrefix>
-                  Social Media
+                  Hubs
                 </ListItem>
-                <ListItem onClick={()=>{navigate('/admin/skills'),handleDrawer()}} >
+                <ListItem selected={location.pathname == '/admin/batches'} onClick={() => { navigate('/admin/hubs'), handleDrawer() }} >
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Batches
+                </ListItem>
+                <ListItem selected={location.pathname == '/admin/skills'} onClick={() => { navigate('/admin/skills'), handleDrawer() }} >
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                   </ListItemPrefix>
                   Skills
+                </ListItem>
+                <ListItem selected={location.pathname == '/admin/social-media'} onClick={() => { navigate('/admin/social-media'), handleDrawer() }} >
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Social Media
                 </ListItem>
                 {/* <ListItem>
                   <ListItemPrefix>

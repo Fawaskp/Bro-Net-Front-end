@@ -136,7 +136,7 @@ const getUserImage = async (userId, setUserImage) => {
 export default function ComplexNavbar() {
 
   const [searchresults, setSearchResults] = useState([])
-  const [search,setSearch] = useState(false)
+  const [search, setSearch] = useState(false)
 
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [userImage, setUserImage] = useState(null);
@@ -146,9 +146,11 @@ export default function ComplexNavbar() {
 
 
   function performSearch(inputValue) {
-    userAxiosInstance.get(`search/${17}/?search=${inputValue}`).then((response) => {
+    const user = getLocal('AuthToken')
+    const user_decoded = jwtDecode(user).custom
+    userAxiosInstance.get(`search/${user_decoded.user_id}/?search=${inputValue}`).then((response) => {
       setSearchResults(response.data)
-      if (response.status == 200 && response.data.length > 0){
+      if (response.status == 200) {
         setSearch(true)
       }
     })
@@ -180,29 +182,38 @@ export default function ComplexNavbar() {
             Bronet
           </Typography>
 
-          <div className="flex items-center">
+          <div className="flex items-center" >
             <div className="relative flex">
-              <Tooltip placement="right" content="Click two times for search page">
+              {/* <Tooltip placement="right" content="Click two times for search page"> */}
                 <input
+                  maxLength={30}
                   onChange={(e) => handleSearch(e.target.value)}
+                  onDoubleClick={()=>alert('You Found It')}
+                  onKeyPress={(e) => {
+                    const allowedRegex = /^[a-z0-9@_ ]+$/i;
+                    const key = e.key;
+                    if (!allowedRegex.test(key)) {
+                      e.preventDefault();
+                    }
+                  }}
                   style={{ borderRadius: 5, transition: 'all 200ms' }}
                   type="text"
                   className="block w-60 px-12 mx-2 py-2 bg-indigo-50 bg-opacity-70 text-indigo-700 focus:outline-indigo-100 focus-within:w-96"
                   placeholder="Search..."
-                  onBlur={()=>setSearch(false)}
+                  // onBlur={()=>setSearch(false)}
                 />
-              </Tooltip>
+              {/* </Tooltip> */}
 
               {
-                search?
+                search ?
                   <div className="absolute max-h-96 overflow-y-scroll mt-12 rounded-10 w-96 bg-white p-4 mx-2 shadow-2xl transition-all duration-500" >
                     <div className="flex w-full flex-col" >
 
                       {
                         searchresults.map((user) => {
                           return (
-                            <div key={user.username} onClick={()=>navigate(`/${user.username}`)} className="flex items-center gap-4 my-1 rounded-10 p-2 hover:bg-indigo-50 cursor-pointer duration-300">
-                              <Avatar size="sm" style={{ borderRadius: '50%' }} src={user.profile?.image? apiUrl+user.profile?.image:defaultUserImageLink} alt="avatar" />
+                            <div key={user.username} onClick={() => {navigate('/'),navigate(`/${user.username}`)}} className="flex items-center gap-4 my-1 rounded-10 p-2 hover:bg-indigo-50 cursor-pointer duration-300">
+                              <Avatar size="sm" style={{ borderRadius: '50%' }} src={user.profile?.image ? apiUrl + user.profile?.image : defaultUserImageLink} alt="avatar" />
                               <div>
                                 <p className="font-semibold text-sm" >{user.fullname}</p>
                                 <p className="text-xs text-gray-600" >{user.profile?.batch}</p>
@@ -211,10 +222,10 @@ export default function ComplexNavbar() {
                           )
                         })
                       }
-                      {searchresults.length <1?
-                      <h1>No Result found</h1>
-                      :
-                      ''
+                      {searchresults.length < 1 ?
+                        <h1>No Result found</h1>
+                        :
+                        ''
                       }
                     </div>
                   </div>

@@ -15,9 +15,9 @@ function UserViewPage() {
 
   const [userid, setUserId] = useState(null)
   const { username } = useParams()
+
   const navigate = useNavigate()
   useEffect(() => {
-    console.log('From user View page ::>> ');
     const user = getLocal('AuthToken')
     if (!user) {
       toast.error('Login First')
@@ -31,22 +31,28 @@ function UserViewPage() {
       return
     }
     else {
-      userAxiosInstance.get(`get-user-id/${username}/`).then((response) => {
-        if (response.data.status == 404) {
-          navigate('/404/')
-          return
-        }
-        else {
-          setUserId(response.data.id)
-        }
-      })
+      if(user_decoded.custom.username == username){
+        navigate('/user/profile')
+        return
+      }
+      else{
+        userAxiosInstance.get(`get-user-id/${username}/`).then((response) => {
+          if (response.data.status == 404) {
+            navigate('/4/0/4/')
+            return
+          }
+          else {
+            setUserId(response.data.id)
+          }
+        })
+      }
     }
   }, [])
 
   return (
     <>
       
-      {userid && <Navbar />}
+      <Navbar />
       {userid && <Profile userId={userid} />}
       <div className='container mx-auto mb-3' >
         {userid &&

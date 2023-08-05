@@ -4,16 +4,12 @@ import {
     List,
     ListItem,
     ListItemPrefix,
-    ListItemSuffix,
-    Chip,
   } from "@material-tailwind/react";
   import {
     VideoCameraIcon,
     PhotoIcon,
     ChartBarIcon,
-    Cog6ToothIcon,
     NewspaperIcon,
-    PowerIcon,
   } from "@heroicons/react/24/solid";
    
   export default function LeftBar() {

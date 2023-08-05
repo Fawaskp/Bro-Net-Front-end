@@ -2,15 +2,16 @@ import React, { useRef, useState } from "react";
 import {
     Button,
     Dialog,
+    Input,
     DialogHeader,
     DialogBody,
 } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import { suAxiosInstance } from "../../../utils/axios-utils";
 
-export function DeleteSkill({ open, handleOpen, instance ,refresh }) {
+export function DeleteBatch({ open, handleOpen, instance ,refresh }) {
     const deleteSocialMedia = () => {
-        suAxiosInstance.delete(`skill/${instance.id}/`).then((response) => {
+        suAxiosInstance.delete(`hub/${instance.id}/`).then((response) => {
             if (response.status == 204) 
                 refresh()
                 handleOpen()
@@ -26,7 +27,7 @@ export function DeleteSkill({ open, handleOpen, instance ,refresh }) {
                 <DialogHeader className="font-normal text-lg" >Are you sure?</DialogHeader>
                 <DialogBody divider>
                     
-                       <h1>Are you user to delete skill {instance?.name}</h1>
+                       <h1>Are you user to delete hub {instance?.name}</h1>
                         <div className="flex p-3 justify-center pt-10" >
                             <Button size="sm" variant="gradient" color="red" onClick={handleOpen} className="mr-1 h-9">
                                 <span>Cancel</span>

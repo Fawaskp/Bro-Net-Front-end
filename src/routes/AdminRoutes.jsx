@@ -9,6 +9,7 @@ import SocialMediaPage from '../pages/Admin/SocialMedia/SocialMediaPage'
 import BadgesPage from '../pages/Admin/Badges/BadgesPage'
 import PrivateRoutes from '../protected-routes/PrivateRoutes'
 import { AdminLogin } from '../pages/Admin/AdminLogin/AdminLogin'
+import HubPage from '../pages/Admin/Hubs/HubPage'
 
 function AdminRoutes() {
   return (
@@ -19,6 +20,8 @@ function AdminRoutes() {
         <Route path="/" element={<AdminLayout />}>
           <Route index element={<AdminHome />}></Route>
           <Route path="/users" element={<UserManageLayout />}></Route>
+          <Route path="/hubs" element={<HubPage/>}></Route>
+          <Route path="/batches" element={<HubPage/>}></Route>
           <Route path="/skills" element={<SkillPage />}></Route>
           <Route path="/social-media" element={<SocialMediaPage />}></Route>
           <Route path="/badges" element={<BadgesPage />}></Route>

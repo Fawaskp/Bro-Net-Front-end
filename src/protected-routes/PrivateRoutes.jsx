@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { isUserAuth, isSuAuth } from '../services/user-services'
-import { Navigate, Outlet, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { userAxiosInstance } from '../utils/axios-utils'
+import { Navigate, Outlet} from 'react-router-dom'
 
 export default function PrivateRoutes({ role, route }) {
   const [verify, setVerify] = useState(null);

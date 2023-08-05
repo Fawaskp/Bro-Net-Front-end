@@ -6,13 +6,23 @@ import { userAxiosInstance } from '../../utils/axios-utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUsersRectangle } from '@fortawesome/free-solid-svg-icons';
 import { getUserSocialMediaAccounts } from './api'
-import { DefaultButton } from '../../components/buttons'
+import { toast } from 'react-toastify'
+import { Button } from '@material-tailwind/react'
 
 const setUserBasicDetails = async (userId, setUserName) => {
     userAxiosInstance.get('/user/' + userId + '/').then((response) => {
         setUserName(response.data.fullname)
     })
 }
+
+const callSetFollowed = (user1, user2, setFollowed) => {
+    userAxiosInstance.get(`follow/${user1}/${user2}/`).then((response) => {
+        if (response.data.status == 200) {
+            setFollowed(true)
+        }
+    })
+}
+
 
 const setUserProfileDetails = async (userId, setUserImage, setFollowers, setFollowings, setHub, setBatch, setAbout, setStackImage) => {
     userAxiosInstance.get('/user-profile/' + userId + '/').then((response) => {
@@ -27,10 +37,12 @@ const setUserProfileDetails = async (userId, setUserImage, setFollowers, setFoll
     })
 }
 
-function Profile({userId}) {
+
+function Profile({ userId }) {
 
     const [userImage, setUserImage] = useState('')
     const [userName, setUserName] = useState('')
+    const [followed, setFollowed] = useState(false)
     const [followers, setFollowers] = useState('')
     const [followings, setFollowings] = useState('')
     const [hub, setHub] = useState('')
@@ -39,26 +51,55 @@ function Profile({userId}) {
     const [stackimage, setStackImage] = useState('')
     const [socialaccounts, setSocialAccounts] = useState([])
 
+    const Follow = () => {
+        const user = getLocal('AuthToken')
+        const user_decoded = jwtDecode(user).custom
+        userAxiosInstance.post(`follow/${user_decoded.user_id}/${userId}/`,).then((response) => {
+            if (response.status == 201) {
+                setFollowed(true)
+                setFollowers(followers+1)
+            }
+            else{
+                toast.warning('Sorry something went wrong')
+            }
+        })
+    }
+
+    const UnFollow = () => {
+        const user = getLocal('AuthToken')
+        const user_decoded = jwtDecode(user).custom
+        userAxiosInstance.delete(`follow/${user_decoded.user_id}/${userId}/`,).then((response) => {
+            if (response.status == 204) {
+                setFollowed(false)
+                setFollowers(followers-1)
+            }
+            else{
+                toast.warning('Sorry something went wrong')
+            }
+        })
+    }
+
     useEffect(() => {
         const user = getLocal('AuthToken')
-            const user_decoded = jwtDecode(user)
-            if (user_decoded.custom.is_profile_completed) {
-                setUserProfileDetails(
-                    userId,
-                    setUserImage,
-                    setFollowers,
-                    setFollowings,
-                    setHub,
-                    setBatch,
-                    setAbout,
-                    setStackImage,
-                )
-                setUserBasicDetails(userId, setUserName)
-                getUserSocialMediaAccounts(userId).then((accounts)=>{
+        const user_decoded = jwtDecode(user)
+        if (user_decoded.custom.is_profile_completed) {
+            setUserProfileDetails(
+                userId,
+                setUserImage,
+                setFollowers,
+                setFollowings,
+                setHub,
+                setBatch,
+                setAbout,
+                setStackImage,
+            )
+            setUserBasicDetails(userId, setUserName)
+            getUserSocialMediaAccounts(userId).then((accounts) => {
                 setSocialAccounts(accounts)
+                callSetFollowed(user_decoded.custom.user_id, userId, setFollowed)
             })
-            }
-            else navigate('/auth/login')
+        }
+        else navigate('/auth/login')
     }, [])
 
     return (
@@ -75,13 +116,13 @@ function Profile({userId}) {
                                         <img
                                             alt="User-Dp"
                                             src={userImage ? apiUrl + userImage : defaultUserImageLink}
-                                            style={{borderRadius:'50%'}}
+                                            style={{ borderRadius: '50%' }}
                                             className="w-full h-full align-middle ring-8 ring-gray-900 object-cover bg-white absolute -mt-16"
                                         />
                                     </div>
                                 </div>
                                 <div className="md:w-5 lg:w-4/12 md:px-4 lg:order-3 float-right lg:self-center">
-                                    <img className='w-16 float-right' src={apiUrl+stackimage} alt="Django" />
+                                    <img className='w-16 float-right' src={apiUrl + stackimage} alt="Django" />
                                 </div>
                                 <div className="w-full lg:w-4/12 px-4 lg:order-1">
                                     <div className="flex justify-center sm:mt-2 md:pt-24 lg:pt-4">
@@ -104,7 +145,12 @@ function Profile({userId}) {
                                     Any Caption which user prefers
                                 </div>
                                 <div className='flex justify-center' >
-                                    <DefaultButton name='Follow' ></DefaultButton>
+                                    {
+                                        followed ?
+                                            <Button onClick={()=>UnFollow()} className='rounded-10' color='indigo' >Unfollow</Button>
+                                            :
+                                            <Button onClick={()=>Follow()} className='rounded-10' color='indigo' >Follow</Button>
+                                    }
                                 </div>
                                 <div className="mb-2 text-blueGray-600 mt-10">
                                     <i className="fas fa-regular fa-building"></i> {hub}
