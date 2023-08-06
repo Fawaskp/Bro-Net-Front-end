@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import './ProfileCompletion.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,6 +10,8 @@ import jwtDecode from 'jwt-decode'
 import { getBatchList, getHubList, getStackList, getToken, updateBasicUserData, updateUserProfile2 } from './api'
 import { defaultUserImageLink } from '../../constants/constants'
 import ConfirmModal from './AlertModal'
+import debounce from '../../helpers/debouce'
+import { userAxiosInstance } from '../../utils/axios-utils'
 
 function ProfileCompletion() {
 
@@ -22,13 +24,13 @@ function ProfileCompletion() {
 
   const fileInputRef = React.createRef();
   const [userimage, setUserImage] = useState()
-  const [fullname, setFullname] = useState()
-  const [username, setUsername] = useState()
-  const [email, setEmail] = useState()
-  const [dob, setDob] = useState('')
+  const fullnameRef = useRef();
+  const usernameRef = useRef();
+  const dobRef = useRef();
   const [hub, setHub] = useState()
   const [batch, setBatch] = useState()
   const [stack, setStack] = useState()
+  const [usernameavailabe, setUsernameAvailable] = useState(null)
 
   const [hublist, setHubList] = useState([])
   const [batchlist, setBatchList] = useState([])
@@ -59,9 +61,42 @@ function ProfileCompletion() {
     else false
   }
 
+  function performCheck(inputValue) {
+
+    userAxiosInstance.get(`check-username/${inputValue}/`).then((response) => {
+      if (response.status == 202) {
+        setUsernameAvailable(true)
+      }
+      else if (response.data.status == 409) {
+        setUsernameAvailable(false)
+      }
+    })
+  }
+  const usernameCheck = debounce((inputValue) => performCheck(inputValue));
+
+  const checkUsername = (event) => {
+    let username = event.target.value.trim()
+    event.target.value = username.toLowerCase()
+    const usernameRegex = /^(?=[a-zA-Z_])(?=(?:\D*\d){0,3}\D*$)(?=(?:[^_]*_){0,4}[^_]*$)(?=(?:[^a-zA-Z]*[a-zA-Z]){3,})[a-z0-9_]{3,10}$/;
+    if (usernameRegex.test(username)) {
+      console.log('trueee');
+      if (!username == '' && username.length > 3)
+      usernameCheck(username.toLowerCase())
+    else
+    setUsernameAvailable(null)
+}
+else
+    console.log('falseeee');
+      setUsernameAvailable(null)
+  }
+
   const handleFormSubmit = async () => {
 
-    var userData = [fullname, username, email, dob, hub, batch, stack]
+    const fullname = fullnameRef.current.value;
+    const username = usernameRef.current.value;
+    const dob = dobRef.current.value;
+    
+    var userData = [fullname, username, dob, hub, batch, stack]
     { userimage ? userData.push(userimage) : null }
 
     var flag = false;
@@ -116,7 +151,6 @@ function ProfileCompletion() {
       if (user_decoded.is_profile_completed) {
         navigate('/')
       } else {
-        setEmail(user_decoded.email)
         StackAndHubList()
       }
     }
@@ -124,7 +158,7 @@ function ProfileCompletion() {
 
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <ConfirmModal status={confirmModal} message={"Are you sure to remove image"} handleOpen={handConfirmModal} confirm={setUserImage} />
       <main>
         <div className="main-card">
@@ -155,17 +189,37 @@ function ProfileCompletion() {
 
             <div className="main-input-container">
               <div className="input-container">
-                <input onChange={(e) => setFullname(e.target.value)} required type="text"
-                  defaultValue={fullname ? fullname : ''} placeholder="Full name" />
-                <input onChange={(e) => { setUsername(e.target.value) }} required type="text"
-                  defaultValue={username ? username : ''} placeholder="Username" />
+                <input ref={fullnameRef} required type="text"
+                  placeholder="Full name" />
+                <input onChange={(e) => { checkUsername(e) }} ref={usernameRef} required type="text"
+                  placeholder="Username" />
+              </div>
+              <div className={`flex justify-between w-5/6 mx-auto -mt-2 ${usernameavailabe == null ? 'opacity-0' : ''}`} >
+                <p className='text-green-400 opacity-0' >Username is availabe </p>
+                {
+                  usernameavailabe == true &&
+                  <p className='text-green-400' >this username is availabe &#x2714; </p>
+                }{
+                  usernameavailabe == false &&
+                  <p className='text-red-400' >this username is not availabe &#x2715; </p>
+                }
               </div>
 
               <div className="input-container">
-                <input onChange={(e) => { setEmail(e.target.value) }} required type="email"
-                  defaultValue={email ? email : ''} placeholder="E-mail" />
-                <input required className="date-input" type="date" placeholder="dob"
-                  max={maxDate} value={dob} onChange={(e) => setDob(e.target.value)} />
+                <input ref={dobRef} required className="date-input" type="date" placeholder="dob"
+                  max={maxDate} />
+
+                <select required name="stack" onChange={(e) => setStack(e.target.value)}>
+                  <option value="">Select Stack</option>
+                  {
+                    stacklist.length > 0 ?
+                      stacklist.map((stack, idx) => {
+                        return (<option key={idx} value={stack.id}>{stack.name.toUpperCase()}</option>)
+                      })
+                      :
+                      null
+                  }
+                </select>
               </div>
 
               <div className="input-container extra-margin">
@@ -199,19 +253,6 @@ function ProfileCompletion() {
                 </select>
               </div>
 
-              <div className="input-container">
-                <select required name="stack" onChange={(e) => setStack(e.target.value)}>
-                  <option value="">Select Stack</option>
-                  {
-                    stacklist.length > 0 ?
-                      stacklist.map((stack, idx) => {
-                        return (<option key={idx} value={stack.id}>{stack.name.toUpperCase()}</option>)
-                      })
-                      :
-                      null
-                  }
-                </select>
-              </div>
 
               <div className="btn-container">
                 <button className="primary-btn">Submit</button>

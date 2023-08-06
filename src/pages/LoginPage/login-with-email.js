@@ -7,8 +7,9 @@ export function login_with_email(email,close,setLoading,setinputColor,setErrorMe
     .post('/login/email/', { email }, {})
     .then((res) => {
         setLoading(false)
-        close()
-        if(res.data.status==200) toast.success('Email Sent to '+email)
+
+        if(res.data.status==200) 
+            toast.success('Email Sent to '+email), close()
         else toast.error(res.data.message) 
     })
     .catch((err) => {

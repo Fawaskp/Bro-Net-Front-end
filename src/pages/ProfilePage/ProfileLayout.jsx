@@ -5,7 +5,6 @@ import SkillSection from './Skill/SkillSection';
 import ProjectSection from './Project/ProjectSection';
 
 function ProfileLayout() {
-console.log('Reached Here');
   return (
     <>
       <Profile />

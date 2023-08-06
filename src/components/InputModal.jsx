@@ -8,7 +8,6 @@ import {
   CardFooter,
   Typography,
   Input,
-  Checkbox,
   Spinner,
 } from "@material-tailwind/react";
 import { validateEmail } from "../helpers/email_validator";

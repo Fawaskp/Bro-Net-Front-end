@@ -16,6 +16,7 @@ const setUserBasicDetails = async (userId, setUserName) => {
 
 const setUserProfileDetails = async (userId, setUserImage, setFollowers, setFollowings, setHub, setBatch, setAbout, setStackImage) => {
     userAxiosInstance.get('/user-profile/' + userId + '/').then((response) => {
+        console.log('User Profile :> ',response.data);
         setUserImage(response.data.profile_image)
         setFollowers(response.data.followers_count)
         setFollowings(response.data.following_count)
