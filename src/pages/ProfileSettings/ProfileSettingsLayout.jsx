@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import PersonalSection from './PersonalSection'
 import BrocampSection from './BrocampSection'
+import SocialMediaSection from './SocialMediaSection'
 function ProfileSettingsLayout() {
 
   useEffect(() => {
@@ -10,6 +11,7 @@ function ProfileSettingsLayout() {
   return (
     <>
       <PersonalSection />
+      <SocialMediaSection/>
       {/* <BrocampSection /> */}
     </>
   )

@@ -97,9 +97,9 @@ export default function ProjectSection() {
                         {
                           project.skills_used.map((skill) => {
                             return (
-                              <ListItem style={{ width: '38%', padding: '5px 5px' }} key={skill.name} >
+                              <ListItem style={{ width: '38%', padding: '5px 5px',borderRadius:'10px' }} key={skill.name} >
                                 <ListItemPrefix>
-                                  <img className="w-7 rounded-10" src={skill.icon} alt="" />
+                                  <img className="w-7" src={skill.icon} alt="" />
                                 </ListItemPrefix>
                                 <div className="hidden md:block">
                                   <p style={{fontSize:'13px'}} >

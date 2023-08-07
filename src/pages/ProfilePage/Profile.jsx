@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { getLocal } from '../../helpers/auth'
-import { useNavigate} from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import { apiUrl, defaultUserImageLink } from '../../constants/constants'
 import { userAxiosInstance } from '../../utils/axios-utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUsersRectangle } from '@fortawesome/free-solid-svg-icons';
 import { getUserSocialMediaAccounts } from './api'
+import { Alert, Button } from '@material-tailwind/react'
+import { useNavigate } from 'react-router-dom'
 
 const setUserBasicDetails = async (userId, setUserName) => {
     userAxiosInstance.get('/user/' + userId + '/').then((response) => {
@@ -16,7 +17,7 @@ const setUserBasicDetails = async (userId, setUserName) => {
 
 const setUserProfileDetails = async (userId, setUserImage, setFollowers, setFollowings, setHub, setBatch, setAbout, setStackImage) => {
     userAxiosInstance.get('/user-profile/' + userId + '/').then((response) => {
-        console.log('User Profile :> ',response.data);
+        console.log('User Profile :> ', response.data);
         setUserImage(response.data.profile_image)
         setFollowers(response.data.followers_count)
         setFollowings(response.data.following_count)
@@ -30,6 +31,8 @@ const setUserProfileDetails = async (userId, setUserImage, setFollowers, setFoll
 
 function Profile() {
 
+    const navigate = useNavigate('')
+
     const [userImage, setUserImage] = useState('')
     const [userName, setUserName] = useState('')
     const [followers, setFollowers] = useState('')
@@ -42,24 +45,24 @@ function Profile() {
 
     useEffect(() => {
         const user = getLocal('AuthToken')
-            const user_decoded = jwtDecode(user)
-            if (user_decoded.custom.is_profile_completed) {
-                setUserProfileDetails(
-                    user_decoded.custom.user_id,
-                    setUserImage,
-                    setFollowers,
-                    setFollowings,
-                    setHub,
-                    setBatch,
-                    setAbout,
-                    setStackImage,
-                )
-                setUserBasicDetails(user_decoded.custom.user_id, setUserName)
-                getUserSocialMediaAccounts(user_decoded.custom.user_id).then((accounts)=>{
+        const user_decoded = jwtDecode(user)
+        if (user_decoded.custom.is_profile_completed) {
+            setUserProfileDetails(
+                user_decoded.custom.user_id,
+                setUserImage,
+                setFollowers,
+                setFollowings,
+                setHub,
+                setBatch,
+                setAbout,
+                setStackImage,
+            )
+            setUserBasicDetails(user_decoded.custom.user_id, setUserName)
+            getUserSocialMediaAccounts(user_decoded.custom.user_id).then((accounts) => {
                 setSocialAccounts(accounts)
             })
-            }
-            else navigate('/auth/login')
+        }
+        else navigate('/auth/login')
     }, [])
 
     return (
@@ -76,13 +79,13 @@ function Profile() {
                                         <img
                                             alt="User-Dp"
                                             src={userImage ? apiUrl + userImage : defaultUserImageLink}
-                                            style={{borderRadius:'50%'}}
+                                            style={{ borderRadius: '50%' }}
                                             className="w-full h-full align-middle ring-8 ring-gray-900 object-cover bg-white absolute -mt-16"
                                         />
                                     </div>
                                 </div>
                                 <div className="md:w-5 lg:w-4/12 md:px-4 lg:order-3 float-right lg:self-center">
-                                    <img className='w-16 float-right' src={apiUrl+stackimage} alt="Django" />
+                                    <img className='w-16 float-right' src={apiUrl + stackimage} alt="Django" />
                                 </div>
                                 <div className="w-full lg:w-4/12 px-4 lg:order-1">
                                     <div className="flex justify-center sm:mt-2 md:pt-24 lg:pt-4">
@@ -137,6 +140,13 @@ function Profile() {
                             </div>
                         </div>
                     </div>
+                    <div className='rounded-10' >
+                        <div className='flex mb-4 justify-between bg-indigo-400 px-6 py-1 items-center text-white rounded-10' >
+                            View User's advice
+                            <Button onClick={()=>navigate('/user/profile/advices')} variant='text' color='white'  className='font- text-xl rounded-10 py-1 px-5' >&rarr;</Button>
+                        </div>
+                    </div>
+
                 </div>
             </main>
         </>

@@ -106,6 +106,12 @@ export function AdminSideBar({ status, handleDrawer }) {
                   </ListItemPrefix>
                   Hubs
                 </ListItem>
+                <ListItem selected={location.pathname == '/admin/educats'} onClick={() => { navigate('/admin/educats'), handleDrawer() }} >
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Educats
+                </ListItem>
                 <ListItem selected={location.pathname == '/admin/batches'} onClick={() => { navigate('/admin/hubs'), handleDrawer() }} >
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />

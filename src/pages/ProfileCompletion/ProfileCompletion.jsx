@@ -81,13 +81,13 @@ function ProfileCompletion() {
     if (usernameRegex.test(username)) {
       console.log('trueee');
       if (!username == '' && username.length > 3)
-      usernameCheck(username.toLowerCase())
+        usernameCheck(username.toLowerCase())
+      else
+        setUsernameAvailable(null)
+    }
     else
+      console.log('falseeee');
     setUsernameAvailable(null)
-}
-else
-    console.log('falseeee');
-      setUsernameAvailable(null)
   }
 
   const handleFormSubmit = async () => {
@@ -95,7 +95,7 @@ else
     const fullname = fullnameRef.current.value;
     const username = usernameRef.current.value;
     const dob = dobRef.current.value;
-    
+
     var userData = [fullname, username, dob, hub, batch, stack]
     { userimage ? userData.push(userimage) : null }
 

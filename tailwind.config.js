@@ -8,12 +8,12 @@ module.exports = withMT({
     "./index.html",
   ],
   theme: {
-    extend: {},
-    borderRadius: {
-      '10': '10px', 
-      'md': '0.375rem',
+    extend: {
+      borderRadius: {
+        '10': '10px', 
+        'md': '0.375rem',
+      },
     },
   },
   plugins: [],
 });
-
