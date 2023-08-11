@@ -55,7 +55,7 @@ function PersonalSection() {
         const fullnameValue = fullnameRef.current.value
         const emailValue = emailRef.current.value
         const dobValue = dobRef.current.value
-
+        console.log('Dob Value ::>> ',dobValue);
         const stateData = [
             usernameValue,
             fullnameValue,
@@ -96,13 +96,13 @@ function PersonalSection() {
 
         const formData = {
             email: emailValue,
-            dob: dobValue,
             about,
         };
-
+        
         const basicData = {
             username: usernameValue,
             fullname: fullnameValue,
+            dob: dobValue,
         };
 
         const user = getLocal('AuthToken')
@@ -113,8 +113,8 @@ function PersonalSection() {
             if (result) {
                 toast.success('User profile successfully updated')
                 handleEditMode()
-                setUserProfileDetails(user_decoded.custom.user_id, setUserImage, setAbout)
-                setUserBasicDetails(user_decoded.custom.user_id, setUserName, setFullName, setEmail, setDob)
+                setUserProfileDetails(user_decoded.user_id, setUserImage, setAbout)
+                setUserBasicDetails(user_decoded.user_id, setUserName, setFullName, setEmail, setDob)
             }
         })
     }
@@ -164,7 +164,7 @@ function PersonalSection() {
 
             <main className="-mt-56 w-full">
                 <div className="container flex justify-center mx-auto px-4">
-                    <div className="relative flex flex-col min-w-0 break-words bg-white w-4/6 mb-6 rounded-10 -mt- border-2 border-gray-200">
+                    <div className="relative shadow-xl border flex flex-col min-w-0 break-words bg-white w-4/6 mb-6 rounded-10 -mt- ">
                         <div className='p-4 font-bold flex justify-between' >
                             <h1>Personal Info</h1>
                             <div className='flex' >
@@ -202,7 +202,7 @@ function PersonalSection() {
                                     <div className='flex' >
                                         {
                                             editmode ?
-                                                <Input inputRef={emailRef} type='email' defaultValue={email} />
+                                                <Input disabled inputRef={emailRef} type='email' defaultValue={email} />
                                                 :
                                                 <p className='mx-10' >{email}</p>
                                         }

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '../../components/Navbar'
-import './ProfileCompletion.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
@@ -12,6 +11,7 @@ import { defaultUserImageLink } from '../../constants/constants'
 import ConfirmModal from './AlertModal'
 import debounce from '../../helpers/debouce'
 import { userAxiosInstance } from '../../utils/axios-utils'
+import './ProfileCompletion.css'
 
 function ProfileCompletion() {
 

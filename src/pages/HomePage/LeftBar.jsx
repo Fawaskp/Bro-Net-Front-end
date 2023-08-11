@@ -12,7 +12,7 @@ import {
     NewspaperIcon,
   } from "@heroicons/react/24/solid";
    
-  export default function LeftBar() {
+  export default function LeftBar({handleImage,handleVideo}) {
     return (
       <Card className="sticky top-24 w-64 border rounded-10 m-2 p-4 shadow-xl shadow-blue-gray-900/5">
         <div className="mb-2 p-4 w-full">
@@ -21,7 +21,7 @@ import {
           </Typography>
         </div>
         <List className="text-sm"  >
-          <ListItem>
+          <ListItem onClick={(e)=>handleImage()} >
             <ListItemPrefix>
               <PhotoIcon className="h-5 w-5" />
             </ListItemPrefix>

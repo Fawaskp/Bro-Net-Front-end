@@ -11,7 +11,6 @@ module.exports = withMT({
     extend: {
       borderRadius: {
         '10': '10px', 
-        'md': '0.375rem',
       },
     },
   },

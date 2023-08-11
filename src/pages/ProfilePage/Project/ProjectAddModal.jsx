@@ -72,8 +72,8 @@ const ProjectAddModal = ({ open, handleOpen, refresh }) => {
     const [skills, setSkills] = useState([])
     useEffect(() => {
         suAxiosInstance.get('/skills/').then((res) => {
-            console.log(res.data);
-            res.data.map((skill) => {
+            console.log('Skills :> ',res.data);
+            res.data.results.map((skill) => {
                 skills.push({ value: skill.id, label: skill.name, icon: skill.icon })
             })
         }).catch((err) => console.log(err))

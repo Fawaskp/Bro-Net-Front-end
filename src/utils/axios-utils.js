@@ -1,5 +1,5 @@
 import axios from "axios"
-import { suBaseUrl, userBaseUrl } from "../constants/constants";
+import { postBaseUrl, suBaseUrl, userBaseUrl } from "../constants/constants";
 
 const createAxiosClient=(baseURL)=>{
     const client =axios.create({
@@ -30,4 +30,10 @@ suAxiosInstance.interceptors.request.use(async(req)=>{
     return modifiedReq
 })
 
-export {userAxiosInstance, suAxiosInstance}
+const postAxiosInstance=createAxiosClient(postBaseUrl)
+suAxiosInstance.interceptors.request.use(async(req)=>{
+    const modifiedReq=attachToken(req,"AuthToken")
+    return modifiedReq
+})
+
+export {userAxiosInstance, suAxiosInstance, postAxiosInstance}

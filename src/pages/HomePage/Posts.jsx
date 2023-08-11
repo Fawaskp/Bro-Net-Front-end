@@ -1,44 +1,61 @@
 import {
-    Card,
-    CardHeader,
-    CardBody,
-    Typography,
-    Avatar,
-  } from "@material-tailwind/react";
-   
-  export default function Posts() {
-    return (
-      <Card
-        shadow={false}
-        className="relative grid h-[40rem] w-full max-w-[28rem] my-3 rounded-10 items-end justify-center overflow-hidden text-center"
-      >
-        <CardHeader
-          floated={false}
-          shadow={false}
-          color="transparent"
-          className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')] bg-cover bg-center"
+  Card,
+  CardHeader,
+  CardBody,
+  Typography,
+  Avatar,
+  Button,
+  CardFooter,
+  Carousel,
+  IconButton,
+} from "@material-tailwind/react";
+import { apiUrl } from "../../constants/constants";
+import { HandThumbUpIcon, HandThumbDownIcon } from "@heroicons/react/24/outline";
+
+export default function Posts({ fullname, images, description, profile_img }) {
+  return (
+    <Card className="w-96 border shadow-none">
+      <CardHeader shadow={false} floated={false} className="border-b m-0 p-3 rounded-0" >
+        <Avatar
+          src={apiUrl + profile_img}
+          alt="avatar"
+        />
+        <span className="text-base px-4 font-semibold" >{fullname}</span>
+      </CardHeader>
+      <CardBody>
+        <Carousel>
+          {
+            images.map((imageurl) => {
+              return (
+                <div className="flex justify-center align-middle" >
+                  <img
+                    src={apiUrl + imageurl}
+                    alt='Post Image'
+                    className="mx-auto h-max"
+                  />
+                </div>
+              )
+            })
+          }
+        </Carousel>
+        <Typography
+          variant="small"
+          color="gray"
+          className="font-normal opacity-75"
         >
-          <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
-        </CardHeader>
-        <CardBody className="relative py-14 px-6 md:px-12">
-          <Typography
-            variant="h2"
-            color="white"
-            className="mb-6 font-medium leading-[1.5]"
-          >
-            How we design and code open-source projects?
-          </Typography>
-          <Typography variant="h5" className="mb-4 text-gray-400">
-            Tania Andrew
-          </Typography>
-          <Avatar
-            size="xl"
-            variant="circular"
-            alt="tania andrew"
-            className="border-2 border-white"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-          />
-        </CardBody>
-      </Card>
-    );
-  }
+          {description}
+        </Typography>
+      </CardBody>
+      <CardFooter className="pt-0 border-t">
+        <div className="flex flex-row align-middle" >
+          <IconButton variant='text' >
+            <HandThumbUpIcon className="w-6 text-black" />
+          </IconButton>
+          <IconButton variant='text' >
+            <HandThumbDownIcon className="w-6 text-black" />
+          </IconButton>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+}
