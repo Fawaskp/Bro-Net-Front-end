@@ -11,8 +11,12 @@ import {
     ChartBarIcon,
     NewspaperIcon,
   } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
    
   export default function LeftBar({handleImage,handleVideo}) {
+
+    const navigate = useNavigate()
+
     return (
       <Card className="sticky top-24 w-64 border rounded-10 m-2 p-4 shadow-xl shadow-blue-gray-900/5">
         <div className="mb-2 p-4 w-full">
@@ -27,13 +31,13 @@ import {
             </ListItemPrefix>
             Picture
           </ListItem>
-          <ListItem>
+          <ListItem onClick={(e)=>handleVideo()} >
             <ListItemPrefix>
               <VideoCameraIcon className="h-5 w-5" />
             </ListItemPrefix>
             Video
           </ListItem>
-          <ListItem>
+          <ListItem onClick={()=>navigate('/post/new/')} >
             <ListItemPrefix>
               <NewspaperIcon className="h-5 w-5" />
             </ListItemPrefix>
@@ -43,7 +47,7 @@ import {
             <ListItemPrefix>
               <ChartBarIcon className="h-5 w-5" />
             </ListItemPrefix>
-            Profile
+            Poll
           </ListItem>
         </List>
       </Card>

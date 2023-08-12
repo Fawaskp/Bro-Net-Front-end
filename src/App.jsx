@@ -5,6 +5,7 @@ import NoteFoundPage from './pages/PageNoteFound'
 import UserRoutes from './routes/UserRoutes'
 import AdminRoutes from './routes/AdminRoutes'
 import UserViewPage from './pages/UserViewPage/UserViewPage'
+import WriteArticle from './pages/HomePage/ArticlePosting/WriteArticle'
 function App() {
 
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
           <Route path='/' exact element={<HomePage />} />
           <Route path='/:username' exact element={<UserViewPage />} />
+          <Route path='/post/new/' exact element={<WriteArticle/>} />
           <Route path='*' exact element={<NoteFoundPage />} />
           <Route path='/auth/*' element={<AuthRoutes />} />
           <Route path='/user/*' element={<UserRoutes />} />

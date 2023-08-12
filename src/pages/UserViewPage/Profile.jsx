@@ -17,7 +17,8 @@ const setUserBasicDetails = async (userId, setUserName) => {
 
 const callSetFollowed = (user1, user2, setFollowed) => {
     userAxiosInstance.get(`follow/${user1}/${user2}/`).then((response) => {
-        if (response.data.status == 200) {
+        console.log('UserFollow :> ',response);
+        if (response.data.is_followed == true) {
             setFollowed(true)
         }
     })
@@ -57,9 +58,9 @@ function Profile({ userId }) {
         userAxiosInstance.post(`follow/${user_decoded.user_id}/${userId}/`,).then((response) => {
             if (response.status == 201) {
                 setFollowed(true)
-                setFollowers(followers+1)
+                setFollowers(followers + 1)
             }
-            else{
+            else {
                 toast.warning('Sorry something went wrong')
             }
         })
@@ -71,9 +72,9 @@ function Profile({ userId }) {
         userAxiosInstance.delete(`follow/${user_decoded.user_id}/${userId}/`,).then((response) => {
             if (response.status == 204) {
                 setFollowed(false)
-                setFollowers(followers-1)
+                setFollowers(followers - 1)
             }
-            else{
+            else {
                 toast.warning('Sorry something went wrong')
             }
         })
@@ -147,9 +148,9 @@ function Profile({ userId }) {
                                 <div className='flex justify-center' >
                                     {
                                         followed ?
-                                            <Button onClick={()=>UnFollow()} className='rounded-10' color='indigo' >Unfollow</Button>
+                                            <Button onClick={() => UnFollow()} className='rounded-10' color='indigo' >Unfollow</Button>
                                             :
-                                            <Button onClick={()=>Follow()} className='rounded-10' color='indigo' >Follow</Button>
+                                            <Button onClick={() => Follow()} className='rounded-10' color='indigo' >Follow</Button>
                                     }
                                 </div>
                                 <div className="mb-2 text-blueGray-600 mt-10">

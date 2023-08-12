@@ -7,18 +7,18 @@
   }
   
   .left-section {
-    width: calc(33.33% - 1rem);
+    width: calc(28.33% - 1rem);
     margin-left:  0px;
   }
   
   .posts-section {
-    width: calc(33.33% - 1rem);
+    width: calc(43.33% - 1rem);
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
   
   .right-section {
-    width: calc(33.33% - 1rem);
+    width: calc(28.33% - 1rem);
   }
   
   .grid-posts {

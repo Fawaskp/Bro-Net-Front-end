@@ -23,6 +23,7 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
     font-size: var(--fs-xl);
+    background-color: #f6f4ff;
 }
 
 /* width */
