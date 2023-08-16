@@ -72,7 +72,7 @@ function HomePage() {
                   posts.map((post,idx) => {
                     if (post.type == 'image' && post.post ) {
                       return (
-                        <ImagePost like_count={post.like_count} comments_count={post.comments_count} key={idx} profile_img={post.user.profile_image} images={post.post} fullname={post.user.fullname} username={post.user.username} description={post.description} />
+                        <ImagePost post={post} />
                       )
                     }
                     else if (post.type == 'video' && post.post ) {

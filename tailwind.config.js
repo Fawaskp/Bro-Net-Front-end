@@ -12,6 +12,9 @@ module.exports = withMT({
       borderRadius: {
         '10': '10px', 
       },
+      height: {
+        'screen-90':'90vh'
+      }
     },
   },
   plugins: [],

@@ -8,10 +8,12 @@ import { faUsersRectangle } from '@fortawesome/free-solid-svg-icons';
 import { getUserSocialMediaAccounts } from './api'
 import { toast } from 'react-toastify'
 import { Button } from '@material-tailwind/react'
+import { useNavigate } from 'react-router-dom'
 
-const setUserBasicDetails = async (userId, setUserName) => {
+const setUserBasicDetails = async (userId, setFullName) => {
     userAxiosInstance.get('/user/' + userId + '/').then((response) => {
-        setUserName(response.data.fullname)
+        setFullName(response.data.fullname)
+        setFullName(response.data.username)
     })
 }
 
@@ -42,7 +44,8 @@ const setUserProfileDetails = async (userId, setUserImage, setFollowers, setFoll
 function Profile({ userId }) {
 
     const [userImage, setUserImage] = useState('')
-    const [userName, setUserName] = useState('')
+    const [username, setUserName] = useState('')
+    const [fullname, setFullName] = useState('')
     const [followed, setFollowed] = useState(false)
     const [followers, setFollowers] = useState('')
     const [followings, setFollowings] = useState('')
@@ -51,6 +54,8 @@ function Profile({ userId }) {
     const [about, setAbout] = useState('')
     const [stackimage, setStackImage] = useState('')
     const [socialaccounts, setSocialAccounts] = useState([])
+
+    const navigate = useNavigate()
 
     const Follow = () => {
         const user = getLocal('AuthToken')
@@ -94,7 +99,7 @@ function Profile({ userId }) {
                 setAbout,
                 setStackImage,
             )
-            setUserBasicDetails(userId, setUserName)
+            setUserBasicDetails(userId, setFullName)
             getUserSocialMediaAccounts(userId).then((accounts) => {
                 setSocialAccounts(accounts)
                 callSetFollowed(user_decoded.custom.user_id, userId, setFollowed)
@@ -140,15 +145,18 @@ function Profile({ userId }) {
 
                             <div className="text-center">
                                 <h3 className="sm:text-xl md:text-2xl lg:text-4xl  font-semibold leading-normal text-blueGray-700 mb-2">
-                                    {userName ? userName : 'No name'}
+                                    {fullname ? fullname : 'No name'}
                                 </h3>
                                 <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-semibold uppercase">
                                     Any Caption which user prefers
                                 </div>
                                 <div className='flex justify-center' >
                                     {
-                                        followed ?
+                                        followed ? 
+                                        <>
                                             <Button onClick={() => UnFollow()} className='rounded-10' color='indigo' >Unfollow</Button>
+                                            <Button onClick={() => navigate('/user/messaging/'+fullname)} className='rounded-10 ms-3 ' color='indigo' >Message</Button>
+                                        </>
                                             :
                                             <Button onClick={() => Follow()} className='rounded-10' color='indigo' >Follow</Button>
                                     }
