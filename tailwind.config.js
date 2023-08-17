@@ -14,7 +14,14 @@ module.exports = withMT({
       },
       height: {
         'screen-90':'90vh'
-      }
+      },
+      minHeight: {
+        '96': '26rem', // Adjust the value as needed
+      },
+      colors: {
+        customColor: "#0C1E40",
+        bgColor: "#F8F8F8",
+      },
     },
   },
   plugins: [],

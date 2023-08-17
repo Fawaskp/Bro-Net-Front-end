@@ -10,7 +10,7 @@ import {
   AccordionBody,
   AccordionHeader,
 } from "@material-tailwind/react";
-import { UsersIcon, ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
+import { UsersIcon, ChevronRightIcon, ChevronDownIcon, NewspaperIcon } from "@heroicons/react/24/solid";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export function AdminSideBar({ status, handleDrawer }) {
@@ -145,6 +145,12 @@ export function AdminSideBar({ status, handleDrawer }) {
               </List>
             </AccordionBody>
           </Accordion>
+          <ListItem selected={location.pathname == '/admin/banners'} onClick={() => { navigate('/admin/banners'), handleDrawer() }} >
+            <ListItemPrefix>
+              <NewspaperIcon className="w-4" />
+            </ListItemPrefix>
+            Banner Management
+          </ListItem>
         </List>
       </Drawer>
     </React.Fragment>

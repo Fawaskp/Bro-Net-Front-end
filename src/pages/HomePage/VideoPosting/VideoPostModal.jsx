@@ -30,15 +30,13 @@ export function VideoPostingModal({ fetchPosts, videoselected, video, open, hand
                 handleOpen()
                 fetchPosts()
             }
-        }).catch((err) => {
-            console.log(err);
-            toast('Sorry something went wrong')
         })
     }
 
 
     return (
         <>
+
             <Dialog
                 open={open}
                 handler={handleOpen}

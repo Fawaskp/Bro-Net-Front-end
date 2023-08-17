@@ -11,6 +11,7 @@ import PrivateRoutes from '../protected-routes/PrivateRoutes'
 import { AdminLogin } from '../pages/Admin/AdminLogin/AdminLogin'
 import HubPage from '../pages/Admin/Hubs/HubPage'
 import EduCatsPage from '../pages/Admin/EduCats/EduCatsPage'
+import BannerPage from '../pages/Admin/BannerManagement/BannerPage'
 
 function AdminRoutes() {
   return (
@@ -27,6 +28,7 @@ function AdminRoutes() {
           <Route path="/skills" element={<SkillPage />}></Route>
           <Route path="/social-media" element={<SocialMediaPage />}></Route>
           <Route path="/badges" element={<BadgesPage />}></Route>
+          <Route path="/banners" element={<BannerPage/>}></Route>
         </Route>
       </Route>
     </Routes>

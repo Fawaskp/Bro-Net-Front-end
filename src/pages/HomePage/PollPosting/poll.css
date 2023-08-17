@@ -1,0 +1,4 @@
+.parent-of-progress-bar div{
+    transition: width;
+    transition-duration: .5s;
+}

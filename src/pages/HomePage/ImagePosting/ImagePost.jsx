@@ -10,29 +10,39 @@ import {
 } from "@material-tailwind/react";
 import { apiUrl, defaultUserImageLink } from "../../../constants/constants";
 import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
-import { HandThumbUpIcon as FilledUpIcon} from "@heroicons/react/24/solid";
+import { HandThumbUpIcon as FilledUpIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postAxiosInstance } from "../../../utils/axios-utils";
 import { PostDetailModal } from "./PostDetailModal";
 
-export default function ImagePost({post}) {
+export default function ImagePost({ post }) {
 
-  const {like_count,profile_img,user,comments_count,username,description} = post
+  const { like_count, user, comments_count, description } = post
   const images = post.post
 
   const navigate = useNavigate()
   const [liked, setLiked] = useState(false)
   const [likecount, setLikeCount] = useState(like_count)
+  const [commentscount, setCommentsCount] = useState(comments_count)
+  const [comments, setComments] = useState([])
 
   const [postdetailmodal, setPostDetailModal] = useState(false);
   const handlePostDetailModal = () => setPostDetailModal(!postdetailmodal);
 
+  const callSetComments = () => {
+    postAxiosInstance.get(`/comments/${post.id}/`).then((response) => {
+      setComments(response.data)
+    })
+  }
 
   const like_post = () => {
-    postAxiosInstance.put('like-post/' + id + '/').then((response) => {
+    postAxiosInstance.put('like-post/' + post.id + '/').then((response) => {
       if (response.status == 200) {
-        setLikeCount(likecount + 1)
+        setLikeCount((prevcount) => {
+          return prevcount += 1
+        })
+        setLiked(true)
       }
 
     })
@@ -40,12 +50,12 @@ export default function ImagePost({post}) {
 
   return (
     <>
-    <PostDetailModal post={post} open={postdetailmodal} handleOpen={handlePostDetailModal} />
+      <PostDetailModal commentscount={commentscount} setCommentsCount={setCommentsCount} comments={comments} refreshComments={callSetComments} post={post} open={postdetailmodal} handleOpen={handlePostDetailModal} />
       <Card className="w-full border shadow-none">
         <CardHeader shadow={false} floated={false} className="border-b m-0 p-3 rounded-0" >
           <Avatar
             onClick={(e) => navigate(`/${user.username}`)}
-            src={profile_img ? apiUrl + profile_img : defaultUserImageLink}
+            src={user.profile_image ? apiUrl + user.profile_image : defaultUserImageLink}
             alt="avatar"
             className="cursor-pointer"
           />
@@ -60,7 +70,7 @@ export default function ImagePost({post}) {
                     return (
                       <div key={idx} className="flex justify-center align-middle" >
                         <img
-                          onDoubleClick={(e) => { setLiked(!liked) }}
+                          onDoubleClick={like_post}
                           src={apiUrl + imageurl}
                           alt='Post Image'
                           className="mx-auto"
@@ -71,9 +81,9 @@ export default function ImagePost({post}) {
                 }
               </Carousel>
               :
-              <div className="flex justify-center align-middle" >
+              <div className="flex justify-center items-center min-h-96">
                 <img
-                  onDoubleClick={(e) => { setLiked(!liked) }}
+                  onDoubleClick={like_post}
                   src={apiUrl + images}
                   alt='Post Image'
                   className="mx-auto h-max"
@@ -96,7 +106,7 @@ export default function ImagePost({post}) {
               <p className="text-xs" >{likecount} Likes</p>
             </div>
             <div className="flex flex-col justify-center mx-2">
-              <IconButton onClick={handlePostDetailModal} variant='text' color="indigo">
+              <IconButton onClick={() => { handlePostDetailModal(), callSetComments() }} variant='text' color="indigo">
                 <ChatBubbleBottomCenterTextIcon className="w-5 text-black" />
               </IconButton>
               <p className="text-xs" >{comments_count} Comments</p>
@@ -107,7 +117,7 @@ export default function ImagePost({post}) {
             color="gray"
             className="font-normal text-left text-black text-base pt-2 opacity-75"
           >
-            <span className="font-semibold text-black text-base" >{username}</span> {description}
+            <span className="font-semibold text-black text-base" >{user.username}</span> {description}
           </Typography>
         </CardFooter>
       </Card>

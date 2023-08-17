@@ -13,7 +13,7 @@ import {
   } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
    
-  export default function LeftBar({handleImage,handleVideo}) {
+  export default function LeftBar({handlePoll,handleImage,handleVideo}) {
 
     const navigate = useNavigate()
 
@@ -25,13 +25,13 @@ import { useNavigate } from "react-router-dom";
           </Typography>
         </div>
         <List className="text-sm"  >
-          <ListItem onClick={(e)=>handleImage()} >
+          <ListItem onClick={()=>handleImage()} >
             <ListItemPrefix>
               <PhotoIcon className="h-5 w-5" />
             </ListItemPrefix>
             Picture
           </ListItem>
-          <ListItem onClick={(e)=>handleVideo()} >
+          <ListItem onClick={()=>handleVideo()} >
             <ListItemPrefix>
               <VideoCameraIcon className="h-5 w-5" />
             </ListItemPrefix>
@@ -43,7 +43,7 @@ import { useNavigate } from "react-router-dom";
             </ListItemPrefix>
             Article
           </ListItem>
-          <ListItem>
+          <ListItem onClick={()=>handlePoll()} >
             <ListItemPrefix>
               <ChartBarIcon className="h-5 w-5" />
             </ListItemPrefix>

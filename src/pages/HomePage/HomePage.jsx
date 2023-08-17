@@ -13,12 +13,21 @@ import { postAxiosInstance } from '../../utils/axios-utils';
 import { VideoSelectModal } from './VideoPosting/VideoSelectModal';
 import VideoPost from './VideoPosting/VideoPost';
 
+import {
+  CardBody,
+  CardHeader,
+  Card,
+  Avatar,
+} from "@material-tailwind/react";
+import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
+import PollPost from './PollPosting/PollPost';
+import { PollPostModal } from './PollPosting/PollPostModal';
 
 function HomePage() {
 
   const [posts, setPosts] = useState([])
   const [loggeduser, setLoggedUer] = useState('')
-  const fetchPosts = (user=loggeduser) => {
+  const fetchPosts = (user = loggeduser) => {
     postAxiosInstance.get(`get-posts/${user}/`).then((response) => {
       if (response.status == 200) {
         setPosts(response.data)
@@ -31,6 +40,9 @@ function HomePage() {
 
   const [openvideomodal, setOpenVideoModal] = useState(false);
   const handleVideoModal = () => setOpenVideoModal(!openvideomodal);
+
+  const [openpollmodal, setOpenPollModal] = useState(false);
+  const handlePollModal = () => setOpenPollModal(!openpollmodal);
 
   const navigate = useNavigate()
   const [start, setStart] = useState(false)
@@ -57,6 +69,7 @@ function HomePage() {
       <>
         <ImageSelectModal fetchPosts={fetchPosts} open={openimagemodal} handleOpen={handleImageModal} />
         <VideoSelectModal fetchPosts={fetchPosts} open={openvideomodal} handleOpen={handleVideoModal} />
+        <PollPostModal open={openpollmodal} handleOpen={handlePollModal} />
         <Navbar />
         <div className='mx-auto' >
           <Banner />
@@ -64,20 +77,25 @@ function HomePage() {
         <div className='max-w-screen-xl mx-auto' >
           <div className="grid-container">
             <div className="left-section">
-              <LeftBar handleImage={handleImageModal} handleVideo={handleVideoModal} />
+              <LeftBar handlePoll={handlePollModal} handleImage={handleImageModal} handleVideo={handleVideoModal} />
             </div>
             <div className="posts-section">
               <div className="grid-posts">
                 {
-                  posts.map((post,idx) => {
-                    if (post.type == 'image' && post.post ) {
+                  posts.map((post, idx) => {
+                    if (post.type == 'image' && post.post) {
                       return (
                         <ImagePost post={post} />
                       )
                     }
-                    else if (post.type == 'video' && post.post ) {
+                    else if (post.type == 'video' && post.post) {
                       return (
-                        <VideoPost like_count={post.like_count} comments_count={post.comments_count} key={idx} profile_img={post.user.profile_image} video={post.post} fullname={post.user.fullname} username={post.user.username} description={post.description} />
+                        <VideoPost post={post} />
+                      )
+                    }
+                    else if (post.type == 'poll' && post.post) {
+                      return (
+                        <PollPost post={post} />
                       )
                     }
                   })

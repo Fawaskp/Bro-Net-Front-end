@@ -4,16 +4,17 @@ import {
     Dialog,
     DialogBody,
     Typography,
-    Carousel,
+    CardFooter,
     IconButton,
 } from "@material-tailwind/react";
 import { apiUrl } from "../../../constants/constants";
 import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
+import { HandThumbUpIcon as FilledUpIcon } from "@heroicons/react/24/solid";
 import { postAxiosInstance } from "../../../utils/axios-utils";
 
-export function PostDetailModal({ commentscount, setCommentsCount, comments, refreshComments, open, handleOpen, post }) {
+export function PostDetailModal({ liked, like_post, commentscount, setCommentsCount, comments, refreshComments, open, handleOpen, post }) {
 
-    const images = post.post
+    const video = post.post
     const commentRef = useRef('')
     const [commentbutton, setCommentButton] = useState(false)
 
@@ -38,50 +39,42 @@ export function PostDetailModal({ commentscount, setCommentsCount, comments, ref
                     <div className="flex" >
                         <div className="w-1/2 " >
                             {
-                                images?.length > 1 ?
-                                    <Carousel>
-                                        {images.map((imageurl, idx) => (
-                                            <div key={idx} className="flex justify-center items-center">
-                                                <img
-                                                    onDoubleClick={(e) => { setLiked(!liked) }}
-                                                    src={apiUrl + imageurl}
-                                                    alt='Post Image'
-                                                    className="mx-auto"
-                                                />
-                                            </div>
-                                        ))}
-                                    </Carousel>
-                                    :
-                                    <div className="flex justify-center items-center" >
-                                        <img
-                                            onDoubleClick={(e) => { setLiked(!liked) }}
-                                            src={apiUrl + images}
-                                            alt='Post Image'
-                                            className="mx-auto h-max"
-                                        />
-                                    </div>
+                                video &&
+                                <div className="flex justify-center items-center min-h-96">
+                                    <video controls className="mx-auto max-h-72 rounded-10">
+                                        <source src={apiUrl + video} type="video/mp4" />
+                                    </video>
+                                </div>
                             }
-                            <div className="flex ">
-                                <div className="flex flex-col justify-center me-2 py-2">
-                                    <IconButton variant='text' color="indigo" >
-
-                                        <HandThumbUpIcon onClick={post.like_post} className="w-5 text-black" />
-
-                                    </IconButton>
-                                    <p className="text-xs" >{post.like_count} Likes</p>
+                            <CardFooter className="pt-0 text-center">
+                                <div className="flex ">
+                                    <div className="flex flex-col justify-center me-2 py-2">
+                                        <IconButton variant='text' color="indigo" onClick={() => setLiked(!liked)}  >
+                                            {
+                                                liked ?
+                                                    <FilledUpIcon className="w-5 text-indigo" />
+                                                    :
+                                                    <HandThumbUpIcon onClick={like_post} className="w-5 text-black" />
+                                            }
+                                        </IconButton>
+                                        <p className="text-xs" >{post.like_count} Likes</p>
+                                    </div>
+                                    <div className="flex flex-col justify-center mx-2">
+                                        <IconButton variant='text' color="indigo">
+                                            <ChatBubbleBottomCenterTextIcon className="w-5 text-black" />
+                                        </IconButton>
+                                        <p className="text-xs" >{commentscount} Comments</p>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col justify-center mx-2">
-                                    <IconButton variant='text' color="indigo">
-                                        <ChatBubbleBottomCenterTextIcon className="w-5 text-black" />
-                                    </IconButton>
-                                    <p className="text-xs" >{commentscount} Comments</p>
-                                </div>
-                            </div>
-                            <p className="font-normal text-left text-black text-base pt-2 opacity-75">
-                                <span className="font-semibold text-black text-base" >{post.user.username}</span> {post.description}
-                            </p>
+                                <Typography
+                                    variant="small"
+                                    color="gray"
+                                    className="font-normal text-left text-black text-base pt-2 opacity-75"
+                                >
+                                    <span className="font-semibold text-black text-base" >{post.user.username}</span> {post.description}
+                                </Typography>
+                            </CardFooter>
                         </div>
-
                         <div className="w-1/2 h-[25rem] overflow-y-scroll" >
                             <Typography className="font-normal">
                                 <section className="bg-white dark:bg-gray-900">
@@ -90,6 +83,7 @@ export function PostDetailModal({ commentscount, setCommentsCount, comments, ref
                                             <h4 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-white">Total Comments ({commentscount})</h4>
                                         </div>
                                     </div>
+
                                     {
                                         comments?.map((comment) => {
                                             return (
@@ -128,11 +122,11 @@ export function PostDetailModal({ commentscount, setCommentsCount, comments, ref
                                         <textarea
 
                                             ref={commentRef}
-                                            onChange={(e)=>{
-                                                if(e.target.value.trim()!=''){
+                                            onChange={(e) => {
+                                                if (e.target.value.trim() != '') {
                                                     setCommentButton(true)
                                                 }
-                                                else{
+                                                else {
                                                     setCommentButton(false)
                                                 }
                                             }}

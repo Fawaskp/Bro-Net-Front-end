@@ -5,9 +5,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 import { apiUrl, defaultUserImageLink } from '../../constants/constants'
 import { userAxiosInstance } from '../../utils/axios-utils'
-import { Switch, Button, Input, Textarea } from "@material-tailwind/react";
+import { Switch, Button, Input, Textarea, IconButton } from "@material-tailwind/react";
 import { DpConfirmModal } from './DpConfirmModal'
 import { updateBasicUserData, updateUserProfile } from '../ProfileCompletion/api'
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import EmailChangeModal from './EmailChangeModal'
 
 const setUserBasicDetails = async (userId, setUserName, setFullName, setEmail, setDob) => {
     userAxiosInstance.get('/user/' + userId + '/').then((response) => {
@@ -36,6 +38,9 @@ function PersonalSection() {
     const [dpconfirmmodal, setDpConfirmModal] = useState(false);
     const handleDpConfirmModal = () => setDpConfirmModal(!dpconfirmmodal);
 
+    const [emailmodal, setEmailModal] = useState(false);
+    const handleEmailModal = () => setEmailModal(!emailmodal);
+
     const [userImage, setUserImage] = useState('')
     const [selectedimage, setSelectedImage] = useState('')
     const [username, setUserName] = useState('')
@@ -47,19 +52,16 @@ function PersonalSection() {
     const fileInputRef = React.createRef();
     const usernameRef = useRef(null);
     const fullnameRef = useRef(null);
-    const emailRef = useRef(null);
     const dobRef = useRef(null);
 
     const handleFormSubmition = () => {
         const usernameValue = usernameRef.current.value
         const fullnameValue = fullnameRef.current.value
-        const emailValue = emailRef.current.value
         const dobValue = dobRef.current.value
-        console.log('Dob Value ::>> ',dobValue);
+        console.log('Dob Value ::>> ', dobValue);
         const stateData = [
             usernameValue,
             fullnameValue,
-            emailValue,
             dobValue,
             about,
         ]
@@ -83,11 +85,6 @@ function PersonalSection() {
             return;
         }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailValue.match(emailRegex)) {
-            toast.error('Please enter a valid email address');
-            return;
-        }
 
         if (about.length > 500) {
             toast.error('About should be less than 500 characters');
@@ -95,10 +92,9 @@ function PersonalSection() {
         }
 
         const formData = {
-            email: emailValue,
             about,
         };
-        
+
         const basicData = {
             username: usernameValue,
             fullname: fullnameValue,
@@ -135,6 +131,7 @@ function PersonalSection() {
 
     return (
         <>
+        <EmailChangeModal emailRefresher={setEmail} username={username} status={emailmodal} close={handleEmailModal} />
             <DpConfirmModal open={dpconfirmmodal} handleOpen={handleDpConfirmModal} setImage={setUserImage} image1={userImage} image2={selectedimage} ></DpConfirmModal>
             <div className='w-full bg-gray-900 h-96'>
                 <div className='mx-auto h-2/3 md:w-3/6 flex flex-col items-center'>
@@ -142,7 +139,7 @@ function PersonalSection() {
                         <input type="file" className="hidden" ref={fileInputRef} onChange={(e) => {
                             if (e.target.value[0] != null)
                                 setSelectedImage(e.target.files[0]);
-                                console.log(e.target.files[0]);
+                            console.log(e.target.files[0]);
                             handleDpConfirmModal();
                         }} />
                         <img
@@ -151,7 +148,7 @@ function PersonalSection() {
                             className="rounded-10 w-28 lg:w-28 h-28 lg:h-28 object-cover ring-4 ring-gray-50 transition-all duration-500 ease-out group-hover:opacity-50"
                         />
                         <span className="text-overlay absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 py-2 px-4 duration-500 ease-out font-semibold text-gray-800 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                        {userImage ? 'Change' : 'Add'} 
+                            {userImage ? 'Change' : 'Add'}
                         </span>
                     </div>
 
@@ -202,7 +199,12 @@ function PersonalSection() {
                                     <div className='flex' >
                                         {
                                             editmode ?
-                                                <Input disabled inputRef={emailRef} type='email' defaultValue={email} />
+                                                <>
+                                                    <Input disabled type='email' defaultValue={email} />
+                                                        <IconButton onClick={handleEmailModal} className='px-3 mx-3' variant='text' color='indigo' >
+                                                            <ArrowPathIcon className='w-4' />
+                                                        </IconButton>
+                                                </>
                                                 :
                                                 <p className='mx-10' >{email}</p>
                                         }
