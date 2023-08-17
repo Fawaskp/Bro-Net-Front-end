@@ -22,6 +22,7 @@ import {
 import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 import PollPost from './PollPosting/PollPost';
 import { PollPostModal } from './PollPosting/PollPostModal';
+import AdminMessages from './AdminMessages';
 
 function HomePage() {
 
@@ -106,8 +107,8 @@ function HomePage() {
                 }
               </div>
             </div>
-            <div className="right-section">
-              <LeftBar />
+            <div className="right-section ">
+                <AdminMessages/>
             </div>
           </div>
         </div>

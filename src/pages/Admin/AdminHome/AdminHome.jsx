@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import AdminMessages from './AdminMessages'
 export default function AdminHome() {
 
   useEffect(() => {
@@ -7,7 +8,11 @@ export default function AdminHome() {
 
   return (
     <>
-      <h1 >Its Admin Home Page</h1>
+      <div className='flex w-5/6' >
+        <AdminMessages />
+        <div>
+        </div>
+      </div>
     </>
   )
 }

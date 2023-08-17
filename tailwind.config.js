@@ -9,6 +9,10 @@ module.exports = withMT({
   ],
   theme: {
     extend: {
+      colors: {
+        customColor: "#0C1E40",
+        bgColor: "#F8F8F8",
+      },
       borderRadius: {
         '10': '10px', 
       },
@@ -18,9 +22,8 @@ module.exports = withMT({
       minHeight: {
         '96': '26rem', // Adjust the value as needed
       },
-      colors: {
-        customColor: "#0C1E40",
-        bgColor: "#F8F8F8",
+      maxHeight: {
+        'screen-40rem': '40rem'
       },
     },
   },

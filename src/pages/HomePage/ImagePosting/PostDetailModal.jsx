@@ -8,7 +8,7 @@ import {
     IconButton,
 } from "@material-tailwind/react";
 import { apiUrl } from "../../../constants/constants";
-import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
+import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon, ArrowPathIcon } from "@heroicons/react/24/outline";
 import { postAxiosInstance } from "../../../utils/axios-utils";
 
 export function PostDetailModal({ commentscount, setCommentsCount, comments, refreshComments, open, handleOpen, post }) {
@@ -16,6 +16,7 @@ export function PostDetailModal({ commentscount, setCommentsCount, comments, ref
     const images = post.post
     const commentRef = useRef('')
     const [commentbutton, setCommentButton] = useState(false)
+    const [commentloadspinning, setCommentsLoadSpinning] = useState(false);
 
     const postComment = () => {
         const commnetValue = commentRef.current.value
@@ -57,7 +58,7 @@ export function PostDetailModal({ commentscount, setCommentsCount, comments, ref
                                             onDoubleClick={(e) => { setLiked(!liked) }}
                                             src={apiUrl + images}
                                             alt='Post Image'
-                                            className="mx-auto h-max"
+                                            className="mx-auto h-[30rem]"
                                         />
                                     </div>
                             }
@@ -88,6 +89,18 @@ export function PostDetailModal({ commentscount, setCommentsCount, comments, ref
                                     <div className="max-w-2xl mx-auto px-4">
                                         <div className="flex justify-between items-center mb-6">
                                             <h4 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-white">Total Comments ({commentscount})</h4>
+                                            <ArrowPathIcon
+                                                className={`w-5 cursor-pointer hover:text-indigo-800 transition-all duration-200 ${commentloadspinning ? 'animate-spin' : ''}`}
+                                                onClick={() => {
+                                                    refreshComments()
+                                                    setCommentsLoadSpinning(true);
+                                                    setTimeout(() => {
+                                                        setCommentsLoadSpinning(false);
+                                                    }, 500)
+                                                }}
+                                            >
+                                                Reload
+                                            </ArrowPathIcon>
                                         </div>
                                     </div>
                                     {
@@ -128,11 +141,11 @@ export function PostDetailModal({ commentscount, setCommentsCount, comments, ref
                                         <textarea
 
                                             ref={commentRef}
-                                            onChange={(e)=>{
-                                                if(e.target.value.trim()!=''){
+                                            onChange={(e) => {
+                                                if (e.target.value.trim() != '') {
                                                     setCommentButton(true)
                                                 }
-                                                else{
+                                                else {
                                                     setCommentButton(false)
                                                 }
                                             }}

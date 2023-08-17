@@ -102,8 +102,8 @@ return (
                   </div>
                 </td>
                 <td className={classes}>
-                  <div className="flex items-center gap-3">
-                    <Typography variant="small" color="blue-gray" className="font-bold">
+                  <div className="flex items-center gap-3 max-w-md">
+                    <Typography variant="small" color="blue-gray" >
                       {content}
                     </Typography>
                   </div>
@@ -114,16 +114,12 @@ return (
                   </div>
                 </td>
                 <td className={classes}>
-                  <Tooltip heading={`Edit Banner`}>
                     <IconButton onClick={() => { setEditingInstance({ id, heading, content }), handleEditModal() }} variant="text" color="blue-gray">
                       <PencilIcon className="h-4 w-4" />
                     </IconButton>
-                  </Tooltip>
-                  <Tooltip heading={`Delete Banner`}>
                     <IconButton onClick={() => { setDeletingInstance({ id, heading, content }), handleDeleteModal() }} variant="text" color="red">
                       <TrashIcon className="h-4 w-4" />
                     </IconButton>
-                  </Tooltip>
                 </td>
               </tr>
             );

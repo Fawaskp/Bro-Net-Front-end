@@ -9,7 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { apiUrl } from "../../../constants/constants";
 import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
-import { HandThumbUpIcon as FilledUpIcon } from "@heroicons/react/24/solid";
+import { HandThumbUpIcon as FilledUpIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 import { postAxiosInstance } from "../../../utils/axios-utils";
 
 export function PostDetailModal({ liked, like_post, commentscount, setCommentsCount, comments, refreshComments, open, handleOpen, post }) {
@@ -17,7 +17,7 @@ export function PostDetailModal({ liked, like_post, commentscount, setCommentsCo
     const video = post.post
     const commentRef = useRef('')
     const [commentbutton, setCommentButton] = useState(false)
-
+    const [commentloadspinning, setCommentsLoadSpinning] = useState(false);
     const postComment = () => {
         const commnetValue = commentRef.current.value
         const data = { user: post.user.id, post: post.id, comment: commnetValue }
@@ -27,6 +27,7 @@ export function PostDetailModal({ liked, like_post, commentscount, setCommentsCo
                 setCommentsCount((prevcount) => {
                     return prevcount += 1
                 })
+                commentRef.current.value = ''
                 console.log(commentscount);
             }
         }).catch((err) => console.log(err))
@@ -81,6 +82,18 @@ export function PostDetailModal({ liked, like_post, commentscount, setCommentsCo
                                     <div className="max-w-2xl mx-auto px-4">
                                         <div className="flex justify-between items-center mb-6">
                                             <h4 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-white">Total Comments ({commentscount})</h4>
+                                            <ArrowPathIcon
+                                                className={`w-5 cursor-pointer hover:text-indigo-800 transition-all duration-200 ${commentloadspinning ? 'animate-spin' : ''}`}
+                                                onClick={() => {
+                                                    refreshComments()
+                                                    setCommentsLoadSpinning(true);
+                                                    setTimeout(() => {
+                                                        setCommentsLoadSpinning(false);
+                                                    }, 500)
+                                                }}
+                                            >
+                                                Reload
+                                            </ArrowPathIcon>
                                         </div>
                                     </div>
 
