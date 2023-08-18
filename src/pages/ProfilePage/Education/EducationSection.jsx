@@ -31,7 +31,7 @@ function EducationSection() {
     return (
         <>
             <EducationAddModal open={addModalstatus} handleOpen={handleAddModal} refresh={callSetUserEducations} />
-            <main className="block max-w-xl border-2 border-gray-200 rounded-10  pt-4 px-5">
+            <main className="block max-w-xl border-2 bg-white  border-gray-200 rounded-10  pt-4 px-5">
                 <div className='flex justify-between'>
                     <h1 className='text-lg text-center py-2 font-semibold' >Education</h1>
                     <span style={{ fontSize: '17px' }} size="sm" color="indigo" className="h-8 rounded-md" >

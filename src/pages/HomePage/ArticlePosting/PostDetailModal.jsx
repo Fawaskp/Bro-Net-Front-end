@@ -14,7 +14,7 @@ import { postAxiosInstance } from "../../../utils/axios-utils";
 
 export function PostDetailModal({ liked, handle_press, commentscount, setCommentsCount, comments, refreshComments, open, handleOpen, post }) {
 
-    const video = post.post
+    const article = post.post
     const commentRef = useRef('')
     const [commentbutton, setCommentButton] = useState(false)
     const [commentloadspinning, setCommentsLoadSpinning] = useState(false);
@@ -40,11 +40,9 @@ export function PostDetailModal({ liked, handle_press, commentscount, setComment
                     <div className="flex" >
                         <div className="w-1/2 " >
                             {
-                                video &&
-                                <div className="flex justify-center items-center min-h-96">
-                                    <video controls className="mx-auto max-h-72 rounded-10">
-                                        <source src={apiUrl + video} type="video/mp4" />
-                                    </video>
+                                article &&
+                                <div className="flex border rounded-md min-h-96 max-h-[30rem] ql-snow overflow-hidden">
+                                    <div className="ql-editor w-full max-h-[30rem] overflow-y-scroll text-black" dangerouslySetInnerHTML={{ __html: article }} />
                                 </div>
                             }
                             <CardFooter className="pt-0 text-center">
@@ -60,20 +58,20 @@ export function PostDetailModal({ liked, handle_press, commentscount, setComment
                                         </IconButton>
                                         <p className="text-xs" >{post.like_count} Likes</p>
                                     </div>
-                                    <div className="flex flex-col justify-center mx-2">
-                                        <IconButton variant='text' color="indigo">
-                                            <ChatBubbleBottomCenterTextIcon className="w-5 text-black" />
-                                        </IconButton>
-                                        <p className="text-xs" >{commentscount} Comments</p>
-                                    </div>
                                 </div>
-                                <Typography
-                                    variant="small"
-                                    color="gray"
-                                    className="font-normal text-left text-black text-base pt-2 opacity-75"
-                                >
-                                    <span className="font-semibold text-black text-base" >{post.user.username}</span> {post.description}
-                                </Typography>
+                                {
+                                    post.description ?
+                                        <Typography
+                                            variant="small"
+                                            color="gray"
+                                            className="font-normal text-left text-black text-base pt-2 opacity-75"
+                                        >
+                                            <span className="font-semibold text-black text-base" >{post.user.username}</span>
+                                            {post.description}
+                                        </Typography>
+                                        :
+                                        ''
+                                }
                             </CardFooter>
                         </div>
                         <div className="w-1/2 h-[25rem] overflow-y-scroll" >
@@ -92,7 +90,6 @@ export function PostDetailModal({ liked, handle_press, commentscount, setComment
                                                     }, 500)
                                                 }}
                                             >
-                                                Reload
                                             </ArrowPathIcon>
                                         </div>
                                     </div>

@@ -38,6 +38,7 @@ export function PollPostModal({ fetchPosts, imageselected, images, open, handleO
         postAxiosInstance.post('post-poll/',formData).then((response)=>{
             if(response.status == 200){
                 handleOpen()
+                toast.success("Image Post Added Successfully")
                 console.log('Response of poll posting ::>> ',response.data);
             }
         })

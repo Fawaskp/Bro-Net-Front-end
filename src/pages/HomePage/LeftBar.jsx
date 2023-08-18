@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
     const navigate = useNavigate()
 
     return (
-      <Card className="sticky top-24 w-64 border rounded-10 m-2 p-4 shadow-xl shadow-blue-gray-900/5">
+      <Card className="sticky top-24 w-84 border rounded-10 p-4 shadow-xl shadow-blue-gray-900/5">
         <div className="mb-2 p-4 w-full">
           <Typography variant="h6" color="blue-gray">
             Create a post

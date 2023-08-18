@@ -6,27 +6,32 @@ import {
   Avatar,
   CardFooter,
   IconButton,
+  Button,
 } from "@material-tailwind/react";
 import { apiUrl, defaultUserImageLink } from "../../../constants/constants";
-import { HandThumbUpIcon, HandThumbDownIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
-import { HandThumbUpIcon as FilledUpIcon, HandThumbDownIcon as FilledDownIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
+import { HandThumbUpIcon as FilledUpIcon } from "@heroicons/react/24/solid";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postAxiosInstance } from "../../../utils/axios-utils";
 import { PostDetailModal } from "./PostDetailModal";
+import 'react-quill/dist/quill.snow.css'
+import './article-style.css'
 
-export default function VideoPost({loggeduser, post }) {
+
+export default function ArticlePost({ loggeduser, post }) {
 
   const { like_count, user, comments_count, description } = post
-  console.log(user);
-  const video = post.post
+  const article = post.post
 
   const navigate = useNavigate()
 
+  const articleDivRef = useRef(null);
   const [liked, setLiked] = useState(post.is_liked)
   const [likecount, setLikeCount] = useState(like_count)
-  const [commentscount,setCommentsCount] = useState(comments_count)
+  const [commentscount, setCommentsCount] = useState(comments_count)
   const [comments, setComments] = useState([])
+  const [readmore, setReadMore] = useState(false)
 
   const [postdetailmodal, setPostDetailModal] = useState(false);
   const handlePostDetailModal = () => setPostDetailModal(!postdetailmodal);
@@ -60,6 +65,15 @@ export default function VideoPost({loggeduser, post }) {
     }
   }
 
+  useEffect(() => {
+    if (articleDivRef.current) {
+      const divHeight = articleDivRef.current.clientHeight;
+      if(divHeight>= 480){
+        setReadMore(true)
+      }
+    }
+  }, [])
+
 
   return (
     <>
@@ -74,21 +88,37 @@ export default function VideoPost({loggeduser, post }) {
           />
           <span className="text-base px-4 font-semibold cursor-pointer" onClick={(e) => navigate(`/${user.username}`)} >{user.fullname}</span>
         </CardHeader>
-        <CardBody className="" >
+        <CardBody className="relative"  >
           {
-            video &&
-            <div className="flex justify-center align-middle">
-              <video controls className="mx-auto max-h-72 rounded-10">
-                <source src={apiUrl + video} type="video/mp4" />
-              </video>
-            </div>
+            article &&
+            <>
+              <div className="flex min-h-96 max-h-[30rem] justify-center align-middle ql-snow overflow-hidden">
+                <div ref={articleDivRef} className="ql-editor max-w-md max-h-[30rem] overflow-hidden" dangerouslySetInnerHTML={{ __html: article }} />
+              </div>
+              {
+                readmore ?
+                  <div className="absolute min-h-96 max-h-[30rem] empty-div-gradient" >
+                    <div className="flex justify-center items-end h-full" >
+                      <Button
+                        onClick={() => { handlePostDetailModal(), callSetComments() }}
+                        color="indigo"
+                        className="mb-10"
+                      >
+                        Read More
+                      </Button>
+                    </div>
+                  </div>
+                :
+                ''
+             }
+            </>
           }
 
         </CardBody>
         <CardFooter className="pt-0 border-t text-center">
           <div className="flex ">
             <div className="flex flex-col justify-center me-2 py-2">
-            <IconButton variant='text' color="indigo" onClick={handle_press}>
+              <IconButton variant='text' color="indigo" onClick={handle_press}>
                 {
                   liked ?
                     <FilledUpIcon className="w-5 text-indigo" />
@@ -99,7 +129,7 @@ export default function VideoPost({loggeduser, post }) {
               <p className="text-xs" >{likecount} Likes</p>
             </div>
             <div className="flex flex-col justify-center mx-2">
-              <IconButton onClick={()=>{handlePostDetailModal(),callSetComments()}} variant='text' color="indigo">
+              <IconButton onClick={() => { handlePostDetailModal(), callSetComments() }} variant='text' color="indigo">
                 <ChatBubbleBottomCenterTextIcon className="w-5 text-black" />
               </IconButton>
               <p className="text-xs" >{comments_count} Comments</p>

@@ -25,12 +25,16 @@ export function VideoPostingModal({ fetchPosts, videoselected, video, open, hand
         formData.append('video', video);
         formData.append('user', user_decoded.user_id)
         formData.append('description', description)
+        if(video.size > 20000000){
+            toast.warning('Video should be less than 20MB')
+            return
+        }
         postAxiosInstance.post('post-video/', formData).then((response) => {
             if (response.status == 200) {
                 handleOpen()
                 fetchPosts()
             }
-        })
+        }).catch((err)=>toast.error(err.message))
     }
 
 

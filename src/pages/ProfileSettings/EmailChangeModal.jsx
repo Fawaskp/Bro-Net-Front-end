@@ -115,7 +115,7 @@ export default function EmailChangeModal({ emailRefresher,username, status, clos
                     }
                   </Button>
                   :
-                  <Button type="submit" variant="gradient" color="indigo" fullWidth>
+                  <Button disabled={loading?true:false} type="submit" variant="gradient" color="indigo" fullWidth>
                     {
                       loading ?
                         <Spinner className="mx-auto" color="indigo" />

@@ -54,7 +54,6 @@ function MessagePage() {
     const messageRef = useRef()
 
     const onButtonClicked = () => {
-        console.log('|||||_______||||| -> ', senderdetails, '<- |||||_______|||||');
         clientstate.send(
             JSON.stringify({
                 message: messageRef.current.value,

@@ -2,3 +2,11 @@
     transition: width;
     transition-duration: .5s;
 }
+
+.xyz{
+    background-color: yellowgreen;
+}
+
+.progress-white-bar div {
+    background-color: #ffffff;
+}

@@ -32,6 +32,9 @@ export function ImagePostingModal({ fetchPosts,imageselected, images, open, hand
             if(response.status == 200){
                 handleOpen()
                 fetchPosts()
+                imageselected(false)
+                
+                toast.success("Image Post Added Successfully")
             }
         }).catch((err)=>{
             toast('Sorry something went wrong')

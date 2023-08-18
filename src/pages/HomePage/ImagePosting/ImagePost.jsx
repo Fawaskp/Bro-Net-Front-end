@@ -16,13 +16,13 @@ import { useNavigate } from "react-router-dom";
 import { postAxiosInstance } from "../../../utils/axios-utils";
 import { PostDetailModal } from "./PostDetailModal";
 
-export default function ImagePost({ post }) {
-
+export default function ImagePost({ loggeduser, post }) {
+  console.log('Post', post);
   const { like_count, user, comments_count, description } = post
   const images = post.post
 
   const navigate = useNavigate()
-  const [liked, setLiked] = useState(false)
+  const [liked, setLiked] = useState(post.is_liked)
   const [likecount, setLikeCount] = useState(like_count)
   const [commentscount, setCommentsCount] = useState(comments_count)
   const [comments, setComments] = useState([])
@@ -36,16 +36,27 @@ export default function ImagePost({ post }) {
     })
   }
 
-  const like_post = () => {
-    postAxiosInstance.put('like-post/' + post.id + '/').then((response) => {
-      if (response.status == 200) {
-        setLikeCount((prevcount) => {
-          return prevcount += 1
-        })
-        setLiked(true)
-      }
-
-    })
+  const handle_press = () => {
+    if (liked == true) {
+      postAxiosInstance.post(`un-like-post/`, { user: loggeduser, post: post.id }).then((response) => {
+        if (response.status == 204) {
+          setLikeCount((prevcount) => {
+            return prevcount -= 1
+          })
+          setLiked(false)
+        }
+      })
+    }
+    else if (liked == false) {
+      postAxiosInstance.post('like-post/', { user: loggeduser, post: post.id }).then((response) => {
+        if (response.status == 201) {
+          setLikeCount((prevcount) => {
+            return prevcount += 1
+          })
+          setLiked(true)
+        }
+      })
+    }
   }
 
   return (
@@ -64,13 +75,13 @@ export default function ImagePost({ post }) {
         <CardBody className="p-0" >
           {
             images?.length > 1 ?
-              <Carousel>
+              <Carousel className="mx-auto max-h-[30rem]" >
                 {
                   images.map((imageurl, idx) => {
                     return (
                       <div key={idx} className="flex justify-center align-middle" >
                         <img
-                          onDoubleClick={like_post}
+                          onDoubleClick={handle_press}
                           src={apiUrl + imageurl}
                           alt='Post Image'
                           className="mx-auto"
@@ -83,10 +94,10 @@ export default function ImagePost({ post }) {
               :
               <div className="flex justify-center items-center min-h-96">
                 <img
-                  onDoubleClick={like_post}
+                  onDoubleClick={handle_press}
                   src={apiUrl + images}
                   alt='Post Image'
-                  className="mx-auto h-max"
+                  className="mx-auto max-h-[30rem]"
                 />
               </div>
           }
@@ -95,12 +106,12 @@ export default function ImagePost({ post }) {
         <CardFooter className="pt-0 border-t text-center">
           <div className="flex ">
             <div className="flex flex-col justify-center me-2 py-2">
-              <IconButton variant='text' color="indigo" onClick={() => setLiked(!liked)}  >
+              <IconButton variant='text' color="indigo" onClick={handle_press}>
                 {
                   liked ?
                     <FilledUpIcon className="w-5 text-indigo" />
                     :
-                    <HandThumbUpIcon onClick={like_post} className="w-5 text-black" />
+                    <HandThumbUpIcon className="w-5 text-black" />
                 }
               </IconButton>
               <p className="text-xs" >{likecount} Likes</p>

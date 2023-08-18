@@ -8,6 +8,7 @@ import {
     Carousel,
 } from "@material-tailwind/react";
 import { VideoPostingModal } from "./VideoPostModal";
+import { toast } from "react-toastify";
 
 export function VideoSelectModal({ fetchPosts, open, handleOpen }) {
 
@@ -55,6 +56,10 @@ export function VideoSelectModal({ fetchPosts, open, handleOpen }) {
                     }
                     <input type="file" className='hidden' ref={videoInputRef} onChange={(e) => {
                         if (e.target.files != null) {
+                            if(e.target.files[0].size > 20000000){
+                                toast.warning('Video should be less than 20MB')
+                                return
+                            }
                             setVideo(e.target.files[0])
                             setVideoSelected(true)
                         }

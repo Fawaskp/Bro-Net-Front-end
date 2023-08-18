@@ -1,0 +1,6 @@
+.empty-div-gradient {
+    background: linear-gradient(to top, rgb(255, 255, 255), rgba(255, 255, 255, 0));
+    width: 90.5%;
+    height: 300px;
+    margin-top: -416px;
+  }

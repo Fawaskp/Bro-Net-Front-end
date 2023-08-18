@@ -10,8 +10,7 @@ module.exports = withMT({
   theme: {
     extend: {
       colors: {
-        customColor: "#0C1E40",
-        bgColor: "#F8F8F8",
+        white:'#ffffff'
       },
       borderRadius: {
         '10': '10px', 

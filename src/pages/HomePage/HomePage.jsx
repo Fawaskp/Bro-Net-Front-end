@@ -3,7 +3,6 @@ import Navbar from '../../components/Navbar'
 import Banner from './Banner';
 import LeftBar from './LeftBar';
 import ImagePost from './ImagePosting/ImagePost';
-import './HomePage.css'
 import { getLocal } from '../../helpers/auth';
 import jwtDecode from 'jwt-decode';
 import { toast } from 'react-toastify';
@@ -12,17 +11,11 @@ import { ImageSelectModal } from './ImagePosting/ImageSelectModal';
 import { postAxiosInstance } from '../../utils/axios-utils';
 import { VideoSelectModal } from './VideoPosting/VideoSelectModal';
 import VideoPost from './VideoPosting/VideoPost';
-
-import {
-  CardBody,
-  CardHeader,
-  Card,
-  Avatar,
-} from "@material-tailwind/react";
-import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 import PollPost from './PollPosting/PollPost';
 import { PollPostModal } from './PollPosting/PollPostModal';
 import AdminMessages from './AdminMessages';
+import ArticlePost from './ArticlePosting/ArticlePost';
+import './HomePage.css'
 
 function HomePage() {
 
@@ -35,7 +28,6 @@ function HomePage() {
       }
     }).catch((err) => console.log(err))
   }
-
   const [openimagemodal, setOpenImageModal] = useState(false);
   const handleImageModal = () => setOpenImageModal(!openimagemodal);
 
@@ -68,14 +60,14 @@ function HomePage() {
   if (start)
     return (
       <>
-        <ImageSelectModal fetchPosts={fetchPosts} open={openimagemodal} handleOpen={handleImageModal} />
+        <ImageSelectModal  fetchPosts={fetchPosts} open={openimagemodal} handleOpen={handleImageModal} />
         <VideoSelectModal fetchPosts={fetchPosts} open={openvideomodal} handleOpen={handleVideoModal} />
         <PollPostModal open={openpollmodal} handleOpen={handlePollModal} />
         <Navbar />
         <div className='mx-auto' >
           <Banner />
         </div>
-        <div className='max-w-screen-xl mx-auto' >
+        <div className='max-w-screen-xl mx-auto mt-5' >
           <div className="grid-container">
             <div className="left-section">
               <LeftBar handlePoll={handlePollModal} handleImage={handleImageModal} handleVideo={handleVideoModal} />
@@ -86,17 +78,22 @@ function HomePage() {
                   posts.map((post, idx) => {
                     if (post.type == 'image' && post.post) {
                       return (
-                        <ImagePost post={post} />
+                        <ImagePost loggeduser={loggeduser} post={post} />
                       )
                     }
                     else if (post.type == 'video' && post.post) {
                       return (
-                        <VideoPost post={post} />
+                        <VideoPost loggeduser={loggeduser} post={post} />
                       )
                     }
                     else if (post.type == 'poll' && post.post) {
                       return (
-                        <PollPost post={post} />
+                        <PollPost loggeduser={loggeduser} post={post} />
+                      )
+                    }
+                    else if (post.type == 'article' && post.post) {
+                      return (
+                        <ArticlePost loggeduser={loggeduser} post={post} />
                       )
                     }
                   })
@@ -107,7 +104,7 @@ function HomePage() {
                 }
               </div>
             </div>
-            <div className="right-section ">
+            <div className="right-section">
                 <AdminMessages/>
             </div>
           </div>
