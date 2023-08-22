@@ -155,7 +155,7 @@ function Profile({ userId }) {
                                         followed ? 
                                         <>
                                             <Button onClick={() => UnFollow()} className='rounded-10' color='indigo' >Unfollow</Button>
-                                            <Button onClick={() => navigate('/user/messaging/'+fullname)} className='rounded-10 ms-3 ' color='indigo' >Message</Button>
+                                            <Button onClick={() => navigate('/user/messaging/?user='+fullname)} className='rounded-10 ms-3 ' color='indigo' >Message</Button>
                                         </>
                                             :
                                             <Button onClick={() => Follow()} className='rounded-10' color='indigo' >Follow</Button>

@@ -10,19 +10,34 @@ import {
     PhotoIcon,
     ChartBarIcon,
     NewspaperIcon,
+    ArrowPathIcon,
   } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
    
-  export default function LeftBar({handlePoll,handleImage,handleVideo}) {
+  export default function LeftBar({refreshPosts,handlePoll,handleImage,handleVideo}) {
 
     const navigate = useNavigate()
+    const [loadspinning, setLoadSpinning] = useState(false);
 
     return (
-      <Card className="sticky top-24 w-84 border rounded-10 p-4 shadow-xl shadow-blue-gray-900/5">
-        <div className="mb-2 p-4 w-full">
+      <Card className="sticky top-24 border rounded-10 p-4 shadow-xl shadow-blue-gray-900/5">
+        <div className="mb-2 p-4 w-full flex justify-between">
           <Typography variant="h6" color="blue-gray">
             Create a post
           </Typography>
+          <ArrowPathIcon
+          title="Get New Posts"
+          className={`w-5 cursor-pointer hover:text-indigo-800 transition-all duration-200 ${loadspinning ? 'animate-spin' : ''}`}
+          onClick={() => {
+            refreshPosts()
+            setLoadSpinning(true);
+            setTimeout(() => {
+              setLoadSpinning(false);
+            }, 500)
+          }} 
+        />
         </div>
         <List className="text-sm"  >
           <ListItem onClick={()=>handleImage()} >

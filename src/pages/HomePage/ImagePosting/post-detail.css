@@ -1,0 +1,20 @@
+@media (max-width: 768px) {
+    .Dialog[size="lg"] {
+      width: 80%;
+      max-width: 900px;
+    }
+  }
+  
+  @media (min-width: 769px) and (max-width: 1200px) {
+    .Dialog[size="lg"] {
+      width: 60%;
+      max-width: 600px; 
+    }
+  }
+  
+  @media (min-width: 1201px) {
+    .Dialog[size="lg"] {
+      width: 40%;
+      max-width: 800px;
+    }
+  }

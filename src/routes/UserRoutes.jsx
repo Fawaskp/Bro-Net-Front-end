@@ -24,7 +24,7 @@ function UserRoutes() {
           <Route path='/profile/settings' element={<ProfileSettingsLayout />} />
           <Route path='/profile/projects' element={<AllProjects />} />
           <Route path='/profile/skills' element={<AllSkills />} />
-          <Route path='/messaging/:username' element={<MessagePage />} />
+          <Route path='/messaging/' element={<MessagePage />} />
         </Route>
       </Route>
     </Routes>

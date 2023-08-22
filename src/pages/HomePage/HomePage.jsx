@@ -67,13 +67,13 @@ function HomePage() {
         <div className='mx-auto' >
           <Banner />
         </div>
-        <div className='max-w-screen-xl mx-auto mt-5' >
+        <div className='max-w-screen-xl mx-auto' >
           <div className="grid-container">
-            <div className="left-section">
-              <LeftBar handlePoll={handlePollModal} handleImage={handleImageModal} handleVideo={handleVideoModal} />
+            <div className="left-section mt-3">
+              <LeftBar refreshPosts={fetchPosts} handlePoll={handlePollModal} handleImage={handleImageModal} handleVideo={handleVideoModal} />
             </div>
             <div className="posts-section">
-              <div className="grid-posts">
+              <div>
                 {
                   posts.map((post, idx) => {
                     if (post.type == 'image' && post.post) {
@@ -104,7 +104,7 @@ function HomePage() {
                 }
               </div>
             </div>
-            <div className="right-section">
+            <div className="right-section mt-3">
                 <AdminMessages/>
             </div>
           </div>

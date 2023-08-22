@@ -13,7 +13,7 @@ function ProfileSettingsLayout() {
     <>
       <PersonalSection />
       <SocialMediaSection/>
-      {/* <BrocampSection /> */}Admin Login
+      {/* <BrocampSection /> */}
     </>
   )
 }

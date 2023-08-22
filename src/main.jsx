@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import 'react-toastify/dist/ReactToastify.css';
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { ThemeProvider } from "@material-tailwind/react";
 import { ToastContainer, toast } from 'react-toastify';
+import App from './App.jsx'
+import 'react-toastify/dist/ReactToastify.css';
+import './index.css'
 
 const google_client_id = import.meta.env.VITE_GOOGLE_CLIENT_ID
 

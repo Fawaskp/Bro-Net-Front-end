@@ -64,8 +64,8 @@ export default function VideoPost({loggeduser, post }) {
   return (
     <>
       <PostDetailModal liked={liked} handle_press={handle_press} commentscount={commentscount} setCommentsCount={setCommentsCount} comments={comments} refreshComments={callSetComments} post={post} open={postdetailmodal} handleOpen={handlePostDetailModal} />
-      <Card className="w-full border shadow-none">
-        <CardHeader shadow={false} floated={false} className="border-b m-0 p-3 rounded-0" >
+      <Card className="w-full border shadow-none my-3">
+        <CardHeader shadow={false} floated={false} className="border-b rounded-b-none m-0 p-3" >
           <Avatar
             onClick={(e) => navigate(`/${user.username}`)}
             src={user.profile_image ? apiUrl + user.profile_image : defaultUserImageLink}

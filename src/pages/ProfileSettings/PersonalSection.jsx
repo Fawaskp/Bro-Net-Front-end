@@ -131,7 +131,7 @@ function PersonalSection() {
 
     return (
         <>
-        <EmailChangeModal emailRefresher={setEmail} username={username} status={emailmodal} close={handleEmailModal} />
+            <EmailChangeModal emailRefresher={setEmail} username={username} status={emailmodal} close={handleEmailModal} />
             <DpConfirmModal open={dpconfirmmodal} handleOpen={handleDpConfirmModal} setImage={setUserImage} image1={userImage} image2={selectedimage} ></DpConfirmModal>
             <div className='w-full bg-gray-900 h-96'>
                 <div className='mx-auto h-2/3 md:w-3/6 flex flex-col items-center'>
@@ -200,10 +200,10 @@ function PersonalSection() {
                                         {
                                             editmode ?
                                                 <>
+                                                    <IconButton onClick={handleEmailModal} className='px-3 mx-3' variant='text' color='indigo' >
+                                                        <ArrowPathIcon className='w-4' />
+                                                    </IconButton>
                                                     <Input disabled type='email' defaultValue={email} />
-                                                        <IconButton onClick={handleEmailModal} className='px-3 mx-3' variant='text' color='indigo' >
-                                                            <ArrowPathIcon className='w-4' />
-                                                        </IconButton>
                                                 </>
                                                 :
                                                 <p className='mx-10' >{email}</p>

@@ -33,6 +33,7 @@ export function VideoPostingModal({ fetchPosts, videoselected, video, open, hand
             if (response.status == 200) {
                 handleOpen()
                 fetchPosts()
+                toast.success('Video post uploaded successfull')
             }
         }).catch((err)=>toast.error(err.message))
     }

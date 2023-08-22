@@ -62,8 +62,8 @@ export default function ImagePost({ loggeduser, post }) {
   return (
     <>
       <PostDetailModal commentscount={commentscount} setCommentsCount={setCommentsCount} comments={comments} refreshComments={callSetComments} post={post} open={postdetailmodal} handleOpen={handlePostDetailModal} />
-      <Card className="w-full border shadow-none">
-        <CardHeader shadow={false} floated={false} className="border-b m-0 p-3 rounded-0" >
+      <Card className="w-full border shadow-none my-3">
+        <CardHeader shadow={false} floated={false} className="rounded-b-none border-b m-0 p-3" >
           <Avatar
             onClick={(e) => navigate(`/${user.username}`)}
             src={user.profile_image ? apiUrl + user.profile_image : defaultUserImageLink}

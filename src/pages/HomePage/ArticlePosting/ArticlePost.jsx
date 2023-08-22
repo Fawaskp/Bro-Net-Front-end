@@ -78,7 +78,7 @@ export default function ArticlePost({ loggeduser, post }) {
   return (
     <>
       <PostDetailModal liked={liked} handle_press={handle_press} commentscount={commentscount} setCommentsCount={setCommentsCount} comments={comments} refreshComments={callSetComments} post={post} open={postdetailmodal} handleOpen={handlePostDetailModal} />
-      <Card className="w-full border shadow-none">
+      <Card className="w-full border shadow-none my-3">
         <CardHeader shadow={false} floated={false} className="border-b m-0 p-3 rounded-0" >
           <Avatar
             onClick={(e) => navigate(`/${user.username}`)}
@@ -92,7 +92,7 @@ export default function ArticlePost({ loggeduser, post }) {
           {
             article &&
             <>
-              <div className="flex min-h-96 max-h-[30rem] justify-center align-middle ql-snow overflow-hidden">
+              <div className="flex min-h-96 max-h-[30rem] align-middle ql-snow overflow-hidden">
                 <div ref={articleDivRef} className="ql-editor max-w-md max-h-[30rem] overflow-hidden" dangerouslySetInnerHTML={{ __html: article }} />
               </div>
               {
