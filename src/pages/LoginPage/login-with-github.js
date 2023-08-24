@@ -1,12 +1,14 @@
 import { toast } from 'react-toastify';
 import { userAxiosInstance } from '../../utils/axios-utils';
 import axios from 'axios';
+import { apiUrl } from '../../constants/constants';
 
 const clearQueryString = (navigate) => {
   navigate('.', { replace: true });
 };
 
 export async function getGitHubAccessToken(codeParam, setLoading, navigate) {
+
   if (codeParam.length !== 20) {
     return clearQueryString(navigate);
   }
@@ -19,12 +21,11 @@ export async function getGitHubAccessToken(codeParam, setLoading, navigate) {
   const timeoutPromise = new Promise((_, reject) => {
     setTimeout(() => {
       setLoading(false);
-      // Reject the promise without throwing an error
       reject('timeout');
     }, 7000);
   });
 
-  const fetchPromise = fetch("http://localhost:5000/getAccessToken?code=" + codeParam, {
+  const fetchPromise = fetch(`${apiUrl}/accounts/get_access_token/?code=${codeParam}`, {
     method: 'GET'
   }).then((response) => {
     return response.json();
@@ -36,20 +37,18 @@ export async function getGitHubAccessToken(codeParam, setLoading, navigate) {
     if (data.access_token) {
       get_user_email(data.access_token, setLoading, navigate);
     }
-  });
+  })
 
   try {
     await Promise.race([fetchPromise, timeoutPromise]);
   } catch (error) {
     if (error === 'timeout') {
       setLoading(false);
-      // Handle the timeout error with toast.error()
       toast.error('Sorry, GitHub login is facing some issues at this moment. Please try another method.');
     } else {
-      console.error('An error occurred:', error);
+      console.error('An error occurred (from github) login ', error);
     }
   } finally {
-    // Hide the loading message when the promise is settled
     toast.dismiss(loadingMessage);
   }
 }
