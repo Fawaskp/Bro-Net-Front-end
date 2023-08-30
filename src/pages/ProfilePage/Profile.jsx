@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getLocal } from '../../helpers/auth'
 import jwtDecode from 'jwt-decode'
-import { apiUrl, defaultUserImageLink } from '../../constants/constants'
+import { apiUrl,mediaApiUrl,defaultUserImageLink } from '../../constants/constants'
 import { userAxiosInstance } from '../../utils/axios-utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUsersRectangle } from '@fortawesome/free-solid-svg-icons';
@@ -78,14 +78,14 @@ function Profile() {
                                     <div className="relative w-40 h-40">
                                         <img
                                             alt="User-Dp"
-                                            src={userImage ? apiUrl + userImage : defaultUserImageLink}
+                                            src={userImage ? mediaApiUrl + userImage : defaultUserImageLink}
                                             style={{ borderRadius: '50%' }}
                                             className="w-full h-full align-middle ring-8 ring-gray-900 object-cover bg-white absolute -mt-16"
                                         />
                                     </div>
                                 </div>
                                 <div className="md:w-5 lg:w-4/12 md:px-4 lg:order-3 float-right lg:self-center">
-                                    <img className='w-16 float-right' src={apiUrl + stackimage} alt="Django" />
+                                    <img className='w-16 float-right' src={mediaApiUrl+stackimage} alt="Django" />
                                 </div>
                                 <div className="w-full lg:w-4/12 px-4 lg:order-1">
                                     <div className="flex justify-center sm:mt-2 md:pt-24 lg:pt-4">

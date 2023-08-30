@@ -29,7 +29,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import jwtDecode from "jwt-decode";
 import { getLocal } from "../helpers/auth";
-import { apiUrl, defaultUserImageLink } from "../constants/constants";
+import { mediaApiUrl, defaultUserImageLink } from "../constants/constants";
 import { userAxiosInstance } from "../utils/axios-utils";
 import debounce from '../helpers/debouce'
 
@@ -81,7 +81,7 @@ function ProfileMenu({ userImage }) {
             size="sm"
             alt="tania andrew"
             className="border border-indigo-500 p-0.5 rounded-full focus:outline-0"
-            src={userImage ? apiUrl + userImage : defaultUserImageLink}
+            src={userImage ? mediaApiUrl + userImage : defaultUserImageLink}
           />
           <ChevronDownIcon
             strokeWidth={2.5}
@@ -345,7 +345,7 @@ export default function ComplexNavbar() {
                           searchresults.map((user) => {
                             return (
                               <div key={user.username} onClick={() => { navigate('/'), navigate(`/${user.username}`) }} className="flex items-center gap-4 my-1 rounded-10 p-2 hover:bg-indigo-50 cursor-pointer duration-300">
-                                <Avatar size="sm" style={{ borderRadius: '50%' }} src={user.profile?.image ? apiUrl + user.profile?.image : defaultUserImageLink} alt="avatar" />
+                                <Avatar size="sm" style={{ borderRadius: '50%' }} src={user.profile?.image ? mediaApiUrl + user.profile?.image : defaultUserImageLink} alt="avatar" />
                                 <div>
                                   <p className="font-semibold text-sm" >{user.fullname}</p>
                                   <p className="text-xs text-gray-600" >{user.profile?.batch}</p>

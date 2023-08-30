@@ -8,7 +8,7 @@ import {
   Carousel,
   IconButton,
 } from "@material-tailwind/react";
-import { apiUrl, defaultUserImageLink } from "../../../constants/constants";
+import { apiUrl,mediaApiUrl,defaultUserImageLink } from "../../../constants/constants";
 import { HandThumbUpIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 import { HandThumbUpIcon as FilledUpIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
@@ -82,7 +82,7 @@ export default function ImagePost({ loggeduser, post }) {
                       <div key={idx} className="flex justify-center align-middle" >
                         <img
                           onDoubleClick={handle_press}
-                          src={apiUrl + imageurl}
+                          src={mediaApiUrl + imageurl}
                           alt='Post Image'
                           className="mx-auto"
                         />
@@ -95,7 +95,7 @@ export default function ImagePost({ loggeduser, post }) {
               <div className="flex justify-center items-center min-h-96">
                 <img
                   onDoubleClick={handle_press}
-                  src={apiUrl + images}
+                  src={mediaApiUrl + images}
                   alt='Post Image'
                   className="mx-auto max-h-[30rem]"
                 />
